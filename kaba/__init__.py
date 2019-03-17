@@ -71,14 +71,23 @@ class Person(Document):
 
 
 class ProductOrder(Document):
-    ref = Str()
     wanted = Int()
     ordered = Int()
 
 
 class PersonOrder(Document):
     person = Str()
-    products = Array(ProductOrder)
+    products = Mapping(str, ProductOrder)
+
+    def get_quantity(self, product):
+        choice = self.products.get(product.ref)
+        return choice.wanted if choice else 0
+
+    def total(self, products):
+        products = {p.ref: p for p in products}
+        return round(
+            sum(p.wanted * products[ref].price for ref, p in self.products.items()), 2
+        )
 
 
 class Order(Document):
@@ -87,7 +96,12 @@ class Order(Document):
     where = Str()
     producer = Reference(Producer, required=True)
     products = Array(Product)
-    orders = Mapping(Str, PersonOrder)
+    orders = Mapping(str, PersonOrder)
+
+    def product_wanted(self, product):
+        return round(
+            sum([po.products[product.ref].wanted for po in self.orders.values()])
+        )
 
 
 app = Roll()
@@ -110,12 +124,33 @@ async def home(request, response):
     response.html("home.html", {"orders": Order.find()})
 
 
-@app.route("/commande/{order_id}", methods=["GET"])
-async def get_order(request, response, order_id):
+@app.route("/commande/{order_id}/total", methods=["GET"])
+async def view_order(request, response, order_id):
     order = Order.find_one(_id=ObjectId(order_id))
+    total = round(sum(po.total(order.products) for po in order.orders.values()), 2)
     response.html(
         "order.html",
-        {"order": order, "person": request.query.get("email"), "person_order": None},
+        {
+            "order": order,
+            "producer": Producer.find_one(_id=order.producer),
+            "total": total,
+        },
+    )
+
+
+@app.route("/commande/{order_id}", methods=["GET"])
+async def order_form(request, response, order_id):
+    order = Order.find_one(_id=ObjectId(order_id))
+    email = request.query.get("email")
+    person_order = order.orders.get(email)
+    response.html(
+        "place_order.html",
+        {
+            "order": order,
+            "person": email,
+            "person_order": person_order,
+            "producer": Producer.find_one(_id=order.producer),
+        },
     )
 
 
@@ -128,7 +163,7 @@ async def place_order(request, response, order_id):
     for product in order.products:
         quantity = form.int(product.ref, 0)
         if quantity:
-            person_order.products.append(ProductOrder(ref=product.ref, wanted=quantity))
+            person_order.products[product.ref] = ProductOrder(wanted=quantity)
     if not order.orders:
         order.orders = {}
     order.orders[email] = person_order

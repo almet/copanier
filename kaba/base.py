@@ -29,12 +29,16 @@ class Field:
         if obj is None:
             return self
         value = obj.get(self.name)
-        return value
+        if value is None and self.default is not None:
+            if callable(self.default):
+                value = self.default()
+            else:
+                value = self.default
+            self.__set__(obj, value)
+        return obj.get(self.name)
 
     def __set__(self, obj, value):
-        print("set", value, id(value))
         value = self.coerce(value)
-        print("set after", value, id(value))
         obj[self.name] = value
 
 
@@ -51,7 +55,8 @@ class Int(Field):
 
 
 class Datetime(Field):
-    def coerce(self, value):
+    @staticmethod
+    def coerce(value):
         if isinstance(value, datetime):
             return value
         if isinstance(value, int):
@@ -59,7 +64,8 @@ class Datetime(Field):
 
 
 class Email(Field):
-    def coerce(self, value):
+    @staticmethod
+    def coerce(value):
         # TODO proper validation
         if "@" not in value:
             raise ValueError(f"Invalid value for email: {value}")
@@ -67,8 +73,8 @@ class Email(Field):
 
 
 class Reference(Field):
-
-    def coerce(self, value):
+    @staticmethod
+    def coerce(value):
         if isinstance(value, dict):
             value = value["_id"]
         return ObjectId(value)
@@ -83,22 +89,21 @@ class Dict(Field):
 
 
 class Mapping(Field):
-    def __init__(self, key_field, value_field, *args, **kwargs):
-        self.key_field = key_field
-        self.value_field = value_field
-        return super().__init__(*args, **kwargs)
+    def __init__(self, key_type, value_type, *args, **kwargs):
+        self.key_type = key_type
+        self.value_type = value_type
+        kwargs["default"] = dict
 
-    def coerce(self, value):
-        print("coerce raw", value, id(value))
-        if value is None:
-            value = {}
-        if not isinstance(value, dict):
-            raise ValueError(f"{value} is not a dict")
-        print("coerce", value, id(value))
-        return {
-            self.key_field.coerce(k): self.value_field.coerce(v)
-            for k, v in value.items()
-        }
+        def coerce(value):
+            if value is None:
+                value = {}
+            if not isinstance(value, dict):
+                raise ValueError(f"{value} is not a dict")
+            # TODO coerce in-place.
+            return {key_type(k): value_type(v) for k, v in value.items()}
+
+        self.coerce = coerce
+        return super().__init__(*args, **kwargs)
 
 
 class Array(Field):
@@ -111,11 +116,11 @@ class Array(Field):
             return self
         value = obj.get(self.name)
         if value is None:
-            value = []
-            self.__set__(value)
-        return value
+            self.__set__(obj, value)
+        return obj[self.name]
 
     def __set__(self, obj, value):
+        # TODO do not replace reference.
         obj[self.name] = [self.coerce(v) for v in value or []]
 
 
@@ -135,9 +140,20 @@ class Document(dict, metaclass=MetaDocument):
     # def __repr__(self):
     #     return f"<{self.__class__.__name__} {self._id}>"
 
+    def __init__(self, data=None, **attrs):
+        if data:
+            for key, value in data.items():
+                setattr(self, key, value)
+        for key, value in attrs.items():
+            setattr(self, key, value)
+
     @property
     def _id(self):
         return self["_id"]
+
+    @_id.setter
+    def _id(self, value):
+        self["_id"] = value
 
     def insert_one(self):
         self.collection.insert_one(self)

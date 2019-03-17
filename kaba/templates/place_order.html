@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block body %}
+<p><a href="/">&lt; Commandes</a></p>
+<p>Producteur: {{ producer.name }}</p>
+<p>Lieu: {{ order.where }}</p>
+<p>Date: {{ order.when }}</p>
+<p>Commande de «{{ person }}»</p>
+<form method="post">
+    <table>
+        <tr><th>Produit</th><th>Prix</th><th>Quantité</th></tr>
+        {% for product in order.products %}
+        <tr><th>{{ product.name }}</th><td>{{ product.price }} €</td><td><input type="number" name="{{ product.ref }}" value="{{ person_order.get_quantity(product) if person_order else 0 }}"></td></tr>
+        {% endfor %}
+    </table>
+    <p>Total: {{ person_order.total(order.products) if person_order else 0 }} €</p>
+    <input type="hidden" name="email" value="{{ person }}">
+    <input type="submit" value="Valider ma commande">
+</form>
+{% endblock body %}
