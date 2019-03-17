@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block body %}
+    {% for order in orders %}
+    <p>Producteur: {{ order.producer }}</p>
+    <p>Lieu: {{ order.where }}</p>
+    <p>Date: {{ order.when }}</p>
+    <form action="/commande/{{ order._id }}">
+        <label for="email">Participer à la commande</label>
+        <input type="text" name="email">
+        <input type="submit" value="Commander">
+    </form>
+    {% endfor %}
+{% endblock body %}
