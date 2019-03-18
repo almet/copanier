@@ -1,9 +1,9 @@
+import csv
 from time import perf_counter
 
 import ujson as json
 import hupper
 import minicli
-from bson import ObjectId
 from jinja2 import Environment, PackageLoader, select_autoescape
 from roll import Roll, Response
 from roll.extensions import cors, options, traceback, simple_server
@@ -21,6 +21,12 @@ class Response(Response):
             context["message"] = json.loads(self.request.cookies["message"])
             self.cookies.set("message", "")
         self.body = env.get_template(template_name).render(*args, **context)
+
+    def redirect(self, location):
+        self.status = 302
+        self.headers["Location"] = location
+
+    redirect = property(None, redirect)
 
 
 class Roll(Roll):
@@ -81,6 +87,19 @@ async def create_delivery(request, response):
     response.headers["Location"] = f"/livraison/{delivery.id}"
 
 
+@app.route("/livraison/{id}/importer/produits", methods=["POST"])
+async def import_products(request, response, id):
+    delivery = Delivery.load(id)
+    delivery.products = []
+    reader = csv.DictReader(
+        request.files.get("data").read().decode().splitlines(), delimiter=";"
+    )
+    for row in reader:
+        delivery.products.append(Product(**row))
+    delivery.persist()
+    response.redirect = f"/livraison/{delivery.id}"
+
+
 @app.route("/livraison/{id}/edit", methods=["GET"])
 async def edit_delivery(request, response, id):
     delivery = Delivery.load(id)
@@ -102,8 +121,7 @@ async def post_delivery(request, response, id):
 @app.route("/livraison/{id}", methods=["GET"])
 async def view_delivery(request, response, id):
     delivery = Delivery.load(id)
-    total = round(sum(o.total(delivery.products) for o in delivery.orders.values()), 2)
-    response.html("delivery.html", {"delivery": delivery, "total": total})
+    response.html("delivery.html", {"delivery": delivery})
 
 
 @app.route("/livraison/{id}/commander", methods=["GET"])
@@ -130,8 +148,24 @@ async def place_order(request, response, id):
         delivery.orders = {}
     delivery.orders[email] = order
     delivery.persist()
-    response.headers["Location"] = request.url.decode()
-    response.status = 302
+    response.redirect = request.url.decode()
+
+
+@app.route("/livraison/{id}/importer/commande", methods=["POST"])
+async def import_commande(request, response, id):
+    email = request.form.get("email")
+    order = Order()
+    reader = csv.DictReader(
+        request.files.get("data").read().decode().splitlines(), delimiter=";"
+    )
+    for row in reader:
+        wanted = int(row["wanted"] or 0)
+        if wanted:
+            order.products[row["ref"]] = ProductOrder(wanted=wanted)
+    delivery = Delivery.load(id)
+    delivery.orders[email] = order
+    delivery.persist()
+    response.redirect = f"/livraison/{delivery.id}"
 
 
 def connect():
