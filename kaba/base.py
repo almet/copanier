@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 
 from bson import ObjectId
 
@@ -61,6 +61,17 @@ class Datetime(Field):
             return value
         if isinstance(value, int):
             return datetime.fromtimestamp(value)
+
+
+class Date(Field):
+    @staticmethod
+    def coerce(value):
+        if isinstance(value, date):
+            return value
+        if isinstance(value, datetime):
+            return value.date()
+        if isinstance(value, int):
+            return date.fromtimestamp(value)
 
 
 class Email(Field):
@@ -126,19 +137,19 @@ class Array(Field):
 
 class MetaDocument(type):
     def __new__(cls, name, bases, attrs):
+        fields = getattr(cls, "_fields", {})
         for attr_name, attr_value in attrs.items():
             if not isinstance(attr_value, Field):
                 continue
+            fields[attr_name] = attr_value
             attr_value.name = attr_name
+        cls._fields = fields
         return super().__new__(cls, name, bases, attrs)
 
 
 class Document(dict, metaclass=MetaDocument):
     __db__ = None
     __collection__ = None
-
-    # def __repr__(self):
-    #     return f"<{self.__class__.__name__} {self._id}>"
 
     def __init__(self, data=None, **attrs):
         if data:

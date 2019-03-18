@@ -1,15 +1,15 @@
 {% extends "base.html" %}
 
 {% block body %}
-    {% for order in orders %}
-    <p>Producteur: {{ order.producer }}</p>
-    <p>Lieu: {{ order.where }}</p>
-    <p>Date: {{ order.when }}</p>
-    <form action="/commande/{{ order._id }}">
-        <label for="email">Participer à la commande</label>
-        <input type="text" name="email">
+    {% for delivery in deliveries %}
+    <p>Producteur: {{ delivery.producer }}</p>
+    <p>Lieu: {{ delivery.where }}</p>
+    <p>Date: {{ delivery.when }}</p>
+    <form action="/livraison/{{ delivery.id }}/commander">
+        <label for="email">Commander</label>
+        <input type="email" name="email">
         <input type="submit" value="Commander">
     </form>
-    <a href="/commande/{{ order._id }}/total">Résumé de la commande</a>
+    <a href="/livraison/{{ delivery.id }}">Résumé de la livraison</a>
     {% endfor %}
 {% endblock body %}

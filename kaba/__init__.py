@@ -1,4 +1,3 @@
-import os
 from time import perf_counter
 
 import ujson as json
@@ -6,11 +5,10 @@ import hupper
 import minicli
 from bson import ObjectId
 from jinja2 import Environment, PackageLoader, select_autoescape
-from pymongo import MongoClient
 from roll import Roll, Response
 from roll.extensions import cors, options, traceback, simple_server
 
-from .base import Document, Str, Float, Array, Email, Int, Reference, Datetime, Mapping
+from .models import Delivery, Order, Person, Product, ProductOrder
 
 
 class Response(Response):
@@ -45,65 +43,6 @@ env = Environment(
 )
 
 
-class Producer(Document):
-    __collection__ = "producers"
-    name = Str(required=True)
-
-    @property
-    def products(self):
-        return Product.find(producer=self._id)
-
-
-class Product(Document):
-    __collection__ = "products"
-    producer = Reference(Producer, required=True)
-    name = Str(required=True)
-    ref = Str(required=True)
-    description = Str()
-    price = Float(required=True)
-
-
-class Person(Document):
-    __collection__ = "persons"
-    first_name = Str()
-    last_name = Str()
-    email = Email()
-
-
-class ProductOrder(Document):
-    wanted = Int()
-    ordered = Int()
-
-
-class PersonOrder(Document):
-    person = Str()
-    products = Mapping(str, ProductOrder)
-
-    def get_quantity(self, product):
-        choice = self.products.get(product.ref)
-        return choice.wanted if choice else 0
-
-    def total(self, products):
-        products = {p.ref: p for p in products}
-        return round(
-            sum(p.wanted * products[ref].price for ref, p in self.products.items()), 2
-        )
-
-
-class Order(Document):
-    __collection__ = "orders"
-    when = Datetime(required=True)
-    where = Str()
-    producer = Reference(Producer, required=True)
-    products = Array(Product)
-    orders = Mapping(str, PersonOrder)
-
-    def product_wanted(self, product):
-        return round(
-            sum([po.products[product.ref].wanted for po in self.orders.values()])
-        )
-
-
 app = Roll()
 cors(app, methods="*", headers="*")
 options(app)
@@ -121,66 +60,88 @@ async def on_startup():
 
 @app.route("/", methods=["GET"])
 async def home(request, response):
-    response.html("home.html", {"orders": Order.find()})
+    response.html("home.html", deliveries=Delivery.all())
 
 
-@app.route("/commande/{order_id}/total", methods=["GET"])
-async def view_order(request, response, order_id):
-    order = Order.find_one(_id=ObjectId(order_id))
-    total = round(sum(po.total(order.products) for po in order.orders.values()), 2)
-    response.html(
-        "order.html",
-        {
-            "order": order,
-            "producer": Producer.find_one(_id=order.producer),
-            "total": total,
-        },
-    )
+@app.route("/livraison/new", methods=["GET"])
+async def new_delivery(request, response):
+    response.html("edit_delivery.html", delivery={})
 
 
-@app.route("/commande/{order_id}", methods=["GET"])
-async def order_form(request, response, order_id):
-    order = Order.find_one(_id=ObjectId(order_id))
-    email = request.query.get("email")
-    person_order = order.orders.get(email)
-    response.html(
-        "place_order.html",
-        {
-            "order": order,
-            "person": email,
-            "person_order": person_order,
-            "producer": Producer.find_one(_id=order.producer),
-        },
-    )
-
-
-@app.route("/commande/{order_id}", methods=["POST"])
-async def place_order(request, response, order_id):
-    order = Order.find_one(_id=ObjectId(order_id))
-    email = request.query.get("email")
-    person_order = PersonOrder(person=email)
+@app.route("/livraison/new", methods=["POST"])
+async def create_delivery(request, response):
     form = request.form
-    for product in order.products:
+    data = {}
+    for name, field in Delivery.__dataclass_fields__.items():
+        if name in form:
+            data[name] = form.get(name)
+    delivery = Delivery(**data)
+    delivery.persist()
+    response.status = 302
+    response.headers["Location"] = f"/livraison/{delivery.id}"
+
+
+@app.route("/livraison/{id}/edit", methods=["GET"])
+async def edit_delivery(request, response, id):
+    delivery = Delivery.load(id)
+    response.html("edit_delivery.html", {"delivery": delivery})
+
+
+@app.route("/livraison/{id}/edit", methods=["POST"])
+async def post_delivery(request, response, id):
+    delivery = Delivery.load(id)
+    form = request.form
+    for name, field in Delivery.__dataclass_fields__.items():
+        if name in form:
+            setattr(delivery, name, form.get(name))
+    delivery.persist()
+    response.status = 302
+    response.headers["Location"] = f"/livraison/{delivery.id}"
+
+
+@app.route("/livraison/{id}", methods=["GET"])
+async def view_delivery(request, response, id):
+    delivery = Delivery.load(id)
+    total = round(sum(o.total(delivery.products) for o in delivery.orders.values()), 2)
+    response.html("delivery.html", {"delivery": delivery, "total": total})
+
+
+@app.route("/livraison/{id}/commander", methods=["GET"])
+async def order_form(request, response, id):
+    delivery = Delivery.load(id)
+    email = request.query.get("email")
+    order = delivery.orders.get(email)
+    response.html(
+        "place_order.html", {"delivery": delivery, "person": email, "order": order}
+    )
+
+
+@app.route("/livraison/{id}/commander", methods=["POST"])
+async def place_order(request, response, id):
+    delivery = Delivery.load(id)
+    email = request.query.get("email")
+    order = Order()
+    form = request.form
+    for product in delivery.products:
         quantity = form.int(product.ref, 0)
         if quantity:
-            person_order.products[product.ref] = ProductOrder(wanted=quantity)
-    if not order.orders:
-        order.orders = {}
-    order.orders[email] = person_order
-    order.replace_one()
+            order.products[product.ref] = ProductOrder(wanted=quantity)
+    if not delivery.orders:
+        delivery.orders = {}
+    delivery.orders[email] = order
+    delivery.persist()
     response.headers["Location"] = request.url.decode()
     response.status = 302
 
 
 def connect():
-    db = os.environ.get("KABA_DB", "mongodb://localhost/kaba")
-    client = MongoClient(db)
-    db = client.get_database()
-    Producer.bind(db)
-    Product.bind(db)
-    Order.bind(db)
-    Person.bind(db)
-    return client
+    # db = os.environ.get("KABA_DB", "mongodb://localhost/kaba")
+    # client = MongoClient(db)
+    # db = client.get_database()
+    # Person.bind(db)
+    # Delivery.bind(db)
+    # return client
+    pass
 
 
 @minicli.cli()
@@ -194,11 +155,11 @@ def shell():
         start_ipython(
             argv=[],
             user_ns={
-                "Producer": Producer,
                 "app": app,
                 "Product": Product,
                 "Person": Person,
                 "Order": Order,
+                "Delivery": Delivery,
             },
         )
 
