@@ -2,15 +2,27 @@
 
 {% block body %}
 <p><a href="/">&lt; Commandes</a></p>
-<p>Producteur: {{ delivery.producer }}</p>
-<p>Lieu: {{ delivery.where }}</p>
-<p>Date: {{ delivery.when }}</p>
+<p>Producteur: {{ delivery.producer }} — Lieu: {{ delivery.where }} — Date: {{ delivery.when }} — Date limite de commande: {{ delivery.order_before }}</p>
 <p>Commande de «{{ person }}»</p>
 <form method="post">
     <table>
         <tr><th>Produit</th><th>Prix</th><th>Quantité</th></tr>
         {% for product in delivery.products %}
-        <tr><th>{{ product.name }}</th><td>{{ product.price }} €</td><td><input type="number" name="{{ product.ref }}" value="{{ order.get_quantity(product) if order else 0 }}"></td></tr>
+        <tr>
+            <th>{{ product.name }}
+                <label for="toggleControl{{ loop.index }}" class="toggle-label">(Détails)</label>
+                <input type="checkbox" id="toggleControl{{ loop.index }}" class="toggle">
+                <div class="toggle-container">
+                    <p>{{ product.description }}</p>
+                    <p>{% if product.img %}
+                        <img src="{{ product.img }}">
+                    {% else %}
+                        <img src="/static/img/default_product.svg">
+                    {% endif %}</p>
+                    <label for="toggleControl{{ loop.index }}" class="toggle-label">Fermer</label>
+                </div>
+            </th>
+            <td>{{ product.price }} €</td><td><input type="number" name="{{ product.ref }}" value="{{ order.get_quantity(product) }}"></td></tr>
         {% endfor %}
     </table>
     <p>Total: {{ order.total(delivery.products) if order else 0 }} €</p>

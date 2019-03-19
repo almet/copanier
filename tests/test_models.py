@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import pytest
 
 from kaba import utils
@@ -17,6 +19,13 @@ def test_can_create_delivery():
 def test_wrong_datetime_raise_valueerror():
     with pytest.raises(ValueError):
         Delivery(producer="Andines", order_before=utils.utcnow(), when="pouet")
+
+
+def test_delivery_is_open_when_order_before_is_in_the_future(delivery):
+    delivery.order_before = utils.utcnow() + timedelta(hours=1)
+    assert delivery.is_open
+    delivery.order_before = utils.utcnow() - timedelta(hours=1)
+    assert not delivery.is_open
 
 
 def test_can_create_product():

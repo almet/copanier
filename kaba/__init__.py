@@ -1,13 +1,17 @@
 import csv
+from pathlib import Path
 from time import perf_counter
 
 import ujson as json
 import hupper
 import minicli
 from jinja2 import Environment, PackageLoader, select_autoescape
+from openpyxl import Workbook
+from openpyxl.writer.excel import save_virtual_workbook
 from roll import Roll, Response
-from roll.extensions import cors, options, traceback, simple_server
+from roll.extensions import cors, options, traceback, simple_server, static
 
+from . import config
 from .models import Delivery, Order, Person, Product, ProductOrder
 
 
@@ -27,6 +31,9 @@ class Response(Response):
         self.headers["Location"] = location
 
     redirect = property(None, redirect)
+
+    def message(self, text, status="success"):
+        self.cookies.set("message", json.dumps((text, status)))
 
 
 class Roll(Roll):
@@ -61,7 +68,7 @@ async def attach_request(request, response):
 
 @app.listen("startup")
 async def on_startup():
-    connect()
+    configure()
 
 
 @app.route("/", methods=["GET"])
@@ -83,8 +90,8 @@ async def create_delivery(request, response):
             data[name] = form.get(name)
     delivery = Delivery(**data)
     delivery.persist()
-    response.status = 302
-    response.headers["Location"] = f"/livraison/{delivery.id}"
+    response.message("La livraison a bien été créée!")
+    response.redirect = f"/livraison/{delivery.id}"
 
 
 @app.route("/livraison/{id}/importer/produits", methods=["POST"])
@@ -97,6 +104,7 @@ async def import_products(request, response, id):
     for row in reader:
         delivery.products.append(Product(**row))
     delivery.persist()
+    response.message("Les produits de la livraison ont bien été mis à jour!")
     response.redirect = f"/livraison/{delivery.id}"
 
 
@@ -114,8 +122,8 @@ async def post_delivery(request, response, id):
         if name in form:
             setattr(delivery, name, form.get(name))
     delivery.persist()
-    response.status = 302
-    response.headers["Location"] = f"/livraison/{delivery.id}"
+    response.message("La livraison a bien été mise à jour!")
+    response.redirect = f"/livraison/{delivery.id}"
 
 
 @app.route("/livraison/{id}", methods=["GET"])
@@ -128,7 +136,7 @@ async def view_delivery(request, response, id):
 async def order_form(request, response, id):
     delivery = Delivery.load(id)
     email = request.query.get("email")
-    order = delivery.orders.get(email)
+    order = delivery.orders.get(email) or Order()
     response.html(
         "place_order.html", {"delivery": delivery, "person": email, "order": order}
     )
@@ -148,6 +156,7 @@ async def place_order(request, response, id):
         delivery.orders = {}
     delivery.orders[email] = order
     delivery.persist()
+    response.message("Jour de fête! Votre commande a bien été prise en compte!")
     response.redirect = request.url.decode()
 
 
@@ -165,22 +174,42 @@ async def import_commande(request, response, id):
     delivery = Delivery.load(id)
     delivery.orders[email] = order
     delivery.persist()
+    response.message(f"Yallah! La commande de {email} a bien été importée!")
     response.redirect = f"/livraison/{delivery.id}"
 
 
-def connect():
-    # db = os.environ.get("KABA_DB", "mongodb://localhost/kaba")
-    # client = MongoClient(db)
-    # db = client.get_database()
-    # Person.bind(db)
-    # Delivery.bind(db)
-    # return client
-    pass
+@app.route("/livraison/{id}/rapport.xlsx", methods=["GET"])
+async def xls_report(request, response, id):
+    delivery = Delivery.load(id)
+    wb = Workbook()
+    ws = wb.active
+    ws.title = f"Commande Epinamap - {delivery.producer} - {delivery.when.date()}"
+    ws.append(["ref", "produit", "prix", "unités", "total"])
+    for product in delivery.products:
+        wanted = delivery.product_wanted(product)
+        ws.append(
+            [
+                product.ref,
+                product.name,
+                product.price,
+                wanted,
+                round(product.price * wanted, 2),
+            ]
+        )
+    ws.append(["", "", "", "Total", delivery.total])
+    response.body = save_virtual_workbook(wb)
+    mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    response.headers["Content-Disposition"] = f'attachment; filename="export.xlsx"'
+    response.headers["Content-Type"] = f"{mimetype}; charset=utf-8"
+
+
+def configure():
+    config.init()
 
 
 @minicli.cli()
 def shell():
-    """Run an ipython already connected to Mongo."""
+    """Run an ipython in app context."""
     try:
         from IPython import start_ipython
     except ImportError:
@@ -200,7 +229,7 @@ def shell():
 
 @minicli.wrap
 def cli_wrapper():
-    connect()
+    configure()
     start = perf_counter()
     yield
     elapsed = perf_counter() - start
@@ -213,6 +242,7 @@ def serve(reload=False):
     if reload:
         hupper.start_reloader("kaba.serve")
     traceback(app)
+    static(app, root=Path(__file__).parent / "static")
     simple_server(app, port=2244)
 
 

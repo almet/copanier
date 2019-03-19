@@ -7,9 +7,11 @@
     <p>Date: {{ delivery.when }}</p>
     <form action="/livraison/{{ delivery.id }}/commander">
         <label for="email">Commander</label>
-        <input type="email" name="email">
+        <input type="email" name="email" placeholder="Mon courriel">
         <input type="submit" value="Commander">
     </form>
     <a href="/livraison/{{ delivery.id }}">Résumé de la livraison</a>
+    <hr>
     {% endfor %}
+<a href="/livraison/new">Nouvelle livraison</a>
 {% endblock body %}
