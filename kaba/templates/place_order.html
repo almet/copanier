@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block body %}
-<p><a href="/">&lt; Commandes</a></p>
 <p>Producteur: {{ delivery.producer }} — Lieu: {{ delivery.where }} — Date: {{ delivery.when }} — Date limite de commande: {{ delivery.order_before }}</p>
 <p>Commande de «{{ person }}»</p>
 <form method="post">

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block body %}
+<p><a href="/">&lt; Revenir aux livraisons</a></p>
+<h1>Nouvelle livraison</h1>
+<form method="post">
+    <label>
+        <h5>Producteur</h5>
+        <input type="text" name="producer" value="{{ delivery.producer or '' }}">
+    </label>
+    <label>
+        <h5>Description</h5>
+        <input type="text" name="description" value="{{ delivery.description or '' }}">
+    </label>
+    <label>
+        <h5>Lieu</h5>
+        <input type="text" name="where" value="{{ delivery.where or '' }}">
+    </label>
+    <label>
+        <h5>Date de livraison</h5>
+        <input type="date" name="when" value="{{ delivery.when.date() if delivery.when else '' }}">
+        <input type="time" name="when_time" value="{{ delivery.when.time() if delivery.when else '' }}">
+    </label>
+    <label>
+        <h5>Date de limite de commande</h5>
+        <input type="date" name="order_before" value="{{ delivery.order_before.date() if delivery.order_before else '' }}">
+    </label>
+    <div>
+        <input type="submit" name="submit" value="Valider">
+    </div>
+</form>
+{% if delivery %}
+<h3>Importer des produits (CSV)</h3>
+<p>Colonnes: ref*, name*, price*, description</p>
+<form action="/livraison/{{ delivery.id }}/importer/produits" method="post" enctype="multipart/form-data">
+    <input type="file" name="data">
+    <input type="submit" name="Importer des produits">
+</form>
+{% endif %}
+{% endblock body %}

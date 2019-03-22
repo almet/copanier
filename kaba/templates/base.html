@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css"> -->
     <link rel="stylesheet" type="text/css" href="/static/app.css">
+    <link rel="stylesheet" type="text/css" href="/static/icomoon.css">
     {% block head %}
     {% endblock head %}
 
@@ -15,6 +16,8 @@
     {% if message %}
         <div class="notification {{ message[1] }}">{{ message[0] }}</div>
     {% endif %}
+    <h1><a href="/">Panio</a></h1>
+    <h5>Commandes groupées Épinamap</h5><a href="/livraison/new">Nouvelle livraison</a>
     </header>
     {% block body %}
     {% endblock body %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h3>{{ delivery.producer }}</h3>
+<p><i class="icon-basket"></i> Description: {{ delivery.description }}</p>
+<p><i class="icon-map-pin"></i> Lieu: {{ delivery.where }}</p>
+<p><i class="icon-clock"></i> Date: {{ delivery.when }}</p>
+<p><i class="icon-alarmclock"></i> Date limite de commande: {{ delivery.order_before.date() }}</p>
+<table class="delivery">
+    <tbody>
+        <tr>
+            <th class="product">Produit</th>
+            <th class="price">Prix</th>
+            {% for email, order in delivery.orders.items() %}
+                <th class="person"><a href="/livraison/{{ delivery.id }}/commander?email={{ email }}" title="{{ email }}">{{ email }}</a></th>
+            {% endfor %}
+            <th class="amount">Total</th>
+        </tr>
+        {% for product in delivery.products %}
+        <tr>
+            <th class="product">{{ product.name }}</th>
+            <td>{{ product.price }} €</td>
+            {% for email, order in delivery.orders.items() %}
+                {% if product.ref in order.products %}
+                <td>{{ order.products[product.ref].wanted }}</td>
+                {% else %}
+                    <td>—</td>
+                {% endif %}
+            {% endfor %}
+            <th>{{ delivery.product_wanted(product) }}</th>
+        </tr>
+        {% endfor %}
+        <tr><th class="total"><i class="icon-pricetags"></i> Total</th><td class="total">{{ delivery.total }} €</td>
+            {% for email, order in delivery.orders.items() %}
+            <td>{{ order.total(delivery.products) }} €</td>
+            {% endfor %}
+            <th>—</th>
+        </tr>
+    </tbody>
+</table>
+<hr>
+<p><a href="/livraison/{{ delivery.id }}/edit">Modifier la livraison (admin)</a></p>
+<p><a href="/livraison/{{ delivery.id }}/rapport.xlsx">Générer un rapport</a></p>
+<h3>Importer une commande</h3>
+<p>Colonnes: ref*, wanted*</p>
+<form action="/livraison/{{ delivery.id }}/importer/commande" method="post" enctype="multipart/form-data">
+    <input type="file" name="data">
+    <input type="email" name="email" placeholder="email">
+    <input type="submit" name="Importer une commande">
+</form>
+{% endblock body %}
