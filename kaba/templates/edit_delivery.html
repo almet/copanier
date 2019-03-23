@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block body %}
-<p><a href="/">&lt; Revenir aux livraisons</a></p>
-<h1>Nouvelle livraison</h1>
+{% if delivery.id %}
+    <h1>Modifier la livraison</h1>
+{% else %}
+    <h1>Nouvelle livraison</h1>
+{% endif %}
 <form method="post">
     <label>
         <h5>Producteur</h5>
@@ -18,8 +21,7 @@
     </label>
     <label>
         <h5>Date de livraison</h5>
-        <input type="date" name="when" value="{{ delivery.when.date() if delivery.when else '' }}" required>
-        <input type="time" name="when_time" value="{{ delivery.when.time() if delivery.when else '' }}" required>
+        <input type="date" name="date" value="{{ delivery.from_date.date() if delivery.from_date else '' }}" required> de <input type="time" name="from_time" value="{{ delivery.from_date.time() if delivery.from_date else '' }}" required> à <input type="time" name="to_time" value="{{ delivery.to_date.time() if delivery.to_date else '' }}" required>
     </label>
     <label>
         <h5>Date de limite de commande</h5>

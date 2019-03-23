@@ -56,6 +56,17 @@ env = Environment(
 )
 
 
+def date_filter(value):
+    return value.strftime("%d/%m/%Y")
+
+
+def time_filter(value):
+    return value.strftime("%H:%M")
+
+
+env.filters["date"] = date_filter
+env.filters["time"] = time_filter
+
 app = Roll()
 cors(app, methods="*", headers="*")
 options(app)
@@ -142,17 +153,19 @@ async def home(request, response):
     response.html("home.html", deliveries=Delivery.all())
 
 
-@app.route("/livraison/new", methods=["GET"])
+@app.route("/livraison", methods=["GET"])
 @auth_required
 async def new_delivery(request, response):
     response.html("edit_delivery.html", delivery={})
 
 
-@app.route("/livraison/new", methods=["POST"])
+@app.route("/livraison", methods=["POST"])
 @auth_required
 async def create_delivery(request, response):
     form = request.form
     data = {}
+    data["from_date"] = f"{form.get('date')} {form.get('from_time')}"
+    data["to_date"] = f"{form.get('date')} {form.get('to_time')}"
     for name, field in Delivery.__dataclass_fields__.items():
         if name in form:
             data[name] = form.get(name)
@@ -189,6 +202,8 @@ async def edit_delivery(request, response, id):
 async def post_delivery(request, response, id):
     delivery = Delivery.load(id)
     form = request.form
+    delivery.from_date = f"{form.get('date')} {form.get('from_time')}"
+    delivery.to_date = f"{form.get('date')} {form.get('to_time')}"
     for name, field in Delivery.__dataclass_fields__.items():
         if name in form:
             setattr(delivery, name, form.get(name))

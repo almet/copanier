@@ -219,15 +219,12 @@ fieldset {
 }
 legend {
   width: 100%;
-  /* margin-top: 2rem;
-  margin-bottom: 1rem; */
   font-size: 1.2rem;
   font-weight: bold;
 }
 
 input,
 textarea {
-  display: block;
   position: relative;
   height: 2rem;
   padding: .4rem .8rem;

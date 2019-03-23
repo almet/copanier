@@ -1,6 +1,6 @@
 <ul class="delivery-head">
     <li><i class="icon-basket"></i> <strong>Produits</strong> {{ delivery.description }}</li>
     <li><i class="icon-map-pin"></i> <strong>Lieu</strong> {{ delivery.where }}</li>
-    <li><i class="icon-clock"></i> <strong>Date de livraison</strong> <time datetime="{{ delivery.when }}">{{ delivery.when }}</time></li>
+    <li><i class="icon-clock"></i> <strong>Date de livraison</strong> <time datetime="{{ delivery.from_date }}">{{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}</time></li>
     <li><i class="icon-hourglass"></i> {% if delivery.is_open %}<strong>Date limite de commande</strong> <time datetime="{{ delivery.order_before.date() }}">{{ delivery.order_before.date() }}</time>{% else %}<strong>Fermée</strong>{% endif %}</li>
 </ul>

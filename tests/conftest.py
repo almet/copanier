@@ -23,6 +23,7 @@ def pytest_runtest_setup(item):
 
 
 class Client(BaseClient):
+    content_type = 'application/x-www-form-urlencoded; charset=utf-8'
     headers = {}
 
     async def request(
@@ -65,7 +66,8 @@ def app():  # Requested by Roll testing utilities.
 def delivery():
     return Delivery(
         producer="Andines",
-        when=datetime.now() + timedelta(days=10),
+        from_date=datetime.now() + timedelta(days=10),
+        to_date=datetime.now() + timedelta(days=10),
         order_before=datetime.now() + timedelta(days=7),
     )
 

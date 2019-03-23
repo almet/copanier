@@ -122,7 +122,8 @@ class Delivery(Base):
     __lock__ = threading.Lock()
 
     producer: str
-    when: datetime_field
+    from_date: datetime_field
+    to_date: datetime_field
     order_before: datetime_field
     description: str = ""
     where: str = "Marché de la Briche"

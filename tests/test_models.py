@@ -9,16 +9,20 @@ now = datetime.now
 
 
 def test_can_create_delivery():
-    delivery = Delivery(producer="Andines", when=now(), order_before=now())
+    delivery = Delivery(
+        producer="Andines", from_date=now(), to_date=now(), order_before=now()
+    )
     assert delivery.producer == "Andines"
     assert delivery.where == "Marché de la Briche"
-    assert delivery.when.year == now().year
+    assert delivery.from_date.year == now().year
     assert delivery.id
 
 
 def test_wrong_datetime_raise_valueerror():
     with pytest.raises(ValueError):
-        Delivery(producer="Andines", order_before=now(), when="pouet")
+        Delivery(
+            producer="Andines", order_before=now(), to_date=now(), from_date="pouet"
+        )
 
 
 def test_delivery_is_open_when_order_before_is_in_the_future(delivery):
@@ -37,7 +41,8 @@ def test_can_create_product():
 def test_can_create_delivery_with_products():
     delivery = Delivery(
         producer="Andines",
-        when=now(),
+        from_date=now(),
+        to_date=now(),
         order_before=now(),
         products=[Product(name="Lait", ref="123", price=1.5)],
     )
