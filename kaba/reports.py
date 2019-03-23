@@ -5,7 +5,7 @@ from openpyxl.writer.excel import save_virtual_workbook
 def summary(delivery):
     wb = Workbook()
     ws = wb.active
-    ws.title = f"Commande Epinamap - {delivery.producer} - {delivery.when.date()}"
+    ws.title = f"{delivery.producer} {delivery.when.date()}"
     ws.append(["ref", "produit", "prix", "unités", "total"])
     for product in delivery.products:
         wanted = delivery.product_wanted(product)
@@ -25,7 +25,7 @@ def summary(delivery):
 def full(delivery):
     wb = Workbook()
     ws = wb.active
-    ws.title = f"Epinamap - {delivery.producer} - {delivery.when.date()}"
+    ws.title = f"{delivery.producer} {delivery.when.date()}"
     headers = ["ref", "produit", "prix"] + [e for e in delivery.orders] + ["total"]
     ws.append(headers)
     for product in delivery.products:

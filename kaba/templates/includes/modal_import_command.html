@@ -1,0 +1,12 @@
+{% extends "includes/modal.html" %}
+
+{% block modal_label %}<i class="icon-paperclip"></i> Importer une commande{% endblock modal_label %}
+{% block modal_body %}
+    <h4>Importer une commande</h4>
+    <p>Colonnes: ref*, wanted*</p>
+    <form action="/livraison/{{ delivery.id }}/importer/commande" method="post" enctype="multipart/form-data">
+        <input type="file" name="data">
+        <input type="email" name="email" placeholder="email">
+        <input type="submit" name="Importer">
+    </form>
+{% endblock modal_body %}

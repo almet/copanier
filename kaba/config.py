@@ -5,10 +5,11 @@ getenv = os.environ.get
 
 DATA_ROOT = Path(__file__).parent.parent / "db"
 SECRET = "sikretfordevonly"
-# JWT_ALGORITHM = "HS256"
+JWT_ALGORITHM = "HS256"
 SEND_EMAILS = False
-SMTP_HOST = "smtp.gmail.com"
+SMTP_HOST = "mail.gandi.net"
 SMTP_PASSWORD = ""
+SMTP_LOGIN = ""
 FROM_EMAIL = "contact@epinamap.org"
 
 

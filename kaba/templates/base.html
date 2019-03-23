@@ -20,6 +20,9 @@
         <h1><a href="/">Panio</a> <small>Les paniers piano d'Épinamap</small></h1>
         <nav>
             <a href="/livraison/new">Nouvelle livraison</a>
+            {% if request["user"] %}
+                &nbsp;⚫&nbsp;{{ request["user"].email }}</span>
+            {% endif %}
         </nav>
     </section>
     </header>

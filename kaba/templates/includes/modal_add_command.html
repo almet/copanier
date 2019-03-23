@@ -1,0 +1,10 @@
+{% extends "includes/modal.html" %}
+
+{% block modal_label %}<i class="icon-hazardous"></i> Ajouter une commande{% endblock modal_label %}
+{% block modal_body %}
+    <form action="/livraison/{{ delivery.id }}/commander">
+        <h4>Ajouter une commande pour quelqu'un d'autre</h4>
+        <input type="email" name="email" placeholder="Courriel" required>
+        <input type="submit" value="Commander">
+    </form>
+{% endblock modal_body %}

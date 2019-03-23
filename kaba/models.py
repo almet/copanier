@@ -8,7 +8,7 @@ from typing import List, Dict
 
 import yaml
 
-from . import config, utils
+from . import config
 
 
 class DoesNotExist(ValueError):

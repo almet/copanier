@@ -1,7 +1,9 @@
 import csv
+from datetime import timedelta
 from pathlib import Path
 from time import perf_counter
 
+import jwt
 import ujson as json
 import hupper
 import minicli
@@ -9,7 +11,7 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 from roll import Roll, Response
 from roll.extensions import cors, options, traceback, simple_server, static
 
-from . import config, reports
+from . import config, reports, session, utils, emails
 from .models import Delivery, Order, Person, Product, ProductOrder
 
 
@@ -59,6 +61,42 @@ cors(app, methods="*", headers="*")
 options(app)
 
 
+def auth_required(view):
+    async def redirect(request, response, *a, **k):
+        # FIXME do not return a view when Roll allows it.
+        response.redirect = f"/sésame?next={request.path}"
+
+    def wrapper(request, response, *args, **kwargs):
+        token = request.cookies.get("token")
+        email = None
+        if token:
+            decoded = read_token(token)
+            email = decoded.get("sub")
+        if not email:
+            return redirect(request, response, *args, **kwargs)
+        user = Person(email=email)
+        request["user"] = user
+        session.user.set(user)
+        return view(request, response, *args, **kwargs)
+
+    return wrapper
+
+
+def create_token(email):
+    return jwt.encode(
+        {"sub": str(email), "exp": utils.utcnow() + timedelta(days=7)},
+        config.SECRET,
+        config.JWT_ALGORITHM,
+    )
+
+
+def read_token(token):
+    try:
+        return jwt.decode(token, config.SECRET, algorithms=[config.JWT_ALGORITHM])
+    except (jwt.DecodeError, jwt.ExpiredSignatureError):
+        return {}
+
+
 @app.listen("request")
 async def attach_request(request, response):
     response.request = request
@@ -69,17 +107,49 @@ async def on_startup():
     configure()
 
 
+@app.route("/sésame", methods=["GET"])
+async def sesame(request, response):
+    response.html("sesame.html")
+
+
+@app.route("/sésame", methods=["POST"])
+async def send_sesame(request, response):
+    email = request.form.get("email")
+    token = create_token(email)
+    emails.send(
+        email,
+        "Sésame Panio",
+        emails.ACCESS_GRANTED.format(hostname=request.host, token=token.decode()),
+    )
+    response.message(f"Un sésame vous a été envoyé à l'adresse '{email}'")
+    response.redirect = "/"
+
+
+@app.route("/sésame/{token}", methods=["GET"])
+async def set_sesame(request, response, token):
+    decoded = read_token(token)
+    if not decoded:
+        response.message("Sésame invalide :(", status="error")
+    else:
+        response.message("Yay! Le sésame a fonctionné. Bienvenue à bord! :)")
+        response.cookies.set(name="token", value=token)
+    response.redirect = "/"
+
+
 @app.route("/", methods=["GET"])
+@auth_required
 async def home(request, response):
     response.html("home.html", deliveries=Delivery.all())
 
 
 @app.route("/livraison/new", methods=["GET"])
+@auth_required
 async def new_delivery(request, response):
     response.html("edit_delivery.html", delivery={})
 
 
 @app.route("/livraison/new", methods=["POST"])
+@auth_required
 async def create_delivery(request, response):
     form = request.form
     data = {}
@@ -93,6 +163,7 @@ async def create_delivery(request, response):
 
 
 @app.route("/livraison/{id}/importer/produits", methods=["POST"])
+@auth_required
 async def import_products(request, response, id):
     delivery = Delivery.load(id)
     delivery.products = []
@@ -107,12 +178,14 @@ async def import_products(request, response, id):
 
 
 @app.route("/livraison/{id}/edit", methods=["GET"])
+@auth_required
 async def edit_delivery(request, response, id):
     delivery = Delivery.load(id)
     response.html("edit_delivery.html", {"delivery": delivery})
 
 
 @app.route("/livraison/{id}/edit", methods=["POST"])
+@auth_required
 async def post_delivery(request, response, id):
     delivery = Delivery.load(id)
     form = request.form
@@ -125,30 +198,40 @@ async def post_delivery(request, response, id):
 
 
 @app.route("/livraison/{id}", methods=["GET"])
+@auth_required
 async def view_delivery(request, response, id):
     delivery = Delivery.load(id)
     response.html("delivery.html", {"delivery": delivery})
 
 
 @app.route("/livraison/{id}/commander", methods=["GET"])
+@auth_required
 async def order_form(request, response, id):
     delivery = Delivery.load(id)
-    email = request.query.get("email")
-    order = delivery.orders.get(email) or Order()
-    response.html(
-        "place_order.html", {"delivery": delivery, "person": email, "order": order}
-    )
+    email = request.query.get("email", None)
+    if not email:
+        user = session.user.get(None)
+        if user:
+            email = user.email
+    if email:
+        order = delivery.orders.get(email) or Order()
+        response.html(
+            "place_order.html", {"delivery": delivery, "person": email, "order": order}
+        )
+    else:
+        response.message("Impossible de comprendre pour qui passer commande…", "error")
+        response.redirect = request.path
 
 
 @app.route("/livraison/{id}/émargement", methods=["GET"])
-async def signing_list(request, response, id):
+@auth_required
+async def signing_sheet(request, response, id):
     delivery = Delivery.load(id)
-    response.html(
-        "signing_list.html", {"delivery": delivery}
-    )
+    response.html("signing_sheet.html", {"delivery": delivery})
 
 
 @app.route("/livraison/{id}/commander", methods=["POST"])
+@auth_required
 async def place_order(request, response, id):
     delivery = Delivery.load(id)
     email = request.query.get("email")
@@ -167,6 +250,7 @@ async def place_order(request, response, id):
 
 
 @app.route("/livraison/{id}/importer/commande", methods=["POST"])
+@auth_required
 async def import_commande(request, response, id):
     email = request.form.get("email")
     order = Order()
@@ -185,20 +269,22 @@ async def import_commande(request, response, id):
 
 
 @app.route("/livraison/{id}/rapport.xlsx", methods=["GET"])
+@auth_required
 async def xls_report(request, response, id):
     delivery = Delivery.load(id)
     response.body = reports.summary(delivery)
     mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    response.headers["Content-Disposition"] = f'attachment; filename="export.xlsx"'
+    response.headers["Content-Disposition"] = f'attachment; filename="epinamap.xlsx"'
     response.headers["Content-Type"] = f"{mimetype}; charset=utf-8"
 
 
 @app.route("/livraison/{id}/rapport-complet.xlsx", methods=["GET"])
+@auth_required
 async def xls_full_report(request, response, id):
     delivery = Delivery.load(id)
     response.body = reports.full(delivery)
     mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    response.headers["Content-Disposition"] = f'attachment; filename="export.xlsx"'
+    response.headers["Content-Disposition"] = f'attachment; filename="epinamap.xlsx"'
     response.headers["Content-Type"] = f"{mimetype}; charset=utf-8"
 
 

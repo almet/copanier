@@ -1,0 +1,8 @@
+<label for="modal-{{ unique_id }}" class="toggle-label">{% block modal_label %}{% endblock %}</label>
+<input type="checkbox" id="modal-{{ unique_id }}" class="toggle">
+<label for="modal-{{ unique_id }}" class="toggle-background"></label>
+<div class="toggle-container">
+    {% block modal_body %}
+    {% endblock modal_body %}
+    <label for="modal-{{ unique_id }}" class="toggle-label">Fermer</label>
+</div>

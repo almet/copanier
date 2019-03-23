@@ -1,0 +1,9 @@
+{% extends "includes/modal.html" %}
+
+{% block modal_label %}(Détails){% endblock modal_label %}
+{% block modal_body %}
+    <p>{{ product.description }}</p>
+    <p>{% if product.img %}
+        <img src="{{ product.img }}">
+    {% endif %}</p>
+{% endblock modal_body %}

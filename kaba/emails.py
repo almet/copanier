@@ -10,7 +10,7 @@ Voici le sésame:
 
 https://{hostname}/sésame/{token}
 
-Les gentils gens d'Épinamap
+Les gentils copains d'Épinamap
 """
 
 
@@ -24,7 +24,7 @@ def send(to, subject, body):
         return print("Sending email", str(msg))
     try:
         server = smtplib.SMTP_SSL(config.SMTP_HOST)
-        server.login(config.FROM_EMAIL, config.SMTP_PASSWORD)
+        server.login(config.SMTP_LOGIN, config.SMTP_PASSWORD)
         server.send_message(msg)
     except smtplib.SMTPException:
         raise RuntimeError

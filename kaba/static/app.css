@@ -157,6 +157,10 @@ nav {
   display: flex;
   align-items: center;
 }
+.logged-in {
+  text-decoration: underline;
+  font-variant: small-caps;
+}
 main {
   padding: 1rem;
 }
@@ -164,7 +168,7 @@ main {
 button,
 a.button,
 input[type=submit] {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: auto;
@@ -376,6 +380,9 @@ hr {
 }
 .notification.success {
   background-color: #0f8796;
+}
+.notification.error {
+  background-color: #e10055;
 }
 .notification i {
   font-size: 2rem;
