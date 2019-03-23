@@ -27,11 +27,11 @@
             <th>{{ delivery.product_wanted(product) }}</th>
         </tr>
         {% endfor %}
-        <tr><th class="total"><i class="icon-pricetags"></i> Total</th><td class="total">{{ delivery.total }} €</td>
+        <tr><th class="total"><i class="icon-pricetags"></i> Total</th><td>—</td>
             {% for email, order in delivery.orders.items() %}
             <td>{{ order.total(delivery.products) }} €</td>
             {% endfor %}
-            <th>—</th>
+            <td class="total">{{ delivery.total }} €</td>
         </tr>
     </tbody>
 </table>
@@ -42,6 +42,9 @@
     </li>
     <li>
         <a href="/livraison/{{ delivery.id }}/rapport.xlsx"><i class="icon-download"></i> Rapport résumé</a>
+    </li>
+    <li>
+        <a href="/livraison/{{ delivery.id }}/rapport-complet.xlsx"><i class="icon-download"></i> Rapport complet</a>
     </li>
     <li>
         <label for="import-command" class="toggle-label"><i class="icon-paperclip"></i> Importer une commande</label>

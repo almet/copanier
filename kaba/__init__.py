@@ -6,12 +6,10 @@ import ujson as json
 import hupper
 import minicli
 from jinja2 import Environment, PackageLoader, select_autoescape
-from openpyxl import Workbook
-from openpyxl.writer.excel import save_virtual_workbook
 from roll import Roll, Response
 from roll.extensions import cors, options, traceback, simple_server, static
 
-from . import config
+from . import config, reports
 from .models import Delivery, Order, Person, Product, ProductOrder
 
 
@@ -181,23 +179,16 @@ async def import_commande(request, response, id):
 @app.route("/livraison/{id}/rapport.xlsx", methods=["GET"])
 async def xls_report(request, response, id):
     delivery = Delivery.load(id)
-    wb = Workbook()
-    ws = wb.active
-    ws.title = f"Commande Epinamap - {delivery.producer} - {delivery.when.date()}"
-    ws.append(["ref", "produit", "prix", "unités", "total"])
-    for product in delivery.products:
-        wanted = delivery.product_wanted(product)
-        ws.append(
-            [
-                product.ref,
-                product.name,
-                product.price,
-                wanted,
-                round(product.price * wanted, 2),
-            ]
-        )
-    ws.append(["", "", "", "Total", delivery.total])
-    response.body = save_virtual_workbook(wb)
+    response.body = reports.summary(delivery)
+    mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    response.headers["Content-Disposition"] = f'attachment; filename="export.xlsx"'
+    response.headers["Content-Type"] = f"{mimetype}; charset=utf-8"
+
+
+@app.route("/livraison/{id}/rapport-complet.xlsx", methods=["GET"])
+async def xls_full_report(request, response, id):
+    delivery = Delivery.load(id)
+    response.body = reports.full(delivery)
     mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     response.headers["Content-Disposition"] = f'attachment; filename="export.xlsx"'
     response.headers["Content-Type"] = f"{mimetype}; charset=utf-8"
