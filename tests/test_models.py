@@ -1,30 +1,30 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import pytest
 
-from kaba import utils
 from kaba.models import Delivery, Product, Person, Order, ProductOrder
 
 
+now = datetime.now
+
+
 def test_can_create_delivery():
-    delivery = Delivery(
-        producer="Andines", when=utils.utcnow(), order_before=utils.utcnow()
-    )
+    delivery = Delivery(producer="Andines", when=now(), order_before=now())
     assert delivery.producer == "Andines"
     assert delivery.where == "Marché de la Briche"
-    assert delivery.when.year == utils.utcnow().year
+    assert delivery.when.year == now().year
     assert delivery.id
 
 
 def test_wrong_datetime_raise_valueerror():
     with pytest.raises(ValueError):
-        Delivery(producer="Andines", order_before=utils.utcnow(), when="pouet")
+        Delivery(producer="Andines", order_before=now(), when="pouet")
 
 
 def test_delivery_is_open_when_order_before_is_in_the_future(delivery):
-    delivery.order_before = utils.utcnow() + timedelta(hours=1)
+    delivery.order_before = now() + timedelta(hours=1)
     assert delivery.is_open
-    delivery.order_before = utils.utcnow() - timedelta(hours=1)
+    delivery.order_before = now() - timedelta(hours=1)
     assert not delivery.is_open
 
 
@@ -37,8 +37,8 @@ def test_can_create_product():
 def test_can_create_delivery_with_products():
     delivery = Delivery(
         producer="Andines",
-        when=utils.utcnow(),
-        order_before=utils.utcnow(),
+        when=now(),
+        order_before=now(),
         products=[Product(name="Lait", ref="123", price=1.5)],
     )
     assert len(delivery.products) == 1

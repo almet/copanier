@@ -2,10 +2,7 @@
 
 {% block body %}
 <h3>{{ delivery.producer }}</h3>
-<p><i class="icon-basket"></i> Description: {{ delivery.description }}</p>
-<p><i class="icon-map-pin"></i> Lieu: {{ delivery.where }}</p>
-<p><i class="icon-clock"></i> Date: {{ delivery.when }}</p>
-<p><i class="icon-alarmclock"></i> Date limite de commande: {{ delivery.order_before.date() }}</p>
+{% include "includes/delivery_head.html" %}
 <table class="delivery">
     <tbody>
         <tr>
@@ -39,13 +36,25 @@
     </tbody>
 </table>
 <hr>
-<p><a href="/livraison/{{ delivery.id }}/edit">Modifier la livraison (admin)</a></p>
-<p><a href="/livraison/{{ delivery.id }}/rapport.xlsx">Générer un rapport</a></p>
-<h3>Importer une commande</h3>
-<p>Colonnes: ref*, wanted*</p>
-<form action="/livraison/{{ delivery.id }}/importer/commande" method="post" enctype="multipart/form-data">
-    <input type="file" name="data">
-    <input type="email" name="email" placeholder="email">
-    <input type="submit" name="Importer une commande">
-</form>
+<ul class="toolbox">
+    <li>
+        <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison (admin)</a>
+    </li>
+    <li>
+        <a href="/livraison/{{ delivery.id }}/rapport.xlsx"><i class="icon-download"></i> Rapport résumé</a>
+    </li>
+    <li>
+        <label for="import-command" class="toggle-label"><i class="icon-paperclip"></i> Importer une commande</label>
+        <input type="checkbox" id="import-command" class="toggle">
+        <div class="toggle-container">
+            <label for="import-command" class="toggle-label">Fermer</label>
+            <p>Colonnes: ref*, wanted*</p>
+            <form action="/livraison/{{ delivery.id }}/importer/commande" method="post" enctype="multipart/form-data">
+                <input type="file" name="data">
+                <input type="email" name="email" placeholder="email">
+                <input type="submit" name="Importer une commande">
+            </form>
+        </div>
+    </li>
+</ul>
 {% endblock body %}

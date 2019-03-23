@@ -1,14 +1,15 @@
 {% extends "base.html" %}
 
 {% block body %}
-<p>Producteur: {{ delivery.producer }} — Lieu: {{ delivery.where }} — Date: {{ delivery.when }} — Date limite de commande: {{ delivery.order_before }}</p>
-<p>Commande de «{{ person }}»</p>
+<article class="order">
+<h3>{{ delivery.producer }} — Commande de «{{ person }}»</h3>
+{% include "includes/delivery_head.html" %}
 <form method="post">
-    <table>
-        <tr><th>Produit</th><th>Prix</th><th>Quantité</th></tr>
+    <table class="order">
+        <tr><th class="product">Produit</th><th class="price">Prix</th><th class="amount">Quantité</th></tr>
         {% for product in delivery.products %}
         <tr>
-            <th>{{ product.name }}
+            <th class="product">{{ product.name }}
                 <label for="toggleControl{{ loop.index }}" class="toggle-label">(Détails)</label>
                 <input type="checkbox" id="toggleControl{{ loop.index }}" class="toggle">
                 <div class="toggle-container">
@@ -21,11 +22,12 @@
                     <label for="toggleControl{{ loop.index }}" class="toggle-label">Fermer</label>
                 </div>
             </th>
-            <td>{{ product.price }} €</td><td><input type="number" name="{{ product.ref }}" value="{{ order.get_quantity(product) }}"></td></tr>
+            <td>{{ product.price }} €</td><td class="with-input"><input type="number" name="{{ product.ref }}" value="{{ order.get_quantity(product) }}"></td></tr>
         {% endfor %}
     </table>
     <p>Total: {{ order.total(delivery.products) if order else 0 }} €</p>
     <input type="hidden" name="email" value="{{ person }}">
-    <input type="submit" value="Valider ma commande">
+    <input type="submit" value="Valider la commande">
 </form>
+</article>
 {% endblock body %}

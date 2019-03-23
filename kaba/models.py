@@ -1,5 +1,4 @@
 import inspect
-import os
 import threading
 import uuid
 from datetime import datetime
@@ -137,7 +136,7 @@ class Delivery(Base):
 
     @property
     def is_open(self):
-        return self.order_before > utils.utcnow()
+        return self.order_before > datetime.now()
 
     @classmethod
     def get_root(cls):

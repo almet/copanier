@@ -1,16 +1,18 @@
 {% extends "base.html" %}
-
 {% block body %}
+    <h2>Livraisons à venir</h2>
+    <ul class="delivery">
     {% for delivery in deliveries %}
-    <p>Producteur: {{ delivery.producer }}</p>
-    <p>Lieu: {{ delivery.where }}</p>
-    <p>Date: {{ delivery.when }}</p>
-    <form action="/livraison/{{ delivery.id }}/commander">
-        <label for="email">Commander</label>
-        <input type="email" name="email" placeholder="Mon courriel">
-        <input type="submit" value="Commander">
-    </form>
-    <a href="/livraison/{{ delivery.id }}">Résumé de la livraison</a>
+    <li>
+        <h3><a href="/livraison/{{ delivery.id }}"><i class="icon-hotairballoon"></i> {{ delivery.producer }}</a></h3>
+        {% include "includes/delivery_head.html" %}
+        <!--form action="/livraison/{{ delivery.id }}/commander">
+            <label for="email">Commander</label>
+            <input type="email" name="email" placeholder="Mon courriel">
+            <input type="submit" value="Commander">
+        </form-->
+    </li>
     <hr>
     {% endfor %}
+    </ul>
 {% endblock body %}

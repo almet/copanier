@@ -105,10 +105,6 @@ body {
   text-rendering: optimizeLegibility;
   background-color: var(--secondary-background-color);
 }
-header {
-  border-bottom: 1px solid #eee;
-  padding: 20px;
-}
 h1,
 h2,
 h3,
@@ -136,6 +132,24 @@ a {
 
 a:hover {
   color: #363636;
+}
+
+header {
+  border-bottom: 1px solid #eee;
+  padding: 20px;
+}
+header section {
+  display: grid;
+  grid-template-columns: 2fr auto;
+}
+header h1, nav {
+  line-height: 1rem;
+  vertical-align: middle;
+}
+header h1 small {
+  font-size: 0.7rem;
+  font-weight: 300;
+  color: #666;
 }
 
 main a {
@@ -217,7 +231,7 @@ input,
 textarea {
   display: block;
   position: relative;
-  height: 1rem;
+  height: 2rem;
   padding: .4rem .8rem;
   color: #50596c;
   font-size: .8rem;
@@ -225,7 +239,7 @@ textarea {
   background-color: #fff;
   border: .05rem solid #bbc;
   border-radius: .1rem;
-  transition: all .2s ease;
+  box-sizing: border-box;
 }
 
 textarea {
@@ -293,15 +307,15 @@ th.person {
   text-overflow: ellipsis;
 }
 th.product {
-  width: 15%;
+  width: 15rem;
   text-align: left;
 }
 th.price {
-  width: 5%;
+  width: 5rem;
   text-align: center;
 }
 th.amount {
-  width: 5%;
+  width: 5rem;
 }
 td.total,
 th.total {
@@ -315,6 +329,20 @@ tr:nth-child(1) {
 }
 tr:nth-child(1) * {
   color: #f1f1f1;
+}
+article.order {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+table.order th.product {
+  width: inherit;
+}
+td.with-input {
+  padding: 0;
+}
+td.with-input input {
+  width: 100%;
 }
 hr {
   background-color: #dbdbdb;
@@ -355,6 +383,7 @@ hr {
 }
 .toggle-label {
   cursor: pointer;
+  color: #00d1b2;
 }
 .toggle-container {
   display: none;
@@ -369,4 +398,38 @@ hr {
 }
 .toggle:checked ~ .toggle-container {
   display: block;
+}
+ul.delivery {
+  padding: 10px
+}
+ul.delivery > li {
+  list-style: none;
+  padding: 20px 0;
+  margin: 0;
+}
+ul.delivery-head {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px , 1fr));
+  grid-gap: 10px;
+}
+ul.delivery-head li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul.delivery-head li i{
+  float: left;
+  font-size: 1.5rem;
+  vertical-align: bottom;
+  padding-right: 5px;
+}
+ul.toolbox {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px , 1fr));
+  grid-gap: 10px;
+}
+ul.toolbox li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }

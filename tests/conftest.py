@@ -1,12 +1,11 @@
 import os
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import pytest
 from roll.extensions import traceback
 
 from kaba import app as kaba_app
 from kaba import config as kconfig
-from kaba import utils
 from kaba.models import Delivery, Person
 
 
@@ -31,8 +30,8 @@ def app():  # Requested by Roll testing utilities.
 def delivery():
     return Delivery(
         producer="Andines",
-        when=utils.utcnow() + timedelta(days=10),
-        order_before=utils.utcnow() + timedelta(days=7),
+        when=datetime.now() + timedelta(days=10),
+        order_before=datetime.now() + timedelta(days=7),
     )
 
 
