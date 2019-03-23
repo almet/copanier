@@ -10,17 +10,18 @@
         {% for product in delivery.products %}
         <tr>
             <th class="product">{{ product.name }}
+                {% if product.description or product.img %}
                 <label for="toggleControl{{ loop.index }}" class="toggle-label">(Détails)</label>
                 <input type="checkbox" id="toggleControl{{ loop.index }}" class="toggle">
+                <label for="toggleControl{{ loop.index }}" class="toggle-background"></label>
                 <div class="toggle-container">
                     <p>{{ product.description }}</p>
                     <p>{% if product.img %}
                         <img src="{{ product.img }}">
-                    {% else %}
-                        <img src="/static/img/default_product.svg">
                     {% endif %}</p>
                     <label for="toggleControl{{ loop.index }}" class="toggle-label">Fermer</label>
                 </div>
+                {% endif %}</p>
             </th>
             <td>{{ product.price }} €</td><td class="with-input"><input type="number" name="{{ product.ref }}" value="{{ order.get_quantity(product) }}"></td></tr>
         {% endfor %}

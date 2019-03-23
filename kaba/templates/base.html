@@ -14,16 +14,18 @@
 <body>
     <header>
     {% if message %}
-        <section class="notification {{ message[1] }}">{{ message[0] }}</section>
+        <section class="notification {{ message[1] }}"><i class="icon-megaphone"></i> {{ message[0] }}</section>
     {% endif %}
-    <section>
+    <section class="menu">
         <h1><a href="/">Panio</a> <small>Les paniers piano d'Épinamap</small></h1>
         <nav>
             <a href="/livraison/new">Nouvelle livraison</a>
         </nav>
     </section>
     </header>
+    <main>
     {% block body %}
     {% endblock body %}
+    </main>
 </body>
 </html>
