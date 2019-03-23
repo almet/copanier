@@ -140,6 +140,14 @@ async def order_form(request, response, id):
     )
 
 
+@app.route("/livraison/{id}/émargement", methods=["GET"])
+async def signing_list(request, response, id):
+    delivery = Delivery.load(id)
+    response.html(
+        "signing_list.html", {"delivery": delivery}
+    )
+
+
 @app.route("/livraison/{id}/commander", methods=["POST"])
 async def place_order(request, response, id):
     delivery = Delivery.load(id)
