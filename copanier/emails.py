@@ -21,7 +21,7 @@ def send(to, subject, body, html=None):
     msg["From"] = config.FROM_EMAIL
     msg["To"] = to
     if html:
-        msg.add_alternative(html, subtype='html')
+        msg.add_alternative(html, subtype="html")
     if not config.SEND_EMAILS:
         return print("Sending email", str(msg))
     try:
@@ -32,3 +32,18 @@ def send(to, subject, body, html=None):
         raise RuntimeError
     finally:
         server.quit()
+
+
+def send_order(env, person, delivery, order):
+    html = env.get_template("emails/order_summary.html").render(
+        order=order, delivery=delivery
+    )
+    txt = env.get_template("emails/order_summary.txt").render(
+        order=order, delivery=delivery
+    )
+    send(
+        person.email,
+        f"Copanier: résumé de la commande {delivery.producer}",
+        body=txt,
+        html=html,
+    )

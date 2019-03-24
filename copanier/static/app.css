@@ -114,7 +114,7 @@ h4,
 h5,
 legend {
   /*margin: 0;*/
-  color: var(--primary-color);
+  color: #444;
   line-height: 1;
   font-weight: 300;
 }
@@ -376,7 +376,7 @@ hr {
 .notification {
   width: 100%;
   text-align: center;
-  color: #f1f1f1;
+  color: white;
   line-height: 3rem;
   height: 3rem;
   vertical-align: middle;
@@ -387,8 +387,8 @@ hr {
 .notification.error {
   background-color: #e10055;
 }
-.notification.error {
-  background-color: #8c5a2d;
+.notification.warning {
+  background-color: #f9b42d;
 }
 .notification i {
   font-size: 2rem;

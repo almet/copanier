@@ -2,7 +2,7 @@
 
 {% block body %}
 <article class="order">
-<h3>{{ delivery.producer }} — Commande de «{{ person }}»</h3>
+<h3>{{ delivery.producer }} — Commande de «{{ person.email }}»</h3>
 {% include "includes/delivery_head.html" %}
 <form method="post">
     <table class="order">
@@ -20,8 +20,9 @@
         {% endfor %}
     </table>
     <p>Total: {{ order.total(delivery.products) if order else 0 }} €</p>
-    <input type="hidden" name="email" value="{{ person }}">
+    <input type="hidden" name="email" value="{{ person.email }}">
     <input type="submit" value="Valider la commande">
+    <a class="button" href="/livraison/{{ delivery.id }}/courriel?email={{ person.email }}">Envoyer par courriel</a>
 </form>
 </article>
 {% endblock body %}

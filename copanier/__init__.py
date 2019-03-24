@@ -255,25 +255,33 @@ async def place_order(request, response, id):
         delivery.persist()
         if user and user.email == email:
             # Only send email if order has been placed by the user itself.
-            html = env.get_template("emails/order_summary.html").render(
-                order=order, delivery=delivery
-            )
-            txt = env.get_template("emails/order_summary.txt").render(
-                order=order, delivery=delivery
-            )
-            emails.send(
-                email,
-                f"Copanier: résumé de la commande {delivery.producer}",
-                body=txt,
-                html=html,
+            emails.send_order(
+                env, person=Person(email=email), delivery=delivery, order=order
             )
         response.message(f"La commande pour «{email}» a bien été prise en compte!")
         response.redirect = f"/livraison/{delivery.id}"
     else:
         order = delivery.orders.get(email) or Order()
         response.html(
-            "place_order.html", {"delivery": delivery, "person": email, "order": order}
+            "place_order.html",
+            {"delivery": delivery, "person": Person(email=email), "order": order},
         )
+
+
+@app.route("/livraison/{id}/courriel", methods=["GET"])
+@auth_required
+async def send_order(request, response, id):
+    delivery = Delivery.load(id)
+    email = request.query.get("email")
+    order = delivery.orders.get(email)
+    if not order:
+        response.message(f"Aucune commande pour «{email}»", status="warning")
+    else:
+        emails.send_order(
+            env, person=Person(email=email), delivery=delivery, order=order
+        )
+        response.message(f"Commande envoyée à «{email}»")
+    response.redirect = f"/livraison/{delivery.id}"
 
 
 @app.route("/livraison/{id}/émargement", methods=["GET"])
