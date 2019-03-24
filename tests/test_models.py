@@ -28,8 +28,11 @@ def test_wrong_datetime_raise_valueerror():
 def test_delivery_is_open_when_order_before_is_in_the_future(delivery):
     delivery.order_before = now() + timedelta(hours=1)
     assert delivery.is_open
-    delivery.order_before = now() - timedelta(hours=1)
+    delivery.order_before = now() - timedelta(days=1)
     assert not delivery.is_open
+    # We don't take the hour into account
+    delivery.order_before = now() - timedelta(hours=1)
+    assert delivery.is_open
 
 
 def test_can_create_product():

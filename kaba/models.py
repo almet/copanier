@@ -137,7 +137,7 @@ class Delivery(Base):
 
     @property
     def is_open(self):
-        return self.order_before > datetime.now()
+        return datetime.now().date() <= self.order_before.date()
 
     @classmethod
     def get_root(cls):
