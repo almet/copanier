@@ -151,7 +151,7 @@ async def set_sesame(request, response, token):
 @app.route("/", methods=["GET"])
 @auth_required
 async def home(request, response):
-    response.html("home.html", deliveries=Delivery.all())
+    response.html("home.html", incoming=Delivery.incoming(), former=Delivery.former())
 
 
 @app.route("/livraison", methods=["GET"])

@@ -139,6 +139,10 @@ class Delivery(Base):
     def is_open(self):
         return datetime.now().date() <= self.order_before.date()
 
+    @property
+    def is_foreseen(self):
+        return datetime.now().date() <= self.from_date.date()
+
     @classmethod
     def init_fs(cls):
         cls.get_root().mkdir(parents=True, exist_ok=True)
@@ -158,6 +162,14 @@ class Delivery(Base):
     def all(cls):
         for path in cls.get_root().glob("*.yml"):
             yield Delivery.load(path.stem)
+
+    @classmethod
+    def incoming(cls):
+        return [d for d in cls.all() if d.is_foreseen]
+
+    @classmethod
+    def former(cls):
+        return [d for d in cls.all() if not d.is_foreseen]
 
     def persist(self):
         with self.__lock__:
