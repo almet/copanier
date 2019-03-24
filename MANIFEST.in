@@ -1,0 +1,4 @@
+recursive-include copanier/static *
+recursive-include copanier/templates *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
