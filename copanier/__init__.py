@@ -225,10 +225,9 @@ async def view_delivery(request, response, id):
 async def place_order(request, response, id):
     delivery = Delivery.load(id)
     email = request.query.get("email", None)
-    if not email:
-        user = session.user.get(None)
-        if user:
-            email = user.email
+    user = session.user.get(None)
+    if not email and user:
+        email = user.email
     if not email:
         response.message("Impossible de comprendre pour qui passer commande…", "error")
         response.redirect = request.path
@@ -244,19 +243,21 @@ async def place_order(request, response, id):
             delivery.orders = {}
         delivery.orders[email] = order
         delivery.persist()
-        html = env.get_template("emails/order_summary.html").render(
-            order=order, delivery=delivery
-        )
-        txt = env.get_template("emails/order_summary.txt").render(
-            order=order, delivery=delivery
-        )
-        emails.send(
-            email,
-            f"Copanier: résumé de la commande {delivery.producer}",
-            body=txt,
-            html=html,
-        )
-        response.message("Jour de fête! Votre commande a bien été prise en compte!")
+        if user and user.email == email:
+            # Only send email if order has been placed by the user itself.
+            html = env.get_template("emails/order_summary.html").render(
+                order=order, delivery=delivery
+            )
+            txt = env.get_template("emails/order_summary.txt").render(
+                order=order, delivery=delivery
+            )
+            emails.send(
+                email,
+                f"Copanier: résumé de la commande {delivery.producer}",
+                body=txt,
+                html=html,
+            )
+        response.message("La commande a bien été prise en compte!")
         response.redirect = request.path
     else:
         order = delivery.orders.get(email) or Order()
