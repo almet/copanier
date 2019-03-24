@@ -2,7 +2,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<h2>{{ delivery.producer }} {{ delivery.when.date() }} - liste d'émargement</h2>
+<h2>{{ delivery.producer }} {{ delivery.from_date.date() }} - liste d'émargement</h2>
 {% for email, order in delivery.orders.items() %}
     <h3>{{ email }}</h3>
     <table class="order">
