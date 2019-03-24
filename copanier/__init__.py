@@ -228,11 +228,12 @@ async def place_order(request, response, id):
     delivery = Delivery.load(id)
     email = request.query.get("email", None)
     user = session.user.get(None)
+    delivery_url = f"/livraison/{delivery.id}"
     if not email and user:
         email = user.email
     if not email:
         response.message("Impossible de comprendre pour qui passer commande…", "error")
-        response.redirect = request.path
+        response.redirect = delivery_url
         return
     if request.method == "POST":
         form = request.form
@@ -248,7 +249,7 @@ async def place_order(request, response, id):
                 del delivery.orders[email]
                 delivery.persist()
             response.message("La commande est vide.", status="warning")
-            response.redirect = f"/livraison/{delivery.id}"
+            response.redirect = delivery_url
             return
         delivery.orders[email] = order
         delivery.persist()
@@ -266,8 +267,8 @@ async def place_order(request, response, id):
                 body=txt,
                 html=html,
             )
-        response.message("La commande a bien été prise en compte!")
-        response.redirect = request.path
+        response.message(f"La commande pour «{email}» a bien été prise en compte!")
+        response.redirect = f"/livraison/{delivery.id}"
     else:
         order = delivery.orders.get(email) or Order()
         response.html(
