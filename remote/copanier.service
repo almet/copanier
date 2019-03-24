@@ -1,0 +1,17 @@
+[Unit]
+Description=COPANIER
+After=syslog.target network.target
+
+[Service]
+Type=simple
+User=copanier
+ExecStart=/srv/copanier/venv/bin/gunicorn copanier:app --config gunicorn.conf
+WorkingDirectory=/srv/copanier/
+EnvironmentFile=/srv/copanier/env
+Restart=always
+RestartSec=5
+StandardOutput=journal
+SyslogIdentifier=COPANIER
+
+[Install]
+WantedBy=default.target

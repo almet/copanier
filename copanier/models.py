@@ -140,6 +140,10 @@ class Delivery(Base):
         return datetime.now().date() <= self.order_before.date()
 
     @classmethod
+    def init_fs(cls):
+        cls.get_root().mkdir(parents=True, exist_ok=True)
+
+    @classmethod
     def get_root(cls):
         return Path(config.DATA_ROOT) / cls.__root__
 

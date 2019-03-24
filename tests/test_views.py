@@ -1,6 +1,6 @@
 import pytest
 
-from kaba.models import Delivery
+from copanier.models import Delivery
 
 pytestmark = pytest.mark.asyncio
 

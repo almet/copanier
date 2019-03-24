@@ -52,7 +52,7 @@ class Roll(Roll):
 
 
 env = Environment(
-    loader=PackageLoader("kaba", "templates"), autoescape=select_autoescape(["kaba"])
+    loader=PackageLoader("copanier", "templates"), autoescape=select_autoescape(["copanier"])
 )
 
 
@@ -116,6 +116,7 @@ async def attach_request(request, response):
 @app.listen("startup")
 async def on_startup():
     configure()
+    Delivery.init_fs()
 
 
 @app.route("/sésame", methods=["GET"])
@@ -340,7 +341,7 @@ def cli_wrapper():
 def serve(reload=False):
     """Run a web server (for development only)."""
     if reload:
-        hupper.start_reloader("kaba.serve")
+        hupper.start_reloader("copanier.serve")
     traceback(app)
     static(app, root=Path(__file__).parent / "static")
     simple_server(app, port=2244)

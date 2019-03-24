@@ -16,7 +16,7 @@ FROM_EMAIL = "contact@epinamap.org"
 def init():
     for key, value in globals().items():
         if key.isupper():
-            env_key = "KABA_" + key
+            env_key = "COPANIER_" + key
             typ = type(value)
             if env_key in os.environ:
                 globals()[key] = typ(os.environ[env_key])

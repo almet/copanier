@@ -1,0 +1,7 @@
+Jinja2==2.10
+minicli==0.4.4
+openpyxl==2.6.1
+PyJWT==1.7.1
+PyYAML==5.1
+roll==0.10.1
+ujson==1.35

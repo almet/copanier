@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from kaba.models import Delivery, Product, Person, Order, ProductOrder
+from copanier.models import Delivery, Product, Person, Order, ProductOrder
 
 
 now = datetime.now
