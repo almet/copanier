@@ -82,6 +82,10 @@ class Person(Base):
     first_name: str = ""
     last_name: str = ""
 
+    @property
+    def is_staff(self):
+        return self.email in config.STAFF
+
 
 @dataclass
 class Product(Base):

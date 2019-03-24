@@ -19,9 +19,11 @@
     <section class="menu">
         <h1><a href="/">Copanier</a> <small>Les paniers piano d'Épinamap</small></h1>
         <nav>
-            <a class="button" href="/livraison"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle livraison</a>
-            {% if request["user"] %}
-                &nbsp;|&nbsp;{{ request["user"].email }}</span>
+            {% if request.user %}
+                {% if request.user.is_staff %}
+                <a class="button" href="/livraison"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle livraison</a>&nbsp;
+                {% endif %}
+                <i class="icon-lock"></i>&nbsp;<span>{{ request["user"].email }}</span>
             {% endif %}
         </nav>
     </section>

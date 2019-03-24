@@ -42,9 +42,6 @@
 <hr>
 <ul class="toolbox">
     <li>
-        <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison (admin)</a>
-    </li>
-    <li>
         <a href="/livraison/{{ delivery.id }}/rapport.xlsx"><i class="icon-magnifying-glass"></i> Rapport résumé</a>
     </li>
     <li>
@@ -52,6 +49,10 @@
     </li>
     <li>
         <a href="/livraison/{{ delivery.id }}/émargement" target="_blank"><i class="icon-document"></i> Liste d'émargement</a>
+    </li>
+    {% if request.user and request.user.is_staff %}
+    <li>
+        <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison (admin)</a>
     </li>
     <li>
         {% with unique_id="import-command" %}
@@ -63,5 +64,6 @@
             {% include "includes/modal_add_command.html" %}
         {% endwith %}
     </li>
+    {% endif %}
 </ul>
 {% endblock body %}
