@@ -54,6 +54,7 @@ def test_can_create_delivery_with_products():
 
 
 def test_can_add_product_to_delivery(delivery):
+    delivery.products = []
     assert not delivery.products
     delivery.products.append(Product(name="Chocolat", ref="choco", price=10))
     assert len(delivery.products) == 1

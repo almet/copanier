@@ -45,3 +45,15 @@ async def test_create_delivery(client):
     assert delivery.to_date.year == 2019
     assert delivery.to_date.hour == 20
     assert delivery.to_date.minute == 0
+
+
+async def test_place_order_with_session(client, delivery):
+    delivery.persist()
+    body = {
+        "123": "3",
+    }
+    resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
+    assert resp.status == 302
+    delivery = list(Delivery.all())[0]
+    assert delivery.orders["foo@bar.org"]
+    assert delivery.orders["foo@bar.org"].products["123"].wanted == 3

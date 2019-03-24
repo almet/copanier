@@ -8,7 +8,7 @@ from roll.testing import Client as BaseClient
 from copanier import app as copanier_app
 from copanier import config as kconfig
 from copanier import create_token
-from copanier.models import Delivery, Person
+from copanier.models import Delivery, Person, Product
 
 
 def pytest_configure(config):
@@ -69,6 +69,7 @@ def delivery():
         from_date=datetime.now() + timedelta(days=10),
         to_date=datetime.now() + timedelta(days=10),
         order_before=datetime.now() + timedelta(days=7),
+        products=[Product(name="Lait", ref="123", price=1.5)],
     )
 
 

@@ -250,7 +250,11 @@ async def signing_sheet(request, response, id):
 @auth_required
 async def place_order(request, response, id):
     delivery = Delivery.load(id)
-    email = request.query.get("email")
+    email = request.query.get("email", None)
+    if not email:
+        user = session.user.get(None)
+        if user:
+            email = user.email
     order = Order()
     form = request.form
     for product in delivery.products:
