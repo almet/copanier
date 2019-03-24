@@ -130,7 +130,7 @@ async def send_sesame(request, response):
     token = create_token(email)
     emails.send(
         email,
-        "Sésame Panio",
+        "Sésame Copanier",
         emails.ACCESS_GRANTED.format(hostname=request.host, token=token.decode()),
     )
     response.message(f"Un sésame vous a été envoyé à l'adresse '{email}'")
