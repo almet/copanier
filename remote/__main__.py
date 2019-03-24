@@ -178,15 +178,19 @@ def upload_env():
         "COPANIER_SMTP_LOGIN": None,
     }
     content = ""
+    table = str.maketrans({'"': r"\""})
     for key, value in vars_.items():
+        value = value or os.environ[key]
         try:
-            content += "{}={}\n".format(key, value or os.environ[key])
+            content += f'{key}="{str(value).translate(table)}"\n'
         except KeyError:
             sys.exit(f"The {key} environment variable does not exist.")
     path = "/srv/copanier/env"
     if exists(path):
         run(f"cat {path}")
     put(StringIO(content), path)
+    if exists(path):
+        run(f"cat {path}")
 
 
 @minicli.wrap
