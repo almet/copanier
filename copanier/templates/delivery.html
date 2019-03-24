@@ -3,40 +3,42 @@
 {% block body %}
 <h3>{{ delivery.producer }} {% if delivery.is_open %}<a class="button" href="/livraison/{{ delivery.id }}/commander">Ma commande</a>{% endif %}</h3>
 {% include "includes/delivery_head.html" %}
-<table class="delivery">
-    <tbody>
-        <tr>
-            <th class="ref">Référence</th>
-            <th class="product">Produit</th>
-            <th class="price">Prix</th>
-            {% for email, order in delivery.orders.items() %}
-                <th class="person"><a href="/livraison/{{ delivery.id }}/commander?email={{ email }}" title="{{ email }}">{{ email }}</a></th>
+<article class="delivery">
+    <table class="delivery">
+        <tbody>
+            <tr>
+                <th class="ref">Référence</th>
+                <th class="product">Produit</th>
+                <th class="price">Prix</th>
+                <th class="amount">Total</th>
+                {% for email, order in delivery.orders.items() %}
+                    <th class="person"><a href="/livraison/{{ delivery.id }}/commander?email={{ email }}" title="{{ email }}">{{ email }}</a></th>
+                {% endfor %}
+            </tr>
+            {% for product in delivery.products %}
+            <tr>
+                <th class="product">{{ product.ref }}</th>
+                <th class="product">{{ product.name }}</th>
+                <td>{{ product.price }} €</td>
+                <th>{{ delivery.product_wanted(product) }}</th>
+                {% for email, order in delivery.orders.items() %}
+                    {% if product.ref in order.products %}
+                    <td>{{ order.products[product.ref].wanted }}</td>
+                    {% else %}
+                        <td>—</td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
             {% endfor %}
-            <th class="amount">Total</th>
-        </tr>
-        {% for product in delivery.products %}
-        <tr>
-            <th class="product">{{ product.ref }}</th>
-            <th class="product">{{ product.name }}</th>
-            <td>{{ product.price }} €</td>
-            {% for email, order in delivery.orders.items() %}
-                {% if product.ref in order.products %}
-                <td>{{ order.products[product.ref].wanted }}</td>
-                {% else %}
-                    <td>—</td>
-                {% endif %}
-            {% endfor %}
-            <th>{{ delivery.product_wanted(product) }}</th>
-        </tr>
-        {% endfor %}
-        <tr><th class="total"><i class="icon-pricetags"></i> Total</th><td>—</td><td>—</td>
-            {% for email, order in delivery.orders.items() %}
-            <td>{{ order.total(delivery.products) }} €</td>
-            {% endfor %}
-            <td class="total">{{ delivery.total }} €</td>
-        </tr>
-    </tbody>
-</table>
+            <tr><th class="total"><i class="icon-pricetags"></i> Total</th><td>—</td><td>—</td>
+                <td class="total">{{ delivery.total }} €</td>
+                {% for email, order in delivery.orders.items() %}
+                <td>{{ order.total(delivery.products) }} €</td>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+</article>
 <hr>
 <ul class="toolbox">
     <li>

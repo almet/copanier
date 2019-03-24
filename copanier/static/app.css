@@ -271,10 +271,7 @@ select:focus {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-  width: 100%;
-  table-layout: fixed;
   border-bottom: 1px solid #aaa;
-  overflow-x: auto;
 }
 tr {
   height: 30px;
@@ -285,6 +282,7 @@ th {
   line-height: 1rem;
   vertical-align: middle;
   text-align: center;
+  white-space: nowrap;
 }
 td + td {
   border-left: 1px solid white;
@@ -335,6 +333,7 @@ article.order {
   margin-right: auto;
 }
 table.order th.product {
+  min-width: 10rem;
   width: inherit;
 }
 td.with-input {
@@ -342,6 +341,13 @@ td.with-input {
 }
 td.with-input input {
   width: 100%;
+}
+article.delivery {
+  width: 100%;
+  overflow-x: auto;
+}
+article.delivery th.person {
+  max-width: 7rem;
 }
 hr {
   background-color: #dbdbdb;
