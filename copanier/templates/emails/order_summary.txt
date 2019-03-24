@@ -1,0 +1,17 @@
+Salut salut,
+
+Voici le résumé de la commande «{{ delivery.producer }}»
+
+Produit | Prix unitaire | Quantité
+
+{% for product in delivery.products %}
+{% if order.get_quantity(product) %}
+{{ product.name }} | {{ product.price }} € | {{ order.get_quantity(product) }}
+{% endif %}
+{% endfor %}
+
+Total: {{ order.total(delivery.products) if order else 0 }} €
+
+Livraison: {{ delivery.where }}, le {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}
+
+Bonne journée!

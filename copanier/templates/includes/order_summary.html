@@ -1,0 +1,12 @@
+<table class="order">
+    <tr><th class="product">Produit</th><th class="price">Prix unitaire</th><th class="amount">Quantité</th></tr>
+    {% for product in delivery.products %}
+    {% if order.get_quantity(product) %}
+    <tr>
+        <th class="product">{{ product.name }}</th>
+        <td>{{ product.price }} €</td><td>{{ order.get_quantity(product) }}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+</table>
+<p>Total: {{ order.total(delivery.products) if order else 0 }} €</p>

@@ -1,0 +1,5 @@
+<p>Bonjour,</p>
+<p>Voici le résumé de la commande «{{ delivery.producer }}»</p>
+{% include "includes/order_summary.html" %}
+<p>Livraison: {{ delivery.where }}, le {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}</p>
+<p>Bonne journée!</p>

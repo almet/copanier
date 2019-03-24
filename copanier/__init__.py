@@ -244,6 +244,18 @@ async def place_order(request, response, id):
             delivery.orders = {}
         delivery.orders[email] = order
         delivery.persist()
+        html = env.get_template("emails/order_summary.html").render(
+            order=order, delivery=delivery
+        )
+        txt = env.get_template("emails/order_summary.txt").render(
+            order=order, delivery=delivery
+        )
+        emails.send(
+            email,
+            f"Copanier: résumé de la commande {delivery.producer}",
+            body=txt,
+            html=html,
+        )
         response.message("Jour de fête! Votre commande a bien été prise en compte!")
         response.redirect = request.path
     else:

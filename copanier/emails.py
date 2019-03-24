@@ -14,12 +14,14 @@ Les gentils copains d'Épinamap
 """
 
 
-def send(to, subject, body):
+def send(to, subject, body, html=None):
     msg = EmailMessage()
     msg.set_content(body)
     msg["Subject"] = subject
     msg["From"] = config.FROM_EMAIL
     msg["To"] = to
+    if html:
+        msg.add_alternative(html, subtype='html')
     if not config.SEND_EMAILS:
         return print("Sending email", str(msg))
     try:
