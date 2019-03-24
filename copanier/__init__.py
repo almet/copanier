@@ -5,7 +5,6 @@ from time import perf_counter
 
 import jwt
 import ujson as json
-import hupper
 import minicli
 from jinja2 import Environment, PackageLoader, select_autoescape
 from roll import Roll, Response
@@ -52,7 +51,8 @@ class Roll(Roll):
 
 
 env = Environment(
-    loader=PackageLoader("copanier", "templates"), autoescape=select_autoescape(["copanier"])
+    loader=PackageLoader("copanier", "templates"),
+    autoescape=select_autoescape(["copanier"]),
 )
 
 
@@ -341,6 +341,8 @@ def cli_wrapper():
 def serve(reload=False):
     """Run a web server (for development only)."""
     if reload:
+        import hupper
+
         hupper.start_reloader("copanier.serve")
     traceback(app)
     static(app, root=Path(__file__).parent / "static")
