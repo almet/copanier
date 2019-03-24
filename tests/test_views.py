@@ -1,6 +1,6 @@
 import pytest
 
-from copanier.models import Delivery
+from copanier.models import Delivery, Order, ProductOrder
 
 pytestmark = pytest.mark.asyncio
 
@@ -54,6 +54,23 @@ async def test_place_order_with_session(client, delivery):
     }
     resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
     assert resp.status == 302
-    delivery = list(Delivery.all())[0]
+    delivery = Delivery.load(id=delivery.id)
     assert delivery.orders["foo@bar.org"]
     assert delivery.orders["foo@bar.org"].products["123"].wanted == 3
+
+
+async def test_place_empty_order(client, delivery):
+    delivery.persist()
+    resp = await client.post(f"/livraison/{delivery.id}/commander", body={})
+    assert resp.status == 302
+    delivery = Delivery.load(id=delivery.id)
+    assert not delivery.orders
+
+
+async def test_place_empty_order_should_delete_previous(client, delivery):
+    delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=1)})
+    delivery.persist()
+    resp = await client.post(f"/livraison/{delivery.id}/commander", body={})
+    assert resp.status == 302
+    delivery = Delivery.load(delivery.id)
+    assert not delivery.orders

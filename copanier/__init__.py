@@ -241,6 +241,13 @@ async def place_order(request, response, id):
                 order.products[product.ref] = ProductOrder(wanted=quantity)
         if not delivery.orders:
             delivery.orders = {}
+        if not order.products:
+            if email in delivery.orders:
+                del delivery.orders[email]
+                delivery.persist()
+            response.message("La commande est vide.", status="warning")
+            response.redirect = f"/livraison/{delivery.id}"
+            return
         delivery.orders[email] = order
         delivery.persist()
         if user and user.email == email:

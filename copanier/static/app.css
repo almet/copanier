@@ -387,6 +387,9 @@ hr {
 .notification.error {
   background-color: #e10055;
 }
+.notification.error {
+  background-color: #8c5a2d;
+}
 .notification i {
   font-size: 2rem;
 }
