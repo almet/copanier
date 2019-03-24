@@ -173,7 +173,7 @@ def upload_env():
     """
     vars_ = {
         "COPANIER_DATA_ROOT": "/srv/copanier/data",
-        "COPANIER_SEND_MAILS": "1",
+        "COPANIER_SEND_EMAILS": "1",
         "COPANIER_SMTP_PASSWORD": None,
         "COPANIER_SMTP_LOGIN": None,
     }
