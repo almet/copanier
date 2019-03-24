@@ -220,33 +220,7 @@ async def view_delivery(request, response, id):
     response.html("delivery.html", {"delivery": delivery})
 
 
-@app.route("/livraison/{id}/commander", methods=["GET"])
-@auth_required
-async def order_form(request, response, id):
-    delivery = Delivery.load(id)
-    email = request.query.get("email", None)
-    if not email:
-        user = session.user.get(None)
-        if user:
-            email = user.email
-    if email:
-        order = delivery.orders.get(email) or Order()
-        response.html(
-            "place_order.html", {"delivery": delivery, "person": email, "order": order}
-        )
-    else:
-        response.message("Impossible de comprendre pour qui passer commande…", "error")
-        response.redirect = request.path
-
-
-@app.route("/livraison/{id}/émargement", methods=["GET"])
-@auth_required
-async def signing_sheet(request, response, id):
-    delivery = Delivery.load(id)
-    response.html("signing_sheet.html", {"delivery": delivery})
-
-
-@app.route("/livraison/{id}/commander", methods=["POST"])
+@app.route("/livraison/{id}/commander", methods=["POST", "GET"])
 @auth_required
 async def place_order(request, response, id):
     delivery = Delivery.load(id)
@@ -255,18 +229,35 @@ async def place_order(request, response, id):
         user = session.user.get(None)
         if user:
             email = user.email
-    order = Order()
-    form = request.form
-    for product in delivery.products:
-        quantity = form.int(product.ref, 0)
-        if quantity:
-            order.products[product.ref] = ProductOrder(wanted=quantity)
-    if not delivery.orders:
-        delivery.orders = {}
-    delivery.orders[email] = order
-    delivery.persist()
-    response.message("Jour de fête! Votre commande a bien été prise en compte!")
-    response.redirect = request.url.decode()
+    if not email:
+        response.message("Impossible de comprendre pour qui passer commande…", "error")
+        response.redirect = request.path
+        return
+    if request.method == "POST":
+        form = request.form
+        order = Order()
+        for product in delivery.products:
+            quantity = form.int(product.ref, 0)
+            if quantity:
+                order.products[product.ref] = ProductOrder(wanted=quantity)
+        if not delivery.orders:
+            delivery.orders = {}
+        delivery.orders[email] = order
+        delivery.persist()
+        response.message("Jour de fête! Votre commande a bien été prise en compte!")
+        response.redirect = request.path
+    else:
+        order = delivery.orders.get(email) or Order()
+        response.html(
+            "place_order.html", {"delivery": delivery, "person": email, "order": order}
+        )
+
+
+@app.route("/livraison/{id}/émargement", methods=["GET"])
+@auth_required
+async def signing_sheet(request, response, id):
+    delivery = Delivery.load(id)
+    response.html("signing_sheet.html", {"delivery": delivery})
 
 
 @app.route("/livraison/{id}/importer/commande", methods=["POST"])
