@@ -107,6 +107,7 @@ class ProductOrder(Base):
 @dataclass
 class Order(Base):
     products: Dict[str, ProductOrder] = field(default_factory=lambda *a, **k: {})
+    paid: bool = False
 
     def get_quantity(self, product):
         choice = self.products.get(product.ref)
@@ -146,6 +147,10 @@ class Delivery(Base):
     @property
     def is_foreseen(self):
         return datetime.now().date() <= self.from_date.date()
+
+    @property
+    def is_passed(self):
+        return not self.is_foreseen
 
     @classmethod
     def init_fs(cls):

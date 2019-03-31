@@ -1,8 +1,6 @@
 import os
 from pathlib import Path
 
-getenv = os.environ.get
-
 DATA_ROOT = Path(__file__).parent.parent / "db"
 SECRET = "sikretfordevonly"
 JWT_ALGORITHM = "HS256"

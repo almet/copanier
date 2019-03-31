@@ -237,7 +237,7 @@ async def place_order(request, response, id):
         return
     if request.method == "POST":
         form = request.form
-        order = Order()
+        order = Order(paid=form.bool("paid", False))
         for product in delivery.products:
             quantity = form.int(product.ref, 0)
             if quantity:

@@ -263,6 +263,12 @@ select {
   display: flex;
 }
 
+input[type=checkbox] {
+  height: 1rem;
+  padding: 0;
+  vertical-align: bottom;
+}
+
 input:focus,
 select:focus {
   box-shadow: 0 0 .1rem var(--primary-color);
@@ -392,6 +398,9 @@ hr {
 }
 .notification i {
   font-size: 2rem;
+}
+.not-paid {
+  background-color: #db7734;
 }
 .toggle {
   display: none;

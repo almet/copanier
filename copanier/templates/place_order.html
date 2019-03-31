@@ -20,8 +20,11 @@
         {% endfor %}
     </table>
     <p>Total: {{ order.total(delivery.products) if order else 0 }} €</p>
+    {% if delivery.is_passed %}
+    <p>Commande soldée: <input type="checkbox" name="paid" {% if order.paid %}checked{% endif %}></p>
+    {% endif %}
     <input type="hidden" name="email" value="{{ person.email }}">
-    <input type="submit" value="Valider la commande">
+    <input type="submit" value="Enregistrer la commande">
     <a class="button" href="/livraison/{{ delivery.id }}/courriel?email={{ person.email }}">Envoyer par courriel</a>
 </form>
 </article>

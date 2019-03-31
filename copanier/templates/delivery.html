@@ -12,7 +12,7 @@
                 <th class="price">Prix</th>
                 <th class="amount">Total</th>
                 {% for email, order in delivery.orders.items() %}
-                    <th class="person">
+                    <th class="person{% if delivery.is_passed and not order.paid %} not-paid{% endif %}">
                         {% if request.user and request.user.is_staff %}
                             <a href="/livraison/{{ delivery.id }}/commander?email={{ email }}" title="{{ email }}">{{ email }}</a>
                         {% else %}
