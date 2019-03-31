@@ -9,7 +9,7 @@ SMTP_HOST = "mail.gandi.net"
 SMTP_PASSWORD = ""
 SMTP_LOGIN = ""
 FROM_EMAIL = "contact@epinamap.org"
-STAFF = ["yohanboniface@free.fr"]
+STAFF = ["yohanboniface@free.fr", "anne.mattler@wanadoo.fr"]
 
 
 def init():
