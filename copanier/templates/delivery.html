@@ -70,6 +70,11 @@
             {% include "includes/modal_add_command.html" %}
         {% endwith %}
     </li>
+    <li>
+        {% with unique_id="copy-emails" %}
+            {% include "includes/modal_copy_emails.html" %}
+        {% endwith %}
+    </li>
     {% endif %}
 </ul>
 {% endblock body %}
