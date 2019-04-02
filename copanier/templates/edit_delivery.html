@@ -27,6 +27,10 @@
         <h5>Date de limite de commande</h5>
         <input type="date" name="order_before" value="{{ delivery.order_before.date() if delivery.order_before else '' }}" required>
     </label>
+    <label>
+        <h5>Instructions particulières</h5>
+        <input type="text" name="instructions" value="{{ delivery.instructions or '' }}">
+    </label>
     <div>
         <input type="submit" name="submit" value="Valider">
     </div>

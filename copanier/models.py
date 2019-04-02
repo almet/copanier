@@ -138,6 +138,7 @@ class Delivery(Base):
     to_date: datetime_field
     order_before: datetime_field
     description: str = ""
+    instructions: str = ""
     where: str = "Marché de la Briche"
     products: List[Product] = field(default_factory=lambda *a, **k: [])
     orders: Dict[str, Order] = field(default_factory=lambda *a, **k: {})
