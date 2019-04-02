@@ -72,7 +72,7 @@ options(app)
 
 @app.listen("request")
 async def auth_required(request, response):
-    if not request.route.payload.get("genuine"):
+    if request.route and not request.route.payload.get("genuine"):
         token = request.cookies.get("token")
         email = None
         if token:
@@ -81,14 +81,15 @@ async def auth_required(request, response):
         if not email:
             response.redirect = f"/sésame?next={request.path}"
             return response
-    user = Person(email=email)
-    request["user"] = user
-    session.user.set(user)
+        user = Person(email=email)
+        request["user"] = user
+        session.user.set(user)
 
 
 @app.listen("request")
 async def attach_request(request, response):
     response.request = request
+
 
 @app.listen("request")
 async def log_request(request, response):
