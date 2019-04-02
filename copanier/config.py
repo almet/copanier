@@ -8,7 +8,7 @@ SEND_EMAILS = False
 SMTP_HOST = "mail.gandi.net"
 SMTP_PASSWORD = ""
 SMTP_LOGIN = ""
-FROM_EMAIL = "contact@epinamap.org"
+FROM_EMAIL = "copanier@epinamap.org"
 STAFF = ["yohanboniface@free.fr", "anne.mattler@wanadoo.fr"]
 
 
