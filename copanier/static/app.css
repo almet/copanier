@@ -426,6 +426,7 @@ hr {
   padding: 5px;
   z-index: 100;
   text-align: center;
+  overflow-y: auto;
 }
 .toggle-background {
   position: fixed;
@@ -440,6 +441,9 @@ hr {
   opacity: 0.4;
   cursor: pointer;
   display: none;
+}
+.toggle-container img {
+  max-width: 100%;
 }
 .toggle:checked ~ .toggle-background,
 .toggle:checked ~ .toggle-container {
