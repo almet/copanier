@@ -27,7 +27,7 @@ def datetime_field(value):
 
 def price_field(value):
     if isinstance(value, str):
-        value = value.replace(",", ".")
+        value = value.replace(",", ".").replace("€", "").strip()
     return float(value)
 
 
