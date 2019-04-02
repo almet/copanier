@@ -23,8 +23,8 @@
             </tr>
             {% for product in delivery.products %}
             <tr>
-                <th class="product">{{ product.ref }}</th>
-                <th class="product">{{ product.name }}</th>
+                <td class="ref">{{ product.ref }}</td>
+                <th class="product">{{ product.label }}</th>
                 <td>{{ product.price }} €</td>
                 <th>{{ delivery.product_wanted(product) }}</th>
                 {% for email, order in delivery.orders.items() %}

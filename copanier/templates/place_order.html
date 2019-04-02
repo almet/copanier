@@ -9,7 +9,7 @@
         <tr><th class="product">Produit</th><th class="price">Prix</th><th class="amount">Quantité</th></tr>
         {% for product in delivery.products %}
         <tr>
-            <th class="product">{{ product.name }}
+            <th class="product">{{ product.label }}
                 {% if product.description or product.img %}
                     {% with unique_id=loop.index %}
                         {% include "includes/modal_product.html" %}

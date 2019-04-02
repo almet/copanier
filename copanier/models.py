@@ -97,6 +97,13 @@ class Product(Base):
     url: str = ""
     img: str = ""
 
+    @property
+    def label(self):
+        out = self.name
+        if self.weight:
+            out += f" ({self.weight})"
+        return out
+
 
 @dataclass
 class ProductOrder(Base):

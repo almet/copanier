@@ -317,8 +317,13 @@ th.price {
 th.amount {
   width: 5rem;
 }
-th.ref {
+.ref {
   width: 5rem;
+  text-align: left;
+}
+td.ref {
+  font-weight: 300;
+  font-style: normal;
 }
 td.total,
 th.total {
