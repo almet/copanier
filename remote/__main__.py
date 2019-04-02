@@ -166,6 +166,13 @@ def error_logs():
 
 
 @minicli.cli
+def data_logs():
+    """See the app data logs."""
+    with sudo():
+        run("tail -F /srv/copanier/logs/copanier-requests.log")
+
+
+@minicli.cli
 def upload_env():
     """Upload environment vars to the server.
 

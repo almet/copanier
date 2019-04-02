@@ -1,6 +1,6 @@
 Salut salut,
 
-Voici le résumé de la commande «{{ delivery.producer }}»
+Voici le résumé de votre commande «{{ delivery.producer }}»
 
 Produit | Prix unitaire | Quantité
 
