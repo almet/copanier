@@ -7,7 +7,7 @@ from roll.testing import Client as BaseClient
 
 from copanier import app as copanier_app
 from copanier import config as kconfig
-from copanier import create_token
+from copanier.utils import create_token
 from copanier.models import Delivery, Person, Product
 
 

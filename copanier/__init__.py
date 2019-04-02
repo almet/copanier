@@ -1,16 +1,14 @@
 import csv
-from datetime import timedelta
 from pathlib import Path
 from time import perf_counter
 
-import jwt
 import ujson as json
 import minicli
 from jinja2 import Environment, PackageLoader, select_autoescape
 from roll import Roll, Response
 from roll.extensions import cors, options, traceback, simple_server, static
 
-from . import config, reports, session, utils, emails
+from . import config, reports, session, utils, emails, loggers
 from .models import Delivery, Order, Person, Product, ProductOrder
 
 
@@ -72,45 +70,37 @@ cors(app, methods="*", headers="*")
 options(app)
 
 
-def auth_required(view):
-    async def redirect(request, response, *a, **k):
-        # FIXME do not return a view when Roll allows it.
-        response.redirect = f"/sésame?next={request.path}"
-
-    def wrapper(request, response, *args, **kwargs):
+@app.listen("request")
+async def auth_required(request, response):
+    if not request.route.payload.get("genuine"):
         token = request.cookies.get("token")
         email = None
         if token:
-            decoded = read_token(token)
+            decoded = utils.read_token(token)
             email = decoded.get("sub")
         if not email:
-            return redirect(request, response, *args, **kwargs)
-        user = Person(email=email)
-        request["user"] = user
-        session.user.set(user)
-        return view(request, response, *args, **kwargs)
-
-    return wrapper
-
-
-def create_token(email):
-    return jwt.encode(
-        {"sub": str(email), "exp": utils.utcnow() + timedelta(days=7)},
-        config.SECRET,
-        config.JWT_ALGORITHM,
-    )
-
-
-def read_token(token):
-    try:
-        return jwt.decode(token, config.SECRET, algorithms=[config.JWT_ALGORITHM])
-    except (jwt.DecodeError, jwt.ExpiredSignatureError):
-        return {}
+            response.redirect = f"/sésame?next={request.path}"
+            return response
+    user = Person(email=email)
+    request["user"] = user
+    session.user.set(user)
 
 
 @app.listen("request")
 async def attach_request(request, response):
     response.request = request
+
+@app.listen("request")
+async def log_request(request, response):
+    if request.method == "POST":
+        message = {
+            "date": utils.utcnow().isoformat(),
+            "data": request.form,
+            "user": request.get("user"),
+        }
+        loggers.request_logger.info(
+            json.dumps(message, sort_keys=True, ensure_ascii=False)
+        )
 
 
 @app.listen("startup")
@@ -119,15 +109,15 @@ async def on_startup():
     Delivery.init_fs()
 
 
-@app.route("/sésame", methods=["GET"])
+@app.route("/sésame", methods=["GET"], genuine=True)
 async def sesame(request, response):
     response.html("sesame.html")
 
 
 @app.route("/sésame", methods=["POST"])
-async def send_sesame(request, response):
+async def send_sesame(request, response, genuine=True):
     email = request.form.get("email")
-    token = create_token(email)
+    token = utils.create_token(email)
     emails.send(
         email,
         "Sésame Copanier",
@@ -137,9 +127,9 @@ async def send_sesame(request, response):
     response.redirect = "/"
 
 
-@app.route("/sésame/{token}", methods=["GET"])
+@app.route("/sésame/{token}", methods=["GET"], genuine=True)
 async def set_sesame(request, response, token):
-    decoded = read_token(token)
+    decoded = utils.read_token(token)
     if not decoded:
         response.message("Sésame invalide :(", status="error")
     else:
@@ -151,19 +141,16 @@ async def set_sesame(request, response, token):
 
 
 @app.route("/", methods=["GET"])
-@auth_required
 async def home(request, response):
     response.html("home.html", incoming=Delivery.incoming(), former=Delivery.former())
 
 
 @app.route("/livraison", methods=["GET"])
-@auth_required
 async def new_delivery(request, response):
     response.html("edit_delivery.html", delivery={})
 
 
 @app.route("/livraison", methods=["POST"])
-@auth_required
 async def create_delivery(request, response):
     form = request.form
     data = {}
@@ -179,7 +166,6 @@ async def create_delivery(request, response):
 
 
 @app.route("/livraison/{id}/importer/produits", methods=["POST"])
-@auth_required
 async def import_products(request, response, id):
     delivery = Delivery.load(id)
     delivery.products = []
@@ -194,14 +180,12 @@ async def import_products(request, response, id):
 
 
 @app.route("/livraison/{id}/edit", methods=["GET"])
-@auth_required
 async def edit_delivery(request, response, id):
     delivery = Delivery.load(id)
     response.html("edit_delivery.html", {"delivery": delivery})
 
 
 @app.route("/livraison/{id}/edit", methods=["POST"])
-@auth_required
 async def post_delivery(request, response, id):
     delivery = Delivery.load(id)
     form = request.form
@@ -216,14 +200,12 @@ async def post_delivery(request, response, id):
 
 
 @app.route("/livraison/{id}", methods=["GET"])
-@auth_required
 async def view_delivery(request, response, id):
     delivery = Delivery.load(id)
     response.html("delivery.html", {"delivery": delivery})
 
 
 @app.route("/livraison/{id}/commander", methods=["POST", "GET"])
-@auth_required
 async def place_order(request, response, id):
     delivery = Delivery.load(id)
     email = request.query.get("email", None)
@@ -269,7 +251,6 @@ async def place_order(request, response, id):
 
 
 @app.route("/livraison/{id}/courriel", methods=["GET"])
-@auth_required
 async def send_order(request, response, id):
     delivery = Delivery.load(id)
     email = request.query.get("email")
@@ -285,14 +266,12 @@ async def send_order(request, response, id):
 
 
 @app.route("/livraison/{id}/émargement", methods=["GET"])
-@auth_required
 async def signing_sheet(request, response, id):
     delivery = Delivery.load(id)
     response.html("signing_sheet.html", {"delivery": delivery})
 
 
 @app.route("/livraison/{id}/importer/commande", methods=["POST"])
-@auth_required
 async def import_commande(request, response, id):
     email = request.form.get("email")
     order = Order()
@@ -311,7 +290,6 @@ async def import_commande(request, response, id):
 
 
 @app.route("/livraison/{id}/rapport.xlsx", methods=["GET"])
-@auth_required
 async def xls_report(request, response, id):
     delivery = Delivery.load(id)
     response.body = reports.summary(delivery)
@@ -321,7 +299,6 @@ async def xls_report(request, response, id):
 
 
 @app.route("/livraison/{id}/rapport-complet.xlsx", methods=["GET"])
-@auth_required
 async def xls_full_report(request, response, id):
     delivery = Delivery.load(id)
     response.body = reports.full(delivery)

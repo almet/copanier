@@ -43,7 +43,7 @@ def send_order(env, person, delivery, order):
     )
     send(
         person.email,
-        f"Copanier: résumé de la commande {delivery.producer}",
+        f"Copanier: résumé de votre commande {delivery.producer}",
         body=txt,
         html=html,
     )

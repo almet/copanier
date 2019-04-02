@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 DATA_ROOT = Path(__file__).parent.parent / "db"
+LOG_ROOT = Path("/tmp")
 SECRET = "sikretfordevonly"
 JWT_ALGORITHM = "HS256"
 SEND_EMAILS = False
