@@ -55,11 +55,11 @@ env = Environment(
 
 
 def date_filter(value):
-    return value.strftime("%d %B")
+    return value.strftime(r"%A %d&nbsp;%B")
 
 
 def time_filter(value):
-    return value.strftime("%H:%M")
+    return value.strftime(r"%H:%M")
 
 
 env.filters["date"] = date_filter
