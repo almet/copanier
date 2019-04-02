@@ -1,3 +1,4 @@
+import locale
 import os
 from pathlib import Path
 
@@ -11,6 +12,7 @@ SMTP_PASSWORD = ""
 SMTP_LOGIN = ""
 FROM_EMAIL = "copanier@epinamap.org"
 STAFF = ["yohanboniface@free.fr", "anne.mattler@wanadoo.fr"]
+LOCALE = "fr_FR.UTF-8"
 
 
 def init():
@@ -20,6 +22,7 @@ def init():
             typ = type(value)
             if env_key in os.environ:
                 globals()[key] = typ(os.environ[env_key])
+    locale.setlocale(locale.LC_ALL, LOCALE)
 
 
 init()
