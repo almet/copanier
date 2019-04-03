@@ -242,7 +242,7 @@ async def place_order(request, response, id):
         if user and user.email == email:
             # Only send email if order has been placed by the user itself.
             emails.send_order(
-                env, person=Person(email=email), delivery=delivery, order=order
+                request, env, person=Person(email=email), delivery=delivery, order=order
             )
         response.message(f"La commande pour «{email}» a bien été prise en compte!")
         response.redirect = f"/livraison/{delivery.id}"
@@ -263,9 +263,9 @@ async def send_order(request, response, id):
         response.message(f"Aucune commande pour «{email}»", status="warning")
     else:
         emails.send_order(
-            env, person=Person(email=email), delivery=delivery, order=order
+            request, env, person=Person(email=email), delivery=delivery, order=order
         )
-        response.message(f"Commande envoyée à «{email}»")
+        response.message(f"Résumé de commande envoyé à «{email}»")
     response.redirect = f"/livraison/{delivery.id}"
 
 

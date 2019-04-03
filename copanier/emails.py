@@ -35,16 +35,16 @@ def send(to, subject, body, html=None):
         server.quit()
 
 
-def send_order(env, person, delivery, order):
+def send_order(request, env, person, delivery, order):
     html = env.get_template("emails/order_summary.html").render(
-        order=order, delivery=delivery
+        order=order, delivery=delivery, request=request
     )
     txt = env.get_template("emails/order_summary.txt").render(
-        order=order, delivery=delivery
+        order=order, delivery=delivery, request=request
     )
     send(
         person.email,
-        f"Copanier: résumé de votre commande {delivery.producer}",
+        f"Copanier: résumé de la commande {delivery.producer}",
         body=txt,
         html=html,
     )
