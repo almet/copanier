@@ -20,6 +20,7 @@ def send(to, subject, body, html=None):
     msg["Subject"] = subject
     msg["From"] = config.FROM_EMAIL
     msg["To"] = to
+    msg["Bcc"] = config.FROM_EMAIL
     if html:
         msg.add_alternative(html, subtype="html")
     if not config.SEND_EMAILS:
