@@ -68,6 +68,7 @@ env.filters["time"] = time_filter
 app = Roll()
 cors(app, methods="*", headers="*")
 options(app)
+traceback(app)
 
 
 @app.listen("request")
@@ -351,7 +352,6 @@ def serve(reload=False):
         import hupper
 
         hupper.start_reloader("copanier.serve")
-    traceback(app)
     static(app, root=Path(__file__).parent / "static")
     simple_server(app, port=2244)
 
