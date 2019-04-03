@@ -76,6 +76,15 @@ async def test_place_empty_order_should_delete_previous(client, delivery):
     assert not delivery.orders
 
 
+async def test_place_order_with_empty_string(client, delivery):
+    delivery.persist()
+    body = {"123": ""}  # User deleted the field value.
+    resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
+    assert resp.status == 302
+    delivery = Delivery.load(id=delivery.id)
+    assert not delivery.orders
+
+
 async def test_change_paid_status_when_placing_order(client, delivery):
     delivery.persist()
     body = {

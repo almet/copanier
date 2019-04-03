@@ -5,7 +5,7 @@ from time import perf_counter
 import ujson as json
 import minicli
 from jinja2 import Environment, PackageLoader, select_autoescape
-from roll import Roll, Response
+from roll import Roll, Response, HttpError
 from roll.extensions import cors, options, traceback, simple_server, static
 
 from . import config, reports, session, utils, emails, loggers
@@ -222,7 +222,10 @@ async def place_order(request, response, id):
         form = request.form
         order = Order(paid=form.bool("paid", False))
         for product in delivery.products:
-            quantity = form.int(product.ref, 0)
+            try:
+                quantity = form.int(product.ref, 0)
+            except HttpError:
+                continue
             if quantity:
                 order.products[product.ref] = ProductOrder(wanted=quantity)
         if not delivery.orders:
