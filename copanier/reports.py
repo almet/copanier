@@ -1,5 +1,9 @@
+from dataclasses import fields as get_fields
+
 from openpyxl import Workbook
 from openpyxl.writer.excel import save_virtual_workbook
+
+from .models import Product
 
 
 def summary(delivery):
@@ -39,4 +43,15 @@ def full(delivery):
         o.total(delivery.products) for o in delivery.orders.values()
     ] + [delivery.total]
     ws.append(footer)
+    return save_virtual_workbook(wb)
+
+
+def products(delivery):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = f"{delivery.producer} produits"
+    fields = [f.name for f in get_fields(Product)]
+    ws.append(fields)
+    for product in delivery.products:
+        ws.append([getattr(product, field) for field in fields])
     return save_virtual_workbook(wb)

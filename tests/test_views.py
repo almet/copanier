@@ -1,4 +1,7 @@
+from io import BytesIO
+
 import pytest
+from openpyxl import load_workbook
 
 from copanier.models import Delivery, Order, ProductOrder
 
@@ -32,7 +35,7 @@ async def test_create_delivery(client):
         "date": "2019-02-23",
         "from_time": "18:30:00",
         "to_time": "20:00:00",
-        "order_before": "2019-02-12"
+        "order_before": "2019-02-12",
     }
     resp = await client.post("/livraison", body=body)
     assert resp.status == 302
@@ -49,9 +52,7 @@ async def test_create_delivery(client):
 
 async def test_place_order_with_session(client, delivery):
     delivery.persist()
-    body = {
-        "123": "3",
-    }
+    body = {"123": "3"}
     resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
@@ -87,12 +88,19 @@ async def test_place_order_with_empty_string(client, delivery):
 
 async def test_change_paid_status_when_placing_order(client, delivery):
     delivery.persist()
-    body = {
-        "123": "3",
-        "paid": 1
-    }
+    body = {"123": "3", "paid": 1}
     resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
     assert delivery.orders["foo@bar.org"]
     assert delivery.orders["foo@bar.org"].paid is True
+
+
+async def test_export_products(client, delivery):
+    delivery.persist()
+    resp = await client.get(f"/livraison/{delivery.id}/exporter/produits")
+    wb = load_workbook(filename=BytesIO(resp.body))
+    assert list(wb.active.values) == [
+        ("name", "ref", "price", "weight", "description", "url", "img"),
+        ("Lait", "123", 1.5, None, None, None, None),
+    ]

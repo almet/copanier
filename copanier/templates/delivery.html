@@ -58,6 +58,9 @@
     </li>
     {% if request.user and request.user.is_staff %}
     <li>
+        <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> Télécharger les produits</a>
+    </li>
+    <li>
         <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison (admin)</a>
     </li>
     <li>

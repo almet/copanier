@@ -181,6 +181,15 @@ async def import_products(request, response, id):
     response.redirect = f"/livraison/{delivery.id}"
 
 
+@app.route("/livraison/{id}/exporter/produits", methods=["GET"])
+async def export_products(request, response, id):
+    delivery = Delivery.load(id)
+    response.body = reports.products(delivery)
+    mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    response.headers["Content-Disposition"] = f'attachment; filename="epinamap.xlsx"'
+    response.headers["Content-Type"] = f"{mimetype}; charset=utf-8"
+
+
 @app.route("/livraison/{id}/edit", methods=["GET"])
 async def edit_delivery(request, response, id):
     delivery = Delivery.load(id)
