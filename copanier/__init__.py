@@ -23,6 +23,12 @@ class Response(Response):
             self.cookies.set("message", "")
         self.body = env.get_template(template_name).render(*args, **context)
 
+    def xlsx(self, body, filename="epinamap.xlsx"):
+        self.body = body
+        mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        self.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+        self.headers["Content-Type"] = f"{mimetype}; charset=utf-8"
+
     def redirect(self, location):
         self.status = 302
         self.headers["Location"] = location
@@ -184,10 +190,7 @@ async def import_products(request, response, id):
 @app.route("/livraison/{id}/exporter/produits", methods=["GET"])
 async def export_products(request, response, id):
     delivery = Delivery.load(id)
-    response.body = reports.products(delivery)
-    mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    response.headers["Content-Disposition"] = f'attachment; filename="epinamap.xlsx"'
-    response.headers["Content-Type"] = f"{mimetype}; charset=utf-8"
+    response.xlsx(reports.products(delivery))
 
 
 @app.route("/livraison/{id}/edit", methods=["GET"])
@@ -306,19 +309,13 @@ async def import_commande(request, response, id):
 @app.route("/livraison/{id}/rapport.xlsx", methods=["GET"])
 async def xls_report(request, response, id):
     delivery = Delivery.load(id)
-    response.body = reports.summary(delivery)
-    mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    response.headers["Content-Disposition"] = f'attachment; filename="epinamap.xlsx"'
-    response.headers["Content-Type"] = f"{mimetype}; charset=utf-8"
+    response.xlsx(reports.summary(delivery))
 
 
 @app.route("/livraison/{id}/rapport-complet.xlsx", methods=["GET"])
 async def xls_full_report(request, response, id):
     delivery = Delivery.load(id)
-    response.body = reports.full(delivery)
-    mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    response.headers["Content-Disposition"] = f'attachment; filename="epinamap.xlsx"'
-    response.headers["Content-Type"] = f"{mimetype}; charset=utf-8"
+    response.xlsx(reports.full(delivery))
 
 
 def configure():
