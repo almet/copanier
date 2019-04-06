@@ -40,7 +40,7 @@
 <h3>Importer des produits (CSV)</h3>
 <p>Colonnes: ref*, name*, price*, description</p>
 <form action="/livraison/{{ delivery.id }}/importer/produits" method="post" enctype="multipart/form-data">
-    <input type="file" name="data">
+    <input type="file" name="data" required>
     <input type="submit" name="Importer des produits">
 </form>
 {% endif %}

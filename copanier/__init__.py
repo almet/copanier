@@ -8,7 +8,7 @@ from jinja2 import Environment, PackageLoader, select_autoescape
 from roll import Roll, Response, HttpError
 from roll.extensions import cors, options, traceback, simple_server, static
 
-from . import config, reports, session, utils, emails, loggers
+from . import config, reports, session, utils, emails, loggers, imports
 from .models import Delivery, Order, Person, Product, ProductOrder
 
 
@@ -177,14 +177,28 @@ async def create_delivery(request, response):
 async def import_products(request, response, id):
     delivery = Delivery.load(id)
     delivery.products = []
-    reader = csv.DictReader(
-        request.files.get("data").read().decode().splitlines(), delimiter=";"
-    )
-    for row in reader:
-        delivery.products.append(Product(**row))
-    delivery.persist()
+    data = request.files.get("data")
+    path = f"/livraison/{delivery.id}"
+    if data.filename.endswith(".csv"):
+        try:
+            imports.products_from_csv(delivery, data.read().decode())
+        except ValueError as err:
+            response.message(err, status="error")
+            response.redirect = path
+            return
+    elif data.filename.endswith('.xlsx'):
+        try:
+            imports.products_from_xlsx(delivery, data)
+        except ValueError as err:
+            response.message(err, status="error")
+            response.redirect = path
+            return
+    else:
+        response.message("Format de fichier inconnu", status="error")
+        response.redirect = path
+        return
     response.message("Les produits de la livraison ont bien été mis à jour!")
-    response.redirect = f"/livraison/{delivery.id}"
+    response.redirect = path
 
 
 @app.route("/livraison/{id}/exporter/produits", methods=["GET"])
