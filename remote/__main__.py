@@ -184,6 +184,7 @@ def upload_env():
         "COPANIER_SEND_EMAILS": "1",
         "COPANIER_SMTP_PASSWORD": None,
         "COPANIER_SMTP_LOGIN": None,
+        "COPANIER_STAFF": None,
     }
     content = ""
     table = str.maketrans({'"': r"\""})
