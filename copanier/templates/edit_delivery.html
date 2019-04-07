@@ -37,8 +37,9 @@
 </form>
 <hr>
 {% if delivery %}
-<h3>Importer des produits (CSV)</h3>
-<p>Colonnes: ref*, name*, price*, description</p>
+<h3>Importer des produits</h3>
+<p>Formats pris en charge: xlsx, csv</p>
+<p>Colonnes: ref*, name*, price*, description, url, img</p>
 <form action="/livraison/{{ delivery.id }}/importer/produits" method="post" enctype="multipart/form-data">
     <input type="file" name="data" required>
     <input type="submit" name="Importer des produits">
