@@ -79,7 +79,12 @@ traceback(app)
 
 @app.listen("request")
 async def auth_required(request, response):
-    if request.route and not request.route.payload.get("genuine"):
+    # Should be handler Roll side?
+    # In dev mode, we serve the static, but we don't have yet a way to mark static
+    # route as unprotected.
+    if request.path.startswith('/static/'):
+        return
+    if request.route.payload and not request.route.payload.get("unprotected"):
         token = request.cookies.get("token")
         email = None
         if token:
@@ -117,13 +122,13 @@ async def on_startup():
     Delivery.init_fs()
 
 
-@app.route("/sésame", methods=["GET"], genuine=True)
+@app.route("/sésame", methods=["GET"], unprotected=True)
 async def sesame(request, response):
     response.html("sesame.html")
 
 
 @app.route("/sésame", methods=["POST"])
-async def send_sesame(request, response, genuine=True):
+async def send_sesame(request, response, unprotected=True):
     email = request.form.get("email")
     token = utils.create_token(email)
     emails.send(
@@ -135,7 +140,7 @@ async def send_sesame(request, response, genuine=True):
     response.redirect = "/"
 
 
-@app.route("/sésame/{token}", methods=["GET"], genuine=True)
+@app.route("/sésame/{token}", methods=["GET"], unprotected=True)
 async def set_sesame(request, response, token):
     decoded = utils.read_token(token)
     if not decoded:
