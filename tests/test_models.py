@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 
 import pytest
 
+from copanier import config
 from copanier.models import Delivery, Product, Person, Order, ProductOrder
 
 
@@ -88,3 +89,17 @@ def test_can_load_delivery(delivery):
     delivery.persist()
     loaded = Delivery.load(delivery.id)
     assert loaded.producer == "Corto"
+
+
+def test_person_is_staff_if_email_is_in_config(monkeypatch):
+    monkeypatch.setattr(config, 'STAFF', ["foo@bar.fr"])
+    person = Person(email="foo@bar.fr")
+    assert person.is_staff
+    person = Person(email="foo@bar.org")
+    assert not person.is_staff
+
+
+def test_person_is_staff_if_no_staff_in_config(monkeypatch):
+    monkeypatch.setattr(config, 'STAFF', [])
+    person = Person(email="foo@bar.fr")
+    assert person.is_staff

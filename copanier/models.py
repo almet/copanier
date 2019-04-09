@@ -84,7 +84,7 @@ class Person(Base):
 
     @property
     def is_staff(self):
-        return self.email in config.STAFF
+        return not config.STAFF or self.email in config.STAFF
 
 
 @dataclass
