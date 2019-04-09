@@ -13,6 +13,7 @@ from copanier.models import Delivery, Person, Product
 
 def pytest_configure(config):
     os.environ["COPANIER_DATA_ROOT"] = "tmp/db"
+    os.environ["COPANIER_SEND_EMAILS"] = ""
     kconfig.init()
     assert str(kconfig.DATA_ROOT) == "tmp/db"
 
