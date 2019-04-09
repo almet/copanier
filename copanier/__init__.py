@@ -1,6 +1,5 @@
 import csv
 from pathlib import Path
-from time import perf_counter
 
 import ujson as json
 import minicli
@@ -359,15 +358,6 @@ def shell():
                 "Delivery": Delivery,
             },
         )
-
-
-@minicli.wrap
-def cli_wrapper():
-    configure()
-    start = perf_counter()
-    yield
-    elapsed = perf_counter() - start
-    print(f"Done in {elapsed:.5f} seconds.")
 
 
 @minicli.cli
