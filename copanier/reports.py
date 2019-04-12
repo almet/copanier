@@ -16,7 +16,7 @@ def summary(delivery):
         ws.append(
             [
                 product.ref,
-                product.name,
+                product.label,
                 product.price,
                 wanted,
                 round(product.price * wanted, 2),
@@ -33,7 +33,7 @@ def full(delivery):
     headers = ["ref", "produit", "prix"] + [e for e in delivery.orders] + ["total"]
     ws.append(headers)
     for product in delivery.products:
-        row = [product.ref, product.name, product.price]
+        row = [product.ref, product.label, product.price]
         for order in delivery.orders.values():
             wanted = order.products.get(product.ref)
             row.append(wanted.wanted if wanted else 0)
