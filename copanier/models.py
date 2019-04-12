@@ -113,7 +113,7 @@ class ProductOrder(Base):
 
 @dataclass
 class Order(Base):
-    products: Dict[str, ProductOrder] = field(default_factory=lambda *a, **k: {})
+    products: Dict[str, ProductOrder] = field(default_factory=dict)
     paid: bool = False
 
     def get_quantity(self, product):
@@ -140,8 +140,8 @@ class Delivery(Base):
     description: str = ""
     instructions: str = ""
     where: str = "Marché de la Briche"
-    products: List[Product] = field(default_factory=lambda *a, **k: [])
-    orders: Dict[str, Order] = field(default_factory=lambda *a, **k: {})
+    products: List[Product] = field(default_factory=list)
+    orders: Dict[str, Order] = field(default_factory=dict)
     id: str = field(default_factory=lambda *a, **k: uuid.uuid4().hex)
 
     @property
