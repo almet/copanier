@@ -101,6 +101,6 @@ async def test_export_products(client, delivery):
     resp = await client.get(f"/livraison/{delivery.id}/exporter/produits")
     wb = load_workbook(filename=BytesIO(resp.body))
     assert list(wb.active.values) == [
-        ("name", "ref", "price", "unit", "description", "url", "img"),
-        ("Lait", "123", 1.5, None, None, None, None),
+        ("name", "ref", "price", "unit", "description", "url", "img", "packing"),
+        ("Lait", "123", 1.5, None, None, None, None, None),
     ]

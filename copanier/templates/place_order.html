@@ -6,7 +6,7 @@
 {% include "includes/delivery_head.html" %}
 <form method="post">
     <table class="order">
-        <tr><th class="product">Produit</th><th class="price">Prix</th><th class="amount">Quantité</th></tr>
+        <tr><th class="product">Produit</th><th class="price">Prix</th><th class="packing">Lot</th><th class="amount">Quantité</th></tr>
         {% for product in delivery.products %}
         <tr>
             <th class="product">{{ product.label }}
@@ -16,7 +16,9 @@
                     {% endwith %}
                 {% endif %}</p>
             </th>
-            <td>{{ product.price }} €</td><td class="with-input"><input type="number" name="{{ product.ref }}" value="{{ order.get_quantity(product) }}"></td></tr>
+            <td>{{ product.price }} €</td>
+            <td{% if delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux lots"{% endif %}>{{ product.packing or "—" }}{% if delivery.product_missing(product) %} (manque {{ delivery.product_missing(product) }}){% endif %}</td>
+            <td class="with-input"><input type="number" name="{{ product.ref }}" value="{{ order.get_quantity(product) }}"></td></tr>
         {% endfor %}
     </table>
     <p>Total: {{ order.total(delivery.products) if order else 0 }} €</p>

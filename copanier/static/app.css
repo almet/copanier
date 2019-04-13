@@ -363,6 +363,10 @@ article.delivery {
 article.delivery th.person {
   max-width: 7rem;
 }
+td.missing,
+th.missing {
+  background-color: #db7734;
+}
 hr {
   background-color: #dbdbdb;
   border: none;

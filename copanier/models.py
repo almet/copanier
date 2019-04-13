@@ -44,7 +44,8 @@ class Base:
         for name, field_ in self.__dataclass_fields__.items():
             value = getattr(self, name)
             type_ = field_.type
-            if not isinstance(value, Base):  # Do not recast our classes.
+            # Do not recast our classes.
+            if not isinstance(value, Base) and value is not None:
                 try:
                     setattr(self, name, self.cast(type_, value))
                 except (TypeError, ValueError):
@@ -95,6 +96,7 @@ class Product(Base):
     description: str = ""
     url: str = ""
     img: str = ""
+    packing: int = None
 
     @property
     def label(self):
@@ -159,6 +161,10 @@ class Delivery(Base):
     def is_passed(self):
         return not self.is_foreseen
 
+    @property
+    def has_packing(self):
+        return any(p.packing for p in self.products)
+
     @classmethod
     def init_fs(cls):
         cls.get_root().mkdir(parents=True, exist_ok=True)
@@ -198,3 +204,10 @@ class Delivery(Base):
             if product.ref in order.products:
                 total += order.products[product.ref].wanted
         return total
+
+    def product_missing(self, product):
+        if not product.packing:
+            return 0
+        wanted = self.product_wanted(product)
+        orphan = wanted % product.packing
+        return product.packing - orphan if orphan else 0

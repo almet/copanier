@@ -10,6 +10,9 @@
                 <th class="ref">Référence</th>
                 <th class="product">Produit</th>
                 <th class="price">Prix</th>
+                {% if delivery.has_packing %}
+                    <th class="packing">Lot</th>
+                {% endif %}
                 <th class="amount">Total</th>
                 {% for email, order in delivery.orders.items() %}
                     <th class="person{% if delivery.is_passed and not order.paid %} not-paid{% endif %}">
@@ -26,7 +29,10 @@
                 <td class="ref">{{ product.ref }}</td>
                 <th class="product">{{ product.label }}</th>
                 <td>{{ product.price }} €</td>
-                <th>{{ delivery.product_wanted(product) }}</th>
+                {% if delivery.has_packing %}
+                    <td class="packing">{{ product.packing or '—'}}</td>
+                {% endif %}
+                <th{% if delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux lots"{% endif %}>{{ delivery.product_wanted(product) }}{% if delivery.product_missing(product) %} ({{ delivery.product_missing(product) }}){% endif %}</th>
                 {% for email, order in delivery.orders.items() %}
                     {% if product.ref in order.products %}
                     <td>{{ order.products[product.ref].wanted }}</td>
@@ -37,7 +43,10 @@
             </tr>
             {% endfor %}
             <tr><th class="total"><i class="icon-pricetags"></i> Total</th><td>—</td><td>—</td>
-                <td class="total">{{ delivery.total }} €</td>
+                {% if delivery.has_packing %}
+                    <td>—</td>
+                {% endif %}
+                <th class="total">{{ delivery.total }} €</th>
                 {% for email, order in delivery.orders.items() %}
                 <td>{{ order.total(delivery.products) }} €</td>
                 {% endfor %}
