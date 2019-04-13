@@ -48,7 +48,6 @@ class Base:
                 try:
                     setattr(self, name, self.cast(type_, value))
                 except (TypeError, ValueError):
-                    raise
                     raise ValueError(f"Wrong value for field `{name}`: `{value}`")
 
     def cast(self, type, value):
@@ -92,7 +91,7 @@ class Product(Base):
     name: str
     ref: str
     price: price_field
-    weight: str = ""
+    unit: str = ""
     description: str = ""
     url: str = ""
     img: str = ""
@@ -100,8 +99,8 @@ class Product(Base):
     @property
     def label(self):
         out = self.name
-        if self.weight:
-            out += f" ({self.weight})"
+        if self.unit:
+            out += f" ({self.unit})"
         return out
 
 
