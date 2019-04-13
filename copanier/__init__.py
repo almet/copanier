@@ -71,8 +71,6 @@ env.filters["date"] = date_filter
 env.filters["time"] = time_filter
 
 app = Roll()
-cors(app, methods="*", headers="*")
-options(app)
 traceback(app)
 
 
