@@ -33,7 +33,6 @@ def price_field(value):
 
 @dataclass
 class Base:
-
     @classmethod
     def create(cls, data=None, **kwargs):
         if isinstance(data, Base):
@@ -109,7 +108,11 @@ class Product(Base):
 @dataclass
 class ProductOrder(Base):
     wanted: int
-    ordered: int = 0
+    adjustment: int = 0
+
+    @property
+    def quantity(self):
+        return self.wanted + self.adjustment
 
 
 @dataclass
@@ -117,14 +120,15 @@ class Order(Base):
     products: Dict[str, ProductOrder] = field(default_factory=dict)
     paid: bool = False
 
-    def get_quantity(self, product):
-        choice = self.products.get(product.ref)
-        return choice.wanted if choice else 0
+    def __getitem__(self, ref):
+        if isinstance(ref, Product):
+            ref = ref.ref
+        return self.products.get(ref, ProductOrder(wanted=0))
 
     def total(self, products):
         products = {p.ref: p for p in products}
         return round(
-            sum(p.wanted * products[ref].price for ref, p in self.products.items()), 2
+            sum(p.quantity * products[ref].price for ref, p in self.products.items()), 2
         )
 
 
@@ -133,6 +137,9 @@ class Delivery(Base):
 
     __root__ = "delivery"
     __lock__ = threading.Lock()
+    CLOSED = 0
+    OPEN = 1
+    ADJUSTMENT = 2
 
     producer: str
     from_date: datetime_field
@@ -144,6 +151,14 @@ class Delivery(Base):
     products: List[Product] = field(default_factory=list)
     orders: Dict[str, Order] = field(default_factory=dict)
     id: str = field(default_factory=lambda *a, **k: uuid.uuid4().hex)
+
+    @property
+    def status(self):
+        if self.is_open:
+            return self.OPEN
+        if self.needs_adjustment:
+            return self.ADJUSTMENT
+        return self.CLOSED
 
     @property
     def total(self):
@@ -164,6 +179,10 @@ class Delivery(Base):
     @property
     def has_packing(self):
         return any(p.packing for p in self.products)
+
+    @property
+    def needs_adjustment(self):
+        return self.has_packing and any(self.product_missing(p) for p in self.products)
 
     @classmethod
     def init_fs(cls):
@@ -202,7 +221,7 @@ class Delivery(Base):
         total = 0
         for order in self.orders.values():
             if product.ref in order.products:
-                total += order.products[product.ref].wanted
+                total += order.products[product.ref].quantity
         return total
 
     def product_missing(self, product):
@@ -211,3 +230,6 @@ class Delivery(Base):
         wanted = self.product_wanted(product)
         orphan = wanted % product.packing
         return product.packing - orphan if orphan else 0
+
+    def has_order(self, person):
+        return person.email in self.orders

@@ -10,7 +10,15 @@ def summary(delivery):
     wb = Workbook()
     ws = wb.active
     ws.title = f"{delivery.producer} {delivery.from_date.date()}"
-    ws.append(["ref", "produit", "prix", "unités", "total"])
+    headers = [
+        "ref",
+        "produit",
+        "prix unitaire",
+        "quantité commandée",
+        "unité",
+        "total",
+    ]
+    ws.append(headers)
     for product in delivery.products:
         wanted = delivery.product_wanted(product)
         ws.append(
@@ -19,10 +27,11 @@ def summary(delivery):
                 product.label,
                 product.price,
                 wanted,
+                product.unit,
                 round(product.price * wanted, 2),
             ]
         )
-    ws.append(["", "", "", "Total", delivery.total])
+    ws.append(["", "", "", "", "Total", delivery.total])
     return save_virtual_workbook(wb)
 
 
@@ -36,12 +45,14 @@ def full(delivery):
         row = [product.ref, product.label, product.price]
         for order in delivery.orders.values():
             wanted = order.products.get(product.ref)
-            row.append(wanted.wanted if wanted else 0)
+            row.append(wanted.quantity if wanted else 0)
         row.append(delivery.product_wanted(product))
         ws.append(row)
-    footer = ["Total", "", ""] + [
-        o.total(delivery.products) for o in delivery.orders.values()
-    ] + [delivery.total]
+    footer = (
+        ["Total", "", ""]
+        + [o.total(delivery.products) for o in delivery.orders.values()]
+        + [delivery.total]
+    )
     ws.append(footer)
     return save_virtual_workbook(wb)
 

@@ -80,7 +80,7 @@ async def auth_required(request, response):
     # Should be handler Roll side?
     # In dev mode, we serve the static, but we don't have yet a way to mark static
     # route as unprotected.
-    if request.path.startswith('/static/'):
+    if request.path.startswith("/static/"):
         return
     if request.route.payload and not request.route.payload.get("unprotected"):
         token = request.cookies.get("token")
@@ -198,7 +198,7 @@ async def import_products(request, response, id):
             response.message(err, status="error")
             response.redirect = path
             return
-    elif data.filename.endswith('.xlsx'):
+    elif data.filename.endswith(".xlsx"):
         try:
             imports.products_from_xlsx(delivery, data)
         except ValueError as err:
@@ -258,15 +258,25 @@ async def place_order(request, response, id):
         response.redirect = delivery_url
         return
     if request.method == "POST":
+        if not (user and user.is_staff) and delivery.status == delivery.CLOSED:
+            response.message("La livraison est fermée", "error")
+            response.redirect = delivery_url
+            return
         form = request.form
         order = Order(paid=form.bool("paid", False))
         for product in delivery.products:
             try:
-                quantity = form.int(product.ref, 0)
+                wanted = form.int(f"wanted:{product.ref}", 0)
             except HttpError:
                 continue
-            if quantity:
-                order.products[product.ref] = ProductOrder(wanted=quantity)
+            try:
+                adjustment = form.int(f"adjustment:{product.ref}", 0)
+            except HttpError:
+                adjustment = 0
+            if wanted or adjustment:
+                order.products[product.ref] = ProductOrder(
+                    wanted=wanted, adjustment=adjustment
+                )
         if not delivery.orders:
             delivery.orders = {}
         if not order.products:

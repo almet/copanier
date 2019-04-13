@@ -36,6 +36,13 @@ def test_delivery_is_open_when_order_before_is_in_the_future(delivery):
     assert delivery.is_open
 
 
+def test_delivery_status(delivery):
+    delivery.order_before = now() + timedelta(hours=1)
+    assert delivery.status == delivery.OPEN
+    delivery.order_before = now() - timedelta(days=1)
+    assert delivery.status == delivery.CLOSED
+
+
 def test_can_create_product():
     product = Product(name="Lait 1.5L", ref="123", price=1.5)
     assert product.ref == "123"
@@ -103,3 +110,13 @@ def test_person_is_staff_if_no_staff_in_config(monkeypatch):
     monkeypatch.setattr(config, 'STAFF', [])
     person = Person(email="foo@bar.fr")
     assert person.is_staff
+
+
+def test_productorder_quantity():
+    choice = ProductOrder(wanted=3)
+    assert choice.wanted == 3
+    assert choice.quantity == 3
+    choice = ProductOrder(wanted=3, adjustment=2)
+    assert choice.quantity == 5
+    choice = ProductOrder(wanted=3, adjustment=-1)
+    assert choice.quantity == 2

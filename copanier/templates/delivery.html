@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block body %}
-<h3>{{ delivery.producer }} {% if delivery.is_open %}<a class="button" href="/livraison/{{ delivery.id }}/commander">Gérer ma commande</a>{% endif %}</h3>
+<h3>{{ delivery.producer }} {% include "includes/order_button.html" %}</h3>
 {% include "includes/delivery_head.html" %}
 <article class="delivery">
     <table class="delivery">
@@ -11,7 +11,7 @@
                 <th class="product">Produit</th>
                 <th class="price">Prix</th>
                 {% if delivery.has_packing %}
-                    <th class="packing">Lot</th>
+                    <th class="packing">Conditionnement</th>
                 {% endif %}
                 <th class="amount">Total</th>
                 {% for email, order in delivery.orders.items() %}
@@ -32,13 +32,9 @@
                 {% if delivery.has_packing %}
                     <td class="packing">{{ product.packing or '—'}}</td>
                 {% endif %}
-                <th{% if delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux lots"{% endif %}>{{ delivery.product_wanted(product) }}{% if delivery.product_missing(product) %} ({{ delivery.product_missing(product) }}){% endif %}</th>
+                <th{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>{{ delivery.product_wanted(product) }}{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (−{{ delivery.product_missing(product) }}){% endif %}</th>
                 {% for email, order in delivery.orders.items() %}
-                    {% if product.ref in order.products %}
-                    <td>{{ order.products[product.ref].wanted }}</td>
-                    {% else %}
-                        <td>—</td>
-                    {% endif %}
+                    <td>{{ order[product.ref].quantity or "—" }}</td>
                 {% endfor %}
             </tr>
             {% endfor %}
@@ -57,7 +53,7 @@
 <hr>
 <ul class="toolbox">
     <li>
-        <a href="/livraison/{{ delivery.id }}/rapport.xlsx"><i class="icon-magnifying-glass"></i> Rapport résumé</a>
+        <a href="/livraison/{{ delivery.id }}/rapport.xlsx"><i class="icon-ribbon"></i> Bon de commande</a>
     </li>
     <li>
         <a href="/livraison/{{ delivery.id }}/rapport-complet.xlsx"><i class="icon-grid"></i> Rapport complet</a>

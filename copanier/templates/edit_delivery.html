@@ -8,27 +8,27 @@
 {% endif %}
 <form method="post">
     <label>
-        <h5>Producteur</h5>
+        <p>Producteur</p>
         <input type="text" name="producer" value="{{ delivery.producer or '' }}" required>
     </label>
     <label>
-        <h5>Description des produits</h5>
+        <p>Description des produits</p>
         <input type="text" name="description" value="{{ delivery.description or '' }}" required>
     </label>
     <label>
-        <h5>Lieu</h5>
+        <p>Lieu</p>
         <input type="text" name="where" value="{{ delivery.where or '' }}" required>
     </label>
     <label>
-        <h5>Date de livraison</h5>
+        <p>Date de livraison</p>
         <input type="date" name="date" value="{{ delivery.from_date.date() if delivery.from_date else '' }}" required> de <input type="time" name="from_time" value="{{ delivery.from_date.time() if delivery.from_date else '' }}" required> à <input type="time" name="to_time" value="{{ delivery.to_date.time() if delivery.to_date else '' }}" required>
     </label>
     <label>
-        <h5>Date de limite de commande</h5>
+        <p>Date de limite de commande</p>
         <input type="date" name="order_before" value="{{ delivery.order_before.date() if delivery.order_before else '' }}" required>
     </label>
     <label>
-        <h5>Instructions particulières</h5>
+        <p>Instructions particulières</p>
         <input type="text" name="instructions" value="{{ delivery.instructions or '' }}">
     </label>
     <div>

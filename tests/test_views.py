@@ -1,9 +1,11 @@
+from datetime import datetime, timedelta
 from io import BytesIO
 
 import pytest
 from openpyxl import load_workbook
+from pyquery import PyQuery as pq
 
-from copanier.models import Delivery, Order, ProductOrder
+from copanier.models import Delivery, Order, ProductOrder, Product
 
 pytestmark = pytest.mark.asyncio
 
@@ -52,7 +54,7 @@ async def test_create_delivery(client):
 
 async def test_place_order_with_session(client, delivery):
     delivery.persist()
-    body = {"123": "3"}
+    body = {"wanted:123": "3"}
     resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
@@ -79,7 +81,7 @@ async def test_place_empty_order_should_delete_previous(client, delivery):
 
 async def test_place_order_with_empty_string(client, delivery):
     delivery.persist()
-    body = {"123": ""}  # User deleted the field value.
+    body = {"wanted:123": ""}  # User deleted the field value.
     resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
@@ -88,12 +90,62 @@ async def test_place_order_with_empty_string(client, delivery):
 
 async def test_change_paid_status_when_placing_order(client, delivery):
     delivery.persist()
-    body = {"123": "3", "paid": 1}
+    body = {"wanted:123": "3", "paid": 1}
     resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
     assert delivery.orders["foo@bar.org"]
     assert delivery.orders["foo@bar.org"].paid is True
+
+
+async def test_get_place_order_with_closed_subscription(client, delivery):
+    delivery.order_before = datetime.now() - timedelta(days=1)
+    delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=1)})
+    delivery.persist()
+    assert delivery.status == delivery.CLOSED
+    resp = await client.get(f"/livraison/{delivery.id}/commander")
+    doc = pq(resp.body)
+    assert doc('[name="wanted:123"]').attr("readonly")
+    assert not doc('[name="adjustment:123"]')
+
+
+async def test_get_place_order_with_adjustment_status(client, delivery):
+    resp = await client.get(f"/livraison/{delivery.id}/commander")
+    doc = pq(resp.body)
+    assert not doc('[name="wanted:123"]').attr("readonly")
+    assert not doc('[name="adjustment:123"]')
+    delivery.order_before = datetime.now() - timedelta(days=1)
+    delivery.products[0].packing = 6
+    delivery.products.append(Product(ref="456", name="yaourt", price="3.5", packing=4))
+    delivery.products.append(Product(ref="789", name="fromage", price="9.2"))
+    delivery.orders["foo@bar.org"] = Order(
+        products={"123": ProductOrder(wanted=1), "456": ProductOrder(wanted=4)}
+    )
+    delivery.persist()
+    assert delivery.status == delivery.ADJUSTMENT
+    resp = await client.get(f"/livraison/{delivery.id}/commander")
+    doc = pq(resp.body)
+    assert doc('[name="wanted:123"]').attr("readonly")
+    assert doc('[name="adjustment:123"]')
+    assert not doc('[name="adjustment:123"]').attr("readonly")
+    assert doc('[name="wanted:456"]').attr("readonly")
+    assert doc('[name="adjustment:456"]')
+    # Already adjusted.
+    assert doc('[name="adjustment:456"]').attr("readonly")
+    assert doc('[name="adjustment:789"]')
+    # Needs no adjustment.
+    assert doc('[name="adjustment:789"]').attr("readonly")
+
+
+async def test_cannot_place_order_on_closed_delivery(client, delivery, monkeypatch):
+    monkeypatch.setattr("copanier.config.STAFF", ["someone@else.org"])
+    delivery.order_before = datetime.now() - timedelta(days=1)
+    delivery.persist()
+    body = {"wanted:123": "3"}
+    resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
+    assert resp.status == 302
+    delivery = Delivery.load(id=delivery.id)
+    assert not delivery.orders
 
 
 async def test_export_products(client, delivery):
