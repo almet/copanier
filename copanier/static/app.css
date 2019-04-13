@@ -486,3 +486,14 @@ ul.toolbox li {
   padding: 0;
   margin: 0;
 }
+dt {
+  font-weight: 600;
+}
+dt.mandatory:after {
+  content: "*";
+  font-size: .7rem;
+  vertical-align: top;
+}
+details summary {
+  cursor: pointer;
+}
