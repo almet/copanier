@@ -113,7 +113,7 @@ def deploy():
     with sudo(user="copanier"):
         put("remote/gunicorn.conf", "/srv/copanier/gunicorn.conf")
         pip("install gunicorn")
-        base = "https://gitlab.com/ybon/copanier"
+        base = "https://framagit.org/ybon/copanier"
         pip(f"install -U git+{base}")
     restart()
 
