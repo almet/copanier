@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{% if title %}{{ title }} - {% endif %}Commandes Epinamap</title>
+	<title>{% if title %}{{ title }} - {% endif %}{{ config.SITE_NAME }}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css"> -->
@@ -17,7 +17,7 @@
         <section class="notification {{ message[1] }}"><i class="icon-megaphone"></i> {{ message[0] }}</section>
     {% endif %}
     <section class="menu">
-        <h1><a href="/">Copanier</a> <small>Les paniers piano d'Épinamap</small></h1>
+        <h1><a href="/">{{ config.SITE_NAME }}</a> <small>{{ config.SITE_DESCRIPTION }}</small></h1>
         <nav>
             {% if request.user %}
                 {% if request.user.is_staff %}

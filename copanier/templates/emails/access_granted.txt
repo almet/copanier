@@ -1,0 +1,7 @@
+Hey ho!
+
+Voici le sésame, clique dessus pour accéder à la commande :
+
+https://{{ hostname }}/sésame/{{ token }}
+
+{{ config.EMAIL_SIGNATURE }}

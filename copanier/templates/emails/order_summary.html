@@ -6,3 +6,4 @@
 <p>Tu peux la modifier (jusqu'au {{ delivery.order_before|date }}) <a href="https://{{ request.host }}/livraison/{{ delivery.id }}/commander">en cliquant ici</a>.</p>
 {% endif %}
 <p>Bonne journée!</p>
+<p>{{ config.EMAIL_SIGNATURE }}</p>

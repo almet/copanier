@@ -21,4 +21,5 @@ https://{{ request.host }}/livraison/{{ delivery.id }}/commander
 
 {% endif %}
 
-Bonne journée!
+Bonne journée,
+{{ config.EMAIL_SIGNATURE }}

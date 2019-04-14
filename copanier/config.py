@@ -13,6 +13,9 @@ SMTP_LOGIN = ""
 FROM_EMAIL = "copanier@epinamap.org"
 STAFF = []
 LOCALE = "fr_FR.UTF-8"
+SITE_NAME = "Copanier"
+SITE_DESCRIPTION = "Les paniers piano d'Épinamap"
+EMAIL_SIGNATURE = "Les gentils copains d'Épinamap"
 
 
 def init():

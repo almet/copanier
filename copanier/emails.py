@@ -4,16 +4,6 @@ from email.message import EmailMessage
 from . import config
 
 
-ACCESS_GRANTED = """Hey ho!
-
-Voici le sésame:
-
-https://{hostname}/sésame/{token}
-
-Les gentils copains d'Épinamap
-"""
-
-
 def send(to, subject, body, html=None):
     msg = EmailMessage()
     msg.set_content(body)
@@ -35,16 +25,20 @@ def send(to, subject, body, html=None):
         server.quit()
 
 
+def send_from_template(env, template, to, subject, **params):
+    params["config"] = config
+    html = env.get_template(f"emails/{template}.html").render(**params)
+    txt = env.get_template(f"emails/{template}.txt").render(**params)
+    send(to, subject, body=txt, html=html)
+
+
 def send_order(request, env, person, delivery, order):
-    html = env.get_template("emails/order_summary.html").render(
-        order=order, delivery=delivery, request=request
-    )
-    txt = env.get_template("emails/order_summary.txt").render(
-        order=order, delivery=delivery, request=request
-    )
-    send(
+    send_from_template(
+        env,
+        "order_summary",
         person.email,
-        f"Copanier: résumé de la commande {delivery.producer}",
-        body=txt,
-        html=html,
+        f"{config.SITE_NAME} : résumé de la commande {delivery.producer}",
+        order=order,
+        delivery=delivery,
+        request=request
     )
