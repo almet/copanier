@@ -370,6 +370,9 @@ td.missing,
 th.missing {
   background-color: #db7734;
 }
+.missing a {
+  color: #ddd;
+}
 hr {
   background-color: #dbdbdb;
   border: none;

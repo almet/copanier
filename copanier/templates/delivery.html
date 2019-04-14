@@ -27,12 +27,18 @@
             {% for product in delivery.products %}
             <tr>
                 <td class="ref">{{ product.ref }}</td>
-                <th class="product">{{ product.label }}</th>
+                <th class="product">{{ product }}</th>
                 <td>{{ product.price }} €</td>
                 {% if delivery.has_packing %}
                     <td class="packing">{{ product.packing or '—'}}</td>
                 {% endif %}
-                <th{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>{{ delivery.product_wanted(product) }}{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (−{{ delivery.product_missing(product) }}){% endif %}</th>
+                <th{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>
+                    {{ delivery.product_wanted(product) }}
+                    {% if request.user.is_staff %}<a href="/livraison/{{ delivery.id }}/ajuster/{{ product.ref }}">{% endif %}
+                    {% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (−{{ delivery.product_missing(product) }})
+                    {% if request.user.is_staff %}</a>{% endif %}
+                    {% endif %}
+                </th>
                 {% for email, order in delivery.orders.items() %}
                     <td>{{ order[product.ref].quantity or "—" }}</td>
                 {% endfor %}

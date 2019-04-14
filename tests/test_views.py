@@ -148,6 +148,54 @@ async def test_cannot_place_order_on_closed_delivery(client, delivery, monkeypat
     assert not delivery.orders
 
 
+async def test_get_adjust_product(client, delivery):
+    delivery.order_before = datetime.now() - timedelta(days=1)
+    delivery.products[0].packing = 6
+    delivery.orders["foo@bar.org"] = Order(
+        products={"123": ProductOrder(wanted=2, adjustment=1)}
+    )
+    delivery.persist()
+    assert delivery.status == delivery.ADJUSTMENT
+    resp = await client.get(f"/livraison/{delivery.id}/ajuster/123")
+    doc = pq(resp.body)
+    assert doc('[name="foo@bar.org"]')
+    assert doc('[name="foo@bar.org"]').attr("value") == '1'
+
+
+async def test_post_adjust_product(client, delivery):
+    delivery.order_before = datetime.now() - timedelta(days=1)
+    delivery.products[0].packing = 6
+    delivery.orders["foo@bar.org"] = Order(
+        products={"123": ProductOrder(wanted=2)}
+    )
+    delivery.persist()
+    assert delivery.status == delivery.ADJUSTMENT
+    body = {"foo@bar.org": "1"}
+    resp = await client.post(f"/livraison/{delivery.id}/ajuster/123", body=body)
+    assert resp.status == 302
+    delivery = Delivery.load(id=delivery.id)
+    assert delivery.orders["foo@bar.org"].products["123"].wanted == 2
+    assert delivery.orders["foo@bar.org"].products["123"].adjustment == 1
+
+
+async def test_only_staff_can_adjust_product(client, delivery, monkeypatch):
+    delivery.order_before = datetime.now() - timedelta(days=1)
+    delivery.products[0].packing = 6
+    delivery.orders["foo@bar.org"] = Order(
+        products={"123": ProductOrder(wanted=2)}
+    )
+    delivery.persist()
+    monkeypatch.setattr("copanier.config.STAFF", ["someone@else.org"])
+    resp = await client.get(f"/livraison/{delivery.id}/ajuster/123")
+    assert resp.status == 302
+    body = {"foo@bar.org": "1"}
+    resp = await client.post(f"/livraison/{delivery.id}/ajuster/123", body=body)
+    assert resp.status == 302
+    delivery = Delivery.load(id=delivery.id)
+    assert delivery.orders["foo@bar.org"].products["123"].wanted == 2
+    assert delivery.orders["foo@bar.org"].products["123"].adjustment == 0
+
+
 async def test_export_products(client, delivery):
     delivery.persist()
     resp = await client.get(f"/livraison/{delivery.id}/exporter/produits")

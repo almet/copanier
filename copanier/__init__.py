@@ -354,6 +354,35 @@ async def xls_full_report(request, response, id):
     response.xlsx(reports.full(delivery))
 
 
+@app.route("/livraison/{id}/ajuster/{ref}", methods=["GET", "POST"])
+async def adjust_product(request, response, id, ref):
+    delivery = Delivery.load(id)
+    delivery_url = f"/livraison/{delivery.id}"
+    user = session.user.get(None)
+    if not user or not user.is_staff:
+        response.message("Désolé, c'est dangereux par ici", "warning")
+        response.redirect = delivery_url
+        return
+    for product in delivery.products:
+        if product.ref == ref:
+            break
+    else:
+        response.message(f"Référence inconnue: {ref}")
+        response.redirect = delivery_url
+        return
+    if request.method == "POST":
+        form = request.form
+        for email, order in delivery.orders.items():
+            choice = order[product]
+            choice.adjustment = form.int(email, 0)
+            order[product] = choice
+        delivery.persist()
+        response.message(f"Le produit «{product.ref}» a bien été ajusté!")
+        response.redirect = delivery_url
+    else:
+        response.html("adjust_product.html", {"delivery": delivery, "product": product})
+
+
 def configure():
     config.init()
 

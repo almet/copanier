@@ -16,7 +16,7 @@
             {% if delivery.status == delivery.ADJUSTMENT %}<th class="amount">Ajustement</th>{% endif %}</tr>
         {% for product in delivery.products %}
         <tr>
-            <th class="product">{{ product.label }}
+            <th class="product">{{ product }}
                 {% if product.description or product.img %}
                     {% with unique_id=loop.index %}
                         {% include "includes/modal_product.html" %}

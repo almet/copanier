@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block body %}
+<article>
+    <h3><a href="/livraison/{{ delivery.id }}">{{ delivery.producer }}</a> — Ajuster le produit «{{ product.name }}»</h3>
+    <p><strong>Conditionnement</strong> {{ product.packing }} x {{ product.unit }}</p>
+    <p><strong>Total commandé</strong> {{ delivery.product_wanted(product) }}</p>
+    <p><strong>Manquant</strong> {{ delivery.product_missing(product) }}</p>
+    <form method="post">
+    <table>
+        <tr><th>Personne</th><th class="amount">Commande</th><th class="amount">Ajustement</th></tr>
+        {% for email, order in delivery.orders.items() %}
+        <tr>
+            <td>{{ email }}</td>
+            <td>{{ order[product].wanted }}</td>
+            <td class="with-input"><input type="number" min=0 name="{{ email }}" value="{{ order[product].adjustment }}"></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <input type="submit" value="Enregistrer">
+    </form>
+</article>
+{% endblock body %}

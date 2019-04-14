@@ -97,8 +97,7 @@ class Product(Base):
     img: str = ""
     packing: int = None
 
-    @property
-    def label(self):
+    def __str__(self):
         out = self.name
         if self.unit:
             out += f" ({self.unit})"
@@ -124,6 +123,11 @@ class Order(Base):
         if isinstance(ref, Product):
             ref = ref.ref
         return self.products.get(ref, ProductOrder(wanted=0))
+
+    def __setitem__(self, ref, value):
+        if isinstance(ref, Product):
+            ref = ref.ref
+        self.products[ref] = value
 
     def total(self, products):
         products = {p.ref: p for p in products}
