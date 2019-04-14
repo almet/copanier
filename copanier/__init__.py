@@ -79,7 +79,7 @@ def staff_only(view):
     async def decorator(request, response, *args, **kwargs):
         user = session.user.get(None)
         if not user or not user.is_staff:
-            response.message("Désolé, c'est dangereux par ici", "warning")
+            response.message("Désolé, c'est réservé au staff par ici", "warning")
             response.redirect = request.headers.get("REFERRER", "/")
             return
         return await view(request, response, *args, **kwargs)
