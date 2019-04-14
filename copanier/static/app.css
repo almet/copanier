@@ -350,6 +350,7 @@ td.total,
 th.total {
   background-color: #bbb;
 }
+
 tr:nth-child(even) {
   background-color: #ddd;
 }
@@ -362,6 +363,15 @@ thead tr * {
 thead th + th {
   border-left: 1px solid white;
 }
+
+tr .producer {
+  border-bottom: 1px solid #aaa;
+}
+
+tr.subtotal {
+  background-color: #bbb;
+}
+
 article.order {
   max-width: 1200px;
   margin-left: auto;

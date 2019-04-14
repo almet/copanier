@@ -37,7 +37,7 @@ def send_order(request, env, person, delivery, order):
         env,
         "order_summary",
         person.email,
-        f"{config.SITE_NAME} : résumé de la commande {delivery.producer}",
+        f"{config.SITE_NAME} : résumé de la commande {delivery.name}",
         order=order,
         delivery=delivery,
         request=request

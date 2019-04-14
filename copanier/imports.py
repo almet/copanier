@@ -24,7 +24,10 @@ def products_from_xlsx(delivery, data):
     delivery.products = []
     for row in rows[1:]:
         raw = {k: v for k, v in dict(zip(headers, row)).items() if v}
-        delivery.products.append(Product(**raw))
+        try:
+            delivery.products.append(Product(**raw))
+        except TypeError as e:
+            raise ValueError(f"Erreur durant l'importation de {raw['ref']}")
     delivery.persist()
 
 

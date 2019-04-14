@@ -96,6 +96,7 @@ class Product(Base):
     url: str = ""
     img: str = ""
     packing: int = None
+    producer: str = ""
 
     def __str__(self):
         out = self.name
@@ -133,9 +134,13 @@ class Order(Base):
         yield from self.products.items()
 
     def total(self, products):
+        def _get_price(ref):
+            product = products.get(ref)
+            return product.price if product else 0
+
         products = {p.ref: p for p in products}
         return round(
-            sum(p.quantity * products[ref].price for ref, p in self.products.items()), 2
+            sum(p.quantity * _get_price(ref) for ref, p in self.products.items()), 2
         )
 
     @property
@@ -153,7 +158,7 @@ class Delivery(Base):
     ADJUSTMENT = 2
     ARCHIVED = 3
 
-    producer: str
+    name: str
     from_date: datetime_field
     to_date: datetime_field
     order_before: datetime_field
@@ -182,6 +187,10 @@ class Delivery(Base):
     @property
     def total(self):
         return round(sum(o.total(self.products) for o in self.orders.values()), 2)
+
+    @property
+    def has_multiple_producers(self):
+        return len(set([p.producer for p in self.products])) > 1
 
     @property
     def is_open(self):
@@ -288,3 +297,12 @@ class Delivery(Base):
 
     def has_order(self, person):
         return person.email in self.orders
+
+    def get_products_by(self, producer):
+        return [p for p in self.products if p.producer == producer]
+
+    def total_for_producer(self, producer, person=None):
+        producer_products = [p for p in self.products if p.producer == producer]
+        if person:
+            return self.orders.get(person).total(producer_products)
+        return round(sum(o.total(producer_products) for o in self.orders.values()), 2)

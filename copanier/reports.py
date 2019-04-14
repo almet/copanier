@@ -41,10 +41,10 @@ def full(delivery):
     wb = Workbook()
     ws = wb.active
     ws.title = f"{delivery.producer} {delivery.from_date.date()}"
-    headers = ["ref", "produit", "prix"] + [e for e in delivery.orders] + ["total"]
+    headers = ["ref", "produit", "prix", "producer"] + [e for e in delivery.orders] + ["total"]
     ws.append(headers)
     for product in delivery.products:
-        row = [product.ref, str(product), product.price]
+        row = [product.ref, str(product), product.price, product.producer]
         for order in delivery.orders.values():
             wanted = order.products.get(product.ref)
             row.append(wanted.quantity if wanted else 0)

@@ -8,11 +8,11 @@
 {% endif %}
 <form method="post">
     <label>
-        <p>Producteur</p>
-        <input type="text" name="producer" value="{{ delivery.producer or '' }}" required>
+        <p>Nom</p>
+        <input type="text" name="name" value="{{ delivery.name or '' }}">
     </label>
     <label>
-        <p>Description des produits</p>
+        <h5>Description des produits</h5>
         <input type="text" name="description" value="{{ delivery.description or '' }}">
     </label>
     <label>
