@@ -5,8 +5,8 @@ Voici le résumé de votre commande «{{ delivery.producer }}»
 Produit | Prix unitaire | Quantité
 
 {% for product in delivery.products %}
-{% if order.get_quantity(product) %}
-{{ product.name }} | {{ product.price }} € | {{ order.get_quantity(product) }}
+{% if order[product].quantity %}
+{{ product.name }} | {{ product.price }} € | {{ order[product].quantity }}
 {% endif %}
 {% endfor %}
 

@@ -1,0 +1,9 @@
+{% if delivery.status != delivery.CLOSED %}
+    <a class="button" href="/livraison/{{ delivery.id }}/commander">
+    {% if delivery.status == delivery.ADJUSTMENT %}
+        Ajuster ma commande
+    {% elif delivery.status == delivery.OPEN %}
+        {% if request.user.email in delivery.orders %}Gérer ma commande{% else %}Commander{% endif %}
+    {% endif %}
+    </a>
+{% endif %}

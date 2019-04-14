@@ -236,7 +236,6 @@ textarea {
   line-height: 1rem;
   background-color: #fff;
   border: .05rem solid #bbc;
-  border-radius: .1rem;
   box-sizing: border-box;
 }
 
@@ -275,6 +274,9 @@ input[type=checkbox] {
 input:focus,
 select:focus {
   box-shadow: 0 0 .1rem var(--primary-color);
+}
+input[readonly] {
+  background-color: #eee;
 }
 
 table {
@@ -355,6 +357,7 @@ td.with-input {
 }
 td.with-input input {
   width: 100%;
+  text-align: center;
 }
 article.delivery {
   width: 100%;
@@ -362,6 +365,13 @@ article.delivery {
 }
 article.delivery th.person {
   max-width: 7rem;
+}
+td.missing,
+th.missing {
+  background-color: #db7734;
+}
+.missing a {
+  color: #ddd;
 }
 hr {
   background-color: #dbdbdb;
