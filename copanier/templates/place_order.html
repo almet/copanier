@@ -2,7 +2,7 @@
 
 {% block body %}
 <article class="order">
-<h3>{% if delivery.producer %}<a href="/livraison/{{ delivery.id }}">{{ delivery.producer }}</a> — {% endif %}Commande de « {{ person.email }} »</h3>
+<h3><a href="/livraison/{{ delivery.id }}">{{ delivery.name }}</a> — Commande de « {{ person.email }} »</h3>
 {% include "includes/delivery_head.html" %}
 <form method="post">
     <table class="order">

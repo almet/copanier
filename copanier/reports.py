@@ -9,7 +9,7 @@ from .models import Product
 def summary(delivery):
     wb = Workbook()
     ws = wb.active
-    ws.title = f"{delivery.producer} {delivery.from_date.date()}"
+    ws.title = f"{delivery.name} {delivery.from_date.date()}"
     headers = [
         "ref",
         "produit",
@@ -40,7 +40,7 @@ def summary(delivery):
 def full(delivery):
     wb = Workbook()
     ws = wb.active
-    ws.title = f"{delivery.producer} {delivery.from_date.date()}"
+    ws.title = f"{delivery.name} {delivery.from_date.date()}"
     headers = ["ref", "produit", "prix", "producer"] + [e for e in delivery.orders] + ["total"]
     ws.append(headers)
     for product in delivery.products:
@@ -62,7 +62,7 @@ def full(delivery):
 def products(delivery):
     wb = Workbook()
     ws = wb.active
-    ws.title = f"{delivery.producer} produits"
+    ws.title = f"{delivery.name} produits"
     fields = [f.name for f in get_fields(Product)]
     ws.append(fields)
     for product in delivery.products:
@@ -73,7 +73,7 @@ def products(delivery):
 def balance(delivery):
     wb = Workbook()
     ws = wb.active
-    ws.title = f"Solde {delivery.producer}"
+    ws.title = f"Solde {delivery.name}"
     ws.append(["Adhérent", "Montant", "Payé"])
     for email, order in delivery.orders.items():
         ws.append(

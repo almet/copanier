@@ -19,7 +19,7 @@ async def test_home_should_list_active_delivery(client, delivery):
     delivery.persist()
     resp = await client.get("/")
     assert resp.status == 200
-    assert delivery.producer in resp.body.decode()
+    assert delivery.name in resp.body.decode()
 
 
 async def test_home_should_redirect_to_login_if_not_logged(client):
@@ -32,7 +32,7 @@ async def test_home_should_redirect_to_login_if_not_logged(client):
 async def test_create_delivery(client):
     assert not list(Delivery.all())
     body = {
-        "producer": "Andines",
+        "name": "Andines",
         "where": "Marché de la Briche",
         "date": "2019-02-23",
         "from_time": "18:30:00",
@@ -44,7 +44,7 @@ async def test_create_delivery(client):
     assert resp.status == 302
     assert len(list(Delivery.all())) == 1
     delivery = list(Delivery.all())[0]
-    assert delivery.producer == "Andines"
+    assert delivery.name == "Andines"
     assert delivery.from_date.year == 2019
     assert delivery.from_date.hour == 18
     assert delivery.from_date.minute == 30
@@ -242,6 +242,6 @@ async def test_export_products(client, delivery):
     resp = await client.get(f"/livraison/{delivery.id}/exporter/produits")
     wb = load_workbook(filename=BytesIO(resp.body))
     assert list(wb.active.values) == [
-        ("name", "ref", "price", "unit", "description", "url", "img", "packing"),
-        ("Lait", "123", 1.5, None, None, None, None, None),
+        ("name", "ref", "price", "unit", "description", "url", "img", "packing", "producer"),
+        ("Lait", "123", 1.5, None, None, None, None, None, None),
     ]

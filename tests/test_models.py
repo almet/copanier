@@ -11,13 +11,13 @@ now = datetime.now
 
 def test_can_create_delivery():
     delivery = Delivery(
-        producer="Andines",
+        name="Andines",
         from_date=now(),
         to_date=now(),
         order_before=now(),
         contact="some@one.to",
     )
-    assert delivery.producer == "Andines"
+    assert delivery.name == "Andines"
     assert delivery.where == "Marché de la Briche"
     assert delivery.from_date.year == now().year
     assert not delivery.id
@@ -26,7 +26,7 @@ def test_can_create_delivery():
 def test_wrong_datetime_raise_valueerror():
     with pytest.raises(ValueError):
         Delivery(
-            producer="Andines",
+            name="Andines",
             order_before=now(),
             to_date=now(),
             from_date="pouet",
@@ -59,7 +59,7 @@ def test_can_create_product():
 
 def test_can_create_delivery_with_products():
     delivery = Delivery(
-        producer="Andines",
+        name="Andines",
         from_date=now(),
         to_date=now(),
         order_before=now(),
@@ -115,10 +115,10 @@ def test_can_persist_delivery(delivery):
 
 
 def test_can_load_delivery(delivery):
-    delivery.producer = "Corto"
+    delivery.name = "Corto"
     delivery.persist()
     loaded = Delivery.load(delivery.id)
-    assert loaded.producer == "Corto"
+    assert loaded.name == "Corto"
 
 
 def test_person_is_staff_if_email_is_in_config(monkeypatch):

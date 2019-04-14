@@ -67,7 +67,7 @@ def app():  # Requested by Roll testing utilities.
 @pytest.fixture
 def delivery():
     return Delivery(
-        producer="Andines",
+        name="Andines",
         contact="mister@me.me",
         from_date=datetime.now() + timedelta(days=10),
         to_date=datetime.now() + timedelta(days=10),
