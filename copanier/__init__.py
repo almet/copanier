@@ -20,9 +20,10 @@ class Response(Response):
         if self.request.cookies.get("message"):
             context["message"] = json.loads(self.request.cookies["message"])
             self.cookies.set("message", "")
+        context["config"] = config
         self.body = env.get_template(template_name).render(*args, **context)
 
-    def xlsx(self, body, filename="epinamap.xlsx"):
+    def xlsx(self, body, filename=f"{config.SITE_NAME}.xlsx"):
         self.body = body
         mimetype = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         self.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
@@ -128,10 +129,13 @@ async def sesame(request, response):
 async def send_sesame(request, response, unprotected=True):
     email = request.form.get("email")
     token = utils.create_token(email)
-    emails.send(
+    emails.send_from_template(
+        env,
+        "access_granted",
         email,
-        "Sésame Copanier",
-        emails.ACCESS_GRANTED.format(hostname=request.host, token=token.decode()),
+        f"Sésame {config.SITE_NAME}",
+        hostname=request.host,
+        token=token.decode(),
     )
     response.message(f"Un sésame vous a été envoyé à l'adresse '{email}'")
     response.redirect = "/"
@@ -147,6 +151,12 @@ async def set_sesame(request, response, token):
         response.cookies.set(
             name="token", value=token, httponly=True, max_age=60 * 60 * 24 * 7
         )
+    response.redirect = "/"
+
+
+@app.route("/déconnexion", methods=["GET"])
+async def logout(request, response):
+    response.cookies.set(name="token", value="", httponly=True)
     response.redirect = "/"
 
 
