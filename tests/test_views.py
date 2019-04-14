@@ -159,15 +159,13 @@ async def test_get_adjust_product(client, delivery):
     resp = await client.get(f"/livraison/{delivery.id}/ajuster/123")
     doc = pq(resp.body)
     assert doc('[name="foo@bar.org"]')
-    assert doc('[name="foo@bar.org"]').attr("value") == '1'
+    assert doc('[name="foo@bar.org"]').attr("value") == "1"
 
 
 async def test_post_adjust_product(client, delivery):
     delivery.order_before = datetime.now() - timedelta(days=1)
     delivery.products[0].packing = 6
-    delivery.orders["foo@bar.org"] = Order(
-        products={"123": ProductOrder(wanted=2)}
-    )
+    delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=2)})
     delivery.persist()
     assert delivery.status == delivery.ADJUSTMENT
     body = {"foo@bar.org": "1"}
@@ -181,9 +179,7 @@ async def test_post_adjust_product(client, delivery):
 async def test_only_staff_can_adjust_product(client, delivery, monkeypatch):
     delivery.order_before = datetime.now() - timedelta(days=1)
     delivery.products[0].packing = 6
-    delivery.orders["foo@bar.org"] = Order(
-        products={"123": ProductOrder(wanted=2)}
-    )
+    delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=2)})
     delivery.persist()
     monkeypatch.setattr("copanier.config.STAFF", ["someone@else.org"])
     resp = await client.get(f"/livraison/{delivery.id}/ajuster/123")
@@ -194,6 +190,34 @@ async def test_only_staff_can_adjust_product(client, delivery, monkeypatch):
     delivery = Delivery.load(id=delivery.id)
     assert delivery.orders["foo@bar.org"].products["123"].wanted == 2
     assert delivery.orders["foo@bar.org"].products["123"].adjustment == 0
+
+
+async def test_get_delivery_balance(client, delivery):
+    delivery.from_date = datetime.now() - timedelta(days=1)
+    delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=2)})
+    delivery.persist()
+    resp = await client.get(f"/livraison/{delivery.id}/soldes")
+    doc = pq(resp.body)
+    assert doc('[name="foo@bar.org"]')
+    assert not doc('[name="foo@bar.org"]').attr("checked")
+    delivery.orders["foo@bar.org"] = Order(
+        products={"123": ProductOrder(wanted=2)}, paid=True
+    )
+    delivery.persist()
+    resp = await client.get(f"/livraison/{delivery.id}/soldes")
+    doc = pq(resp.body)
+    assert doc('[name="foo@bar.org"]').attr("checked")
+
+
+async def test_post_delivery_balance(client, delivery):
+    delivery.order_before = datetime.now() - timedelta(days=1)
+    delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=2)})
+    delivery.persist()
+    body = {"foo@bar.org": "on"}
+    resp = await client.post(f"/livraison/{delivery.id}/soldes", body=body)
+    assert resp.status == 302
+    delivery = Delivery.load(id=delivery.id)
+    assert delivery.orders["foo@bar.org"].paid is True
 
 
 async def test_export_products(client, delivery):
