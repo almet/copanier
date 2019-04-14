@@ -440,6 +440,7 @@ hr {
   z-index: 100;
   text-align: center;
   overflow-y: auto;
+  white-space: normal;
 }
 .toggle-background {
   position: fixed;
