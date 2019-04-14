@@ -5,7 +5,7 @@ import ujson as json
 import minicli
 from jinja2 import Environment, PackageLoader, select_autoescape
 from roll import Roll, Response, HttpError
-from roll.extensions import cors, options, traceback, simple_server, static
+from roll.extensions import traceback, simple_server, static
 
 from . import config, reports, session, utils, emails, loggers, imports
 from .models import Delivery, Order, Person, Product, ProductOrder
@@ -73,6 +73,18 @@ env.filters["time"] = time_filter
 
 app = Roll()
 traceback(app)
+
+
+def staff_only(view):
+    async def decorator(request, response, *args, **kwargs):
+        user = session.user.get(None)
+        if not user or not user.is_staff:
+            response.message("Désolé, c'est dangereux par ici", "warning")
+            response.redirect = request.headers.get("REFERRER", "/")
+            return
+        return await view(request, response, *args, **kwargs)
+
+    return decorator
 
 
 @app.listen("request")
@@ -171,6 +183,7 @@ async def new_delivery(request, response):
 
 
 @app.route("/livraison", methods=["POST"])
+@staff_only
 async def create_delivery(request, response):
     form = request.form
     data = {}
@@ -186,6 +199,7 @@ async def create_delivery(request, response):
 
 
 @app.route("/livraison/{id}/importer/produits", methods=["POST"])
+@staff_only
 async def import_products(request, response, id):
     delivery = Delivery.load(id)
     delivery.products = []
@@ -220,12 +234,14 @@ async def export_products(request, response, id):
 
 
 @app.route("/livraison/{id}/edit", methods=["GET"])
+@staff_only
 async def edit_delivery(request, response, id):
     delivery = Delivery.load(id)
     response.html("edit_delivery.html", {"delivery": delivery})
 
 
 @app.route("/livraison/{id}/edit", methods=["POST"])
+@staff_only
 async def post_delivery(request, response, id):
     delivery = Delivery.load(id)
     form = request.form
@@ -325,6 +341,7 @@ async def signing_sheet(request, response, id):
 
 
 @app.route("/livraison/{id}/importer/commande", methods=["POST"])
+@staff_only
 async def import_commande(request, response, id):
     email = request.form.get("email")
     order = Order()
@@ -355,14 +372,10 @@ async def xls_full_report(request, response, id):
 
 
 @app.route("/livraison/{id}/ajuster/{ref}", methods=["GET", "POST"])
+@staff_only
 async def adjust_product(request, response, id, ref):
     delivery = Delivery.load(id)
     delivery_url = f"/livraison/{delivery.id}"
-    user = session.user.get(None)
-    if not user or not user.is_staff:
-        response.message("Désolé, c'est dangereux par ici", "warning")
-        response.redirect = delivery_url
-        return
     for product in delivery.products:
         if product.ref == ref:
             break
@@ -381,6 +394,22 @@ async def adjust_product(request, response, id, ref):
         response.redirect = delivery_url
     else:
         response.html("adjust_product.html", {"delivery": delivery, "product": product})
+
+
+@app.route("/livraison/{id}/soldes", methods=["GET", "POST"])
+@staff_only
+async def delivery_balance(request, response, id):
+    delivery = Delivery.load(id)
+    delivery_url = f"/livraison/{delivery.id}"
+    if request.method == "POST":
+        form = request.form
+        for email, order in delivery.orders.items():
+            order.paid = form.bool(email, False)
+        delivery.persist()
+        response.message(f"Les soldes ont bien été mis à jour!")
+        response.redirect = delivery_url
+    else:
+        response.html("delivery_balance.html", {"delivery": delivery})
 
 
 def configure():
