@@ -374,7 +374,9 @@ th.missing {
   background-color: #db7734;
 }
 .missing a {
-  color: #ddd;
+  color: #f1f1f1;
+  border-color: #f1f1f1;
+  height: 1rem;
 }
 hr {
   background-color: #dbdbdb;

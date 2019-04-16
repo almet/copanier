@@ -36,9 +36,8 @@
                 {% endif %}
                 <th{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>
                     {{ delivery.product_wanted(product) }}
-                    {% if request.user.is_staff %}<a href="/livraison/{{ delivery.id }}/ajuster/{{ product.ref }}">{% endif %}
                     {% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (−{{ delivery.product_missing(product) }})
-                    {% if request.user.is_staff %}</a>{% endif %}
+                    {% if request.user.is_staff %}<a href="/livraison/{{ delivery.id }}/ajuster/{{ product.ref }}" class="button" title="ajuster le produit">ajuster</a>{% endif %}
                     {% endif %}
                 </th>
                 {% for email, order in delivery.orders.items() %}
