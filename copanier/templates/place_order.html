@@ -6,6 +6,7 @@
 {% include "includes/delivery_head.html" %}
 <form method="post">
     <table class="order">
+        <thead>
         <tr>
             <th class="product">Produit</th>
             <th class="price">Prix</th>
@@ -13,7 +14,10 @@
                 <th class="packing">Conditionnement</th>
             {% endif %}
             <th class="amount">Quantité</th>
-            {% if delivery.status == delivery.ADJUSTMENT %}<th class="amount">Ajustement</th>{% endif %}</tr>
+            {% if delivery.status == delivery.ADJUSTMENT %}<th class="amount">Ajustement</th>{% endif %}
+        </tr>
+        </thead>
+        <tbody>
         {% for product in delivery.products %}
         <tr>
             <th class="product">{{ product }}
@@ -33,6 +37,7 @@
             {% endif %}
         </tr>
         {% endfor %}
+        </tbody>
     </table>
     <p>Total: {{ order.total(delivery.products) if order else 0 }} €</p>
     {% if delivery.is_passed %}

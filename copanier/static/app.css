@@ -337,11 +337,14 @@ th.total {
 tr:nth-child(even) {
   background-color: #ddd;
 }
-tr:nth-child(1) {
+thead tr {
   background-color: #3498db;
 }
-tr:nth-child(1) * {
+thead tr * {
   color: #f1f1f1;
+}
+thead th + th {
+  border-left: 1px solid white;
 }
 article.order {
   max-width: 1200px;

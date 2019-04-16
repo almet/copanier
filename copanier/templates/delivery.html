@@ -5,7 +5,7 @@
 {% include "includes/delivery_head.html" %}
 <article class="delivery">
     <table class="delivery">
-        <tbody>
+        <thead>
             <tr>
                 <th class="ref">Référence</th>
                 <th class="product">Produit</th>
@@ -24,6 +24,8 @@
                     </th>
                 {% endfor %}
             </tr>
+        </thead>
+        <tbody>
             {% for product in delivery.products %}
             <tr>
                 <td class="ref">{{ product.ref }}</td>
