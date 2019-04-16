@@ -41,7 +41,7 @@
                     {% endif %}
                 </th>
                 {% for email, order in delivery.orders.items() %}
-                    <td>{{ order[product.ref].quantity or "—" }}</td>
+                    <td title="Commandé: {{ order[product.ref].wanted }} — Ajusté: {{ "%+d"|format(order[product.ref].adjustment) }}">{{ order[product.ref].quantity or "—" }}</td>
                 {% endfor %}
             </tr>
             {% endfor %}
