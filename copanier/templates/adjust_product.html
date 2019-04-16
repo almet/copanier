@@ -16,7 +16,7 @@
             <tr>
                 <td>{{ email }}</td>
                 <td>{{ order[product].wanted }}</td>
-                <td class="with-input"><input type="number" min=0 name="{{ email }}" value="{{ order[product].adjustment }}"></td>
+                <td class="with-input"><input type="number" name="{{ email }}" value="{{ order[product].adjustment }}"></td>
             </tr>
             {% endfor %}
         </tbody>
