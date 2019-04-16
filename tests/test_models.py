@@ -87,6 +87,15 @@ def test_can_add_product_to_order():
     assert order.products["123"].wanted == 2
 
 
+def test_order_has_adjustments():
+    order = Order()
+    assert not order.has_adjustments
+    order.products["123"] = ProductOrder(wanted=2)
+    assert not order.has_adjustments
+    order.products["123"] = ProductOrder(wanted=2, adjustment=1)
+    assert order.has_adjustments
+
+
 def test_can_persist_delivery(delivery):
     delivery.persist()
 

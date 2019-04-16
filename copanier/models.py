@@ -129,11 +129,18 @@ class Order(Base):
             ref = ref.ref
         self.products[ref] = value
 
+    def __iter__(self):
+        yield from self.products.items()
+
     def total(self, products):
         products = {p.ref: p for p in products}
         return round(
             sum(p.quantity * products[ref].price for ref, p in self.products.items()), 2
         )
+
+    @property
+    def has_adjustments(self):
+        return any(choice.adjustment for email, choice in self)
 
 
 @dataclass

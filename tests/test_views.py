@@ -98,7 +98,8 @@ async def test_change_paid_status_when_placing_order(client, delivery):
     assert delivery.orders["foo@bar.org"].paid is True
 
 
-async def test_get_place_order_with_closed_subscription(client, delivery):
+async def test_get_place_order_with_closed_delivery(client, delivery, monkeypatch):
+    monkeypatch.setattr("copanier.config.STAFF", ["someone@else.org"])
     delivery.order_before = datetime.now() - timedelta(days=1)
     delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=1)})
     delivery.persist()
@@ -107,6 +108,7 @@ async def test_get_place_order_with_closed_subscription(client, delivery):
     doc = pq(resp.body)
     assert doc('[name="wanted:123"]').attr("readonly")
     assert not doc('[name="adjustment:123"]')
+    assert not doc('input[type="submit"]')
 
 
 async def test_get_place_order_with_adjustment_status(client, delivery):
@@ -135,6 +137,20 @@ async def test_get_place_order_with_adjustment_status(client, delivery):
     assert doc('[name="adjustment:789"]')
     # Needs no adjustment.
     assert doc('[name="adjustment:789"]').attr("readonly")
+    assert doc('input[type="submit"]')
+
+
+async def test_get_place_order_with_closed_delivery_but_adjustments(client, delivery):
+    delivery.order_before = datetime.now() - timedelta(days=1)
+    delivery.orders["foo@bar.org"] = Order(
+        products={"123": ProductOrder(wanted=1, adjustment=1)}
+    )
+    delivery.persist()
+    assert delivery.status == delivery.CLOSED
+    resp = await client.get(f"/livraison/{delivery.id}/commander")
+    doc = pq(resp.body)
+    assert doc('[name="wanted:123"]').attr("readonly")
+    assert doc('[name="adjustment:123"]')
 
 
 async def test_cannot_place_order_on_closed_delivery(client, delivery, monkeypatch):
