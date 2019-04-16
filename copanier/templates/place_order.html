@@ -14,7 +14,7 @@
                 <th class="packing">Conditionnement</th>
             {% endif %}
             <th class="amount">Quantité</th>
-            {% if delivery.status == delivery.ADJUSTMENT %}<th class="amount">Ajustement</th>{% endif %}
+            {% if delivery.status != delivery.OPEN %}<th class="amount">Ajustement</th>{% endif %}
         </tr>
         </thead>
         <tbody>
@@ -32,7 +32,7 @@
                 <td{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>{{ product.packing or "—" }}{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (−{{ delivery.product_missing(product) }}){% endif %}</td>
             {% endif %}
             <td class="with-input"><input {% if delivery.status != delivery.OPEN %}type="text" readonly{% else%}type="number"{% endif%} min=0 name="wanted:{{ product.ref }}" value="{{ order[product].wanted }}"></td>
-            {% if delivery.status == delivery.ADJUSTMENT %}
+            {% if delivery.status != delivery.OPEN %}
             <td class="with-input"><input type="number" name="adjustment:{{ product.ref }}" value="{{ order[product].adjustment }}" {% if not delivery.product_missing(product) %}readonly{% endif %}></td>
             {% endif %}
         </tr>
