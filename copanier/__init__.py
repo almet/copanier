@@ -359,7 +359,7 @@ async def import_commande(request, response, id):
     response.redirect = f"/livraison/{delivery.id}"
 
 
-@app.route("/livraison/{id}/rapport.xlsx", methods=["GET"])
+@app.route("/livraison/{id}/bon-de-commande.xlsx", methods=["GET"])
 async def xls_report(request, response, id):
     delivery = Delivery.load(id)
     response.xlsx(reports.summary(delivery))

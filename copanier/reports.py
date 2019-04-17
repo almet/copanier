@@ -21,6 +21,8 @@ def summary(delivery):
     ws.append(headers)
     for product in delivery.products:
         wanted = delivery.product_wanted(product)
+        if not wanted:
+            continue
         ws.append(
             [
                 product.ref,
