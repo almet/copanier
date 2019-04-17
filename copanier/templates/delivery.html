@@ -7,7 +7,6 @@
     <table class="delivery">
         <thead>
             <tr>
-                <th class="ref">Référence</th>
                 <th class="product">Produit</th>
                 <th class="price">Prix</th>
                 {% if delivery.has_packing %}
@@ -28,7 +27,6 @@
         <tbody>
             {% for product in delivery.products %}
             <tr>
-                <td class="ref">{{ product.ref }}</td>
                 <th class="product">{{ product }}</th>
                 <td>{{ product.price }} €</td>
                 {% if delivery.has_packing %}
@@ -45,7 +43,8 @@
                 {% endfor %}
             </tr>
             {% endfor %}
-            <tr><th class="total"><i class="icon-pricetags"></i> Total</th><td>—</td><td>—</td>
+            <tr>
+                <th class="total"><i class="icon-pricetags"></i> Total</th><td>—</td>
                 {% if delivery.has_packing %}
                     <td>—</td>
                 {% endif %}
