@@ -156,6 +156,7 @@ class Delivery(Base):
     from_date: datetime_field
     to_date: datetime_field
     order_before: datetime_field
+    contact: str
     description: str = ""
     instructions: str = ""
     where: str = "Marché de la Briche"

@@ -16,6 +16,10 @@
         <input type="text" name="description" value="{{ delivery.description or '' }}" required>
     </label>
     <label>
+        <p>Référent</p>
+        <input type="email" name="contact" value="{{ delivery.contact or request.user.email }}" required>
+    </label>
+    <label>
         <p>Lieu</p>
         <input type="text" name="where" value="{{ delivery.where or '' }}" required>
     </label>
