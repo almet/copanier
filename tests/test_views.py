@@ -212,7 +212,7 @@ async def test_get_delivery_balance(client, delivery):
     delivery.from_date = datetime.now() - timedelta(days=1)
     delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=2)})
     delivery.persist()
-    resp = await client.get(f"/livraison/{delivery.id}/soldes")
+    resp = await client.get(f"/livraison/{delivery.id}/solde")
     doc = pq(resp.body)
     assert doc('[name="foo@bar.org"]')
     assert not doc('[name="foo@bar.org"]').attr("checked")
@@ -220,7 +220,7 @@ async def test_get_delivery_balance(client, delivery):
         products={"123": ProductOrder(wanted=2)}, paid=True
     )
     delivery.persist()
-    resp = await client.get(f"/livraison/{delivery.id}/soldes")
+    resp = await client.get(f"/livraison/{delivery.id}/solde")
     doc = pq(resp.body)
     assert doc('[name="foo@bar.org"]').attr("checked")
 
@@ -230,7 +230,7 @@ async def test_post_delivery_balance(client, delivery):
     delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=2)})
     delivery.persist()
     body = {"foo@bar.org": "on"}
-    resp = await client.post(f"/livraison/{delivery.id}/soldes", body=body)
+    resp = await client.post(f"/livraison/{delivery.id}/solde", body=body)
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
     assert delivery.orders["foo@bar.org"].paid is True

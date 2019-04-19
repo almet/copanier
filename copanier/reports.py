@@ -68,3 +68,15 @@ def products(delivery):
     for product in delivery.products:
         ws.append([getattr(product, field) for field in fields])
     return save_virtual_workbook(wb)
+
+
+def balance(delivery):
+    wb = Workbook()
+    ws = wb.active
+    ws.title = f"Solde {delivery.producer}"
+    ws.append(["Adhérent", "Montant", "Payé"])
+    for email, order in delivery.orders.items():
+        ws.append(
+            [email, order.total(delivery.products), "oui" if order.paid else "non"]
+        )
+    return save_virtual_workbook(wb)

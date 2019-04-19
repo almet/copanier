@@ -396,7 +396,7 @@ async def adjust_product(request, response, id, ref):
         response.html("adjust_product.html", {"delivery": delivery, "product": product})
 
 
-@app.route("/livraison/{id}/soldes", methods=["GET", "POST"])
+@app.route("/livraison/{id}/solde", methods=["GET", "POST"])
 @staff_only
 async def delivery_balance(request, response, id):
     delivery = Delivery.load(id)
@@ -410,6 +410,12 @@ async def delivery_balance(request, response, id):
         response.redirect = delivery_url
     else:
         response.html("delivery_balance.html", {"delivery": delivery})
+
+
+@app.route("/livraison/{id}/solde.xlsx", methods=["GET"])
+async def delivery_balance_report(request, response, id):
+    delivery = Delivery.load(id)
+    response.xlsx(reports.balance(delivery))
 
 
 def configure():

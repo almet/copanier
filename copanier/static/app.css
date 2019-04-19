@@ -189,10 +189,12 @@ input[type=submit] {
   transition: all .2s ease;
   cursor: pointer;
 }
-input[type=submit] {
+input[type=submit],
+input[type=submit] + a.button {
   margin-top: 5px;
 }
 
+input[type=submit]:hover,
 .button:hover {
   color: #fff;
   background-color: var(--primary-color);

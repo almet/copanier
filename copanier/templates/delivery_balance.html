@@ -5,16 +5,21 @@
     <h3><a href="/livraison/{{ delivery.id }}">{{ delivery.producer }}</a> — Gérer les soldes</h3>
     <form method="post">
     <table>
-        <tr><th>Personne</th><th>Montant</th><th>Soldée</th></tr>
-        {% for email, order in delivery.orders.items() %}
-        <tr>
-            <td>{{ email }}</td>
-            <td>{{ order.total(delivery.products) }} €</td>
-            <td class="with-input"><input type="checkbox" name="{{ email }}" {% if order.paid %}checked{% endif %}></td>
-        </tr>
-        {% endfor %}
+        <thead>
+            <tr><th>Personne</th><th>Montant</th><th>Soldée</th></tr>
+        </thead>
+        <tbody>
+            {% for email, order in delivery.orders.items() %}
+            <tr>
+                <td>{{ email }}</td>
+                <td>{{ order.total(delivery.products) }} €</td>
+                <td class="with-input"><input type="checkbox" name="{{ email }}" {% if order.paid %}checked{% endif %}></td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
-    <input type="submit" value="Mettre à jour les soldes">
+    <input type="submit" value="Enregistrer" class="primary">
+    <a href="/livraison/{{ delivery.id }}/solde.xlsx" class="button"><i class="icon-download"></i>&nbsp;Exporter</a>
     </form>
 </article>
 {% endblock body %}

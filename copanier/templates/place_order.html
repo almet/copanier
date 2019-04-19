@@ -45,7 +45,7 @@
     {% endif %}
     <input type="hidden" name="email" value="{{ person.email }}">
     {% if delivery.status != delivery.CLOSED or request.user.is_staff %}
-    <input type="submit" value="Enregistrer la commande">
+    <input type="submit" value="Enregistrer la commande" class="primary">
     {% endif %}
     <a class="button" href="/livraison/{{ delivery.id }}/courriel?email={{ person.email }}">Envoyer par courriel</a>
 </form>
