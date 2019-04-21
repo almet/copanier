@@ -4,7 +4,7 @@
     {% if order[product].quantity %}
     <tr>
         <th class="product" style="text-align: left;">{{ product }}</th>
-        <td>{{ product.price }} €</td><td>{{ order[product].quantity }}</td>
+        <td>{{ product.price | round(2) }} €</td><td>{{ order[product].quantity }}</td>
     </tr>
     {% endif %}
     {% endfor %}
