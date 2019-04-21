@@ -67,6 +67,7 @@ def app():  # Requested by Roll testing utilities.
 def delivery():
     return Delivery(
         producer="Andines",
+        contact="mister@me.me",
         from_date=datetime.now() + timedelta(days=10),
         to_date=datetime.now() + timedelta(days=10),
         order_before=datetime.now() + timedelta(days=7),

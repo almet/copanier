@@ -38,6 +38,7 @@ async def test_create_delivery(client):
         "from_time": "18:30:00",
         "to_time": "20:00:00",
         "order_before": "2019-02-12",
+        "contact": "lucky@you.me",
     }
     resp = await client.post("/livraison", body=body)
     assert resp.status == 302
