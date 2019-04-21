@@ -27,7 +27,7 @@
                     {% endwith %}
                 {% endif %}</p>
             </th>
-            <td>{{ product.price }} €</td>
+            <td>{{ product.price | round(2) }} €</td>
             {% if delivery.has_packing %}
                 <td{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>{{ product.packing or "—" }}{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (−{{ delivery.product_missing(product) }}){% endif %}</td>
             {% endif %}

@@ -28,7 +28,7 @@
             {% for product in delivery.products %}
             <tr>
                 <th class="product">{{ product }}</th>
-                <td>{{ product.price }} €</td>
+                <td>{{ product.price | round(2) }} €</td>
                 {% if delivery.has_packing %}
                     <td class="packing">{{ product.packing or '—'}}</td>
                 {% endif %}
