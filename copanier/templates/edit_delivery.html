@@ -35,6 +35,10 @@
         <p>Instructions particulières</p>
         <input type="text" name="instructions" value="{{ delivery.instructions or '' }}">
     </label>
+    <label>
+        <p>URL externe d'information</p>
+        <input type="url" name="url" value="{{ delivery.url or '' }}">
+    </label>
     <div>
         <input type="submit" name="submit" value="Valider" class="primary">
     </div>

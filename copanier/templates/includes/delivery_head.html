@@ -5,4 +5,5 @@
     <li><i class="icon-clock"></i> <strong>Date de livraison</strong> <time datetime="{{ delivery.from_date }}">{{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}</time></li>
     <li><i class="icon-hourglass"></i> {% if delivery.status == delivery.OPEN %}<strong>Date limite de commande</strong> <time datetime="{{ delivery.order_before.date() }}">{{ delivery.order_before|date }}</time>{% elif delivery.status == delivery.ADJUSTMENT %}<strong>Ajustement en cours</strong>{% else %}<strong>Fermée</strong>{% endif %}</li>
     {% if delivery.instructions %}<li><i class="icon-lightbulb"></i> <strong>À savoir</strong> {{ delivery.instructions }}</li>{% endif %}
+    {% if delivery.url %}<li><i class="icon-global"></i> <strong>En savoir plus</strong><br><a href="{{ delivery.url }}">{{ delivery.url }}</a></li>{% endif %}
 </ul>
