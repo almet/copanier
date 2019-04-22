@@ -52,8 +52,8 @@ def full(delivery):
         ws.append(row)
     footer = (
         ["Total", "", ""]
-        + [o.total(delivery.products) for o in delivery.orders.values()]
-        + [delivery.total]
+        + [round(o.total(delivery.products),2) for o in delivery.orders.values()]
+        + [round(delivery.total, 2)]
     )
     ws.append(footer)
     return save_virtual_workbook(wb)
