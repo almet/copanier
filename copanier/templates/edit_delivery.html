@@ -36,7 +36,7 @@
         <input type="text" name="instructions" value="{{ delivery.instructions or '' }}">
     </label>
     <div>
-        <input type="submit" name="submit" value="Valider">
+        <input type="submit" name="submit" value="Valider" class="primary">
     </div>
 </form>
 <hr>
@@ -66,7 +66,7 @@
 </details>
 <form action="/livraison/{{ delivery.id }}/importer/produits" method="post" enctype="multipart/form-data">
     <input type="file" name="data" required>
-    <input type="submit" name="Importer des produits">
+    <input type="submit" value="Mettre à jour les produits">
 </form>
 {% endif %}
 {% endblock body %}
