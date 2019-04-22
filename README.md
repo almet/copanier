@@ -1,35 +1,78 @@
 # Copanier
 
-Minimalist grouped command management
+Copanier is a minimalist grouped-command management software.
 
+It helps people to order a set of defined products, and provide a few helpers
+to ease the life of everyone involved :-)
 
-# Local install
+## Philosophy
 
-Dependencies:
-- python >= 3.7
+- Keep things simple
+- Do not rely on JavaScript (or the less possible)
+- Lower the cost of maintainance of the project
 
+## Install copanier locally
 
-- Create a venv:
+The project relies on Python 3.7+, so if you don't have it yet, here's your
+chance!
 
-    python -m venv path/to/venv
+One way to install it, is to use [pyenv](https://github.com/pyenv/pyenv):
 
-- Activate it:
+```bash
+$ pyenv install 3.7.1
+$ pyenv global 3.7.1
+```
 
-    source path/to/venv/bin/activate
+And then create a virtualenv so everything is installed separately from the
+rest of the system:
 
-- Install python package locally
+```bash
+$ # Get the source code locally
+$ git clone https://framagit.org/ybon/copanier.git
+$ cd copanier
 
-    python setup.py develop
+$ # Create the virtualenv
+$ python -m venv venv
 
+$ # Activate it!
+$ source venv/bin/activate
+
+$ # install everything!
+$ pip install -e .
+```
 
 ## Run local server
 
+Once everything is installed, you can use the `copanier` command to run the server.
+
 Make sure venv is active, then:
 
-    copanier serve
+```bash
+$ copanier serve
+```
 
 Optionally autoreload the server when you change a python file (needs `hupper`):
 
-    copanier serve --reload
+```bash
+$ copanier serve --reload
+```
 
-Then browse to http://localhost:2244
+Then browse to [http://localhost:2244](http://localhost:2244)
+
+## Run the tests
+
+If you want to contribute, don't hesitate! In this case, it might be helpful to
+install a few other dependencies.
+
+```bash
+$ pip instal -e .[test]
+```
+
+Then, to run the tests:
+
+```bash
+$ # install the required dependencies for dev
+$ pip install -r requirements-dev.txt
+$ # run the tests
+$ py.test tests
+```
