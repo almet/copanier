@@ -31,7 +31,8 @@ def products_from_xlsx(delivery, data):
 def products_from_csv(delivery, data):
     reader = csv.DictReader(data.splitlines(), delimiter=";")
     if not set(reader.fieldnames) >= PRODUCT_FIELDS:
-        raise ValueError("Colonnes obligatoires: name, ref, price")
+        raise ValueError("Colonnes obligatoires: name, ref, price. "
+                         "Assurez-vous que le délimiteur soit bien «;»")
     delivery.products = []
     for row in reader:
         delivery.products.append(Product(**row))
