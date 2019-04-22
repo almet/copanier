@@ -2,3 +2,4 @@ hupper
 pytest
 pytest-asyncio
 usine
+pyquery
