@@ -48,7 +48,7 @@
 <ul class="toolbox">
     {% if delivery.status == delivery.CLOSED %}
     <li>
-        <a href="/livraison/{{ delivery.id }}/archiver"><i class="icon-hazardous"></i> Archiver</a>
+        <a href="/livraison/{{ delivery.id }}/archiver" class="button danger"><i class="icon-hazardous"></i>&nbsp;Archiver</a>
     </li>
     {% endif %}
     <li>

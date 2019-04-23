@@ -99,7 +99,7 @@
     {% else %}
         {% if request.user and request.user.is_staff %}
         <li>
-            <a href="/livraison/{{ delivery.id }}/désarchiver"><i class="icon-hazardous"></i> Désarchiver</a>
+            <a href="/livraison/{{ delivery.id }}/désarchiver" class="button danger"><i class="icon-hazardous"></i>&nbsp;Désarchiver</a>
         </li>
         {% endif %}
     {% endif %}
