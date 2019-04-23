@@ -177,6 +177,35 @@ async def home(request, response):
     response.html("home.html", incoming=Delivery.incoming(), former=Delivery.former())
 
 
+@app.route("/archives", methods=["GET"])
+async def view_archives(request, response):
+    response.html("archive.html", {"deliveries": Delivery.all(is_archived=True)})
+
+
+@app.route("/livraison/archive/{id}", methods=["GET"])
+async def view_archive(request, response, id):
+    delivery = Delivery.load(f"archive/{id}")
+    response.html("delivery.html", {"delivery": delivery})
+
+
+@app.route("/livraison/{id}/archiver", methods=["GET"])
+@staff_only
+async def archive_delivery(request, response, id):
+    delivery = Delivery.load(id)
+    delivery.archive()
+    response.message("La livraison a été archivée")
+    response.redirect = f"/livraison/{delivery.id}"
+
+
+@app.route("/livraison/archive/{id}/désarchiver", methods=["GET"])
+@staff_only
+async def unarchive_delivery(request, response, id):
+    delivery = Delivery.load(f"archive/{id}")
+    delivery.unarchive()
+    response.message("La livraison a été désarchivée")
+    response.redirect = f"/livraison/{delivery.id}"
+
+
 @app.route("/livraison", methods=["GET"])
 async def new_delivery(request, response):
     response.html("edit_delivery.html", delivery={})

@@ -151,6 +151,7 @@ class Delivery(Base):
     CLOSED = 0
     OPEN = 1
     ADJUSTMENT = 2
+    ARCHIVED = 3
 
     producer: str
     from_date: datetime_field
@@ -162,11 +163,16 @@ class Delivery(Base):
     where: str = "Marché de la Briche"
     products: List[Product] = field(default_factory=list)
     orders: Dict[str, Order] = field(default_factory=dict)
-    id: str = field(default_factory=lambda *a, **k: uuid.uuid4().hex)
     infos_url: str = ""
+
+    def __post_init__(self):
+        self.id = None  # Not a field because we don't want to persist it.
+        super().__post_init__()
 
     @property
     def status(self):
+        if self.is_archived:
+            return self.ARCHIVED
         if self.is_open:
             return self.OPEN
         if self.needs_adjustment:
@@ -197,9 +203,14 @@ class Delivery(Base):
     def needs_adjustment(self):
         return self.has_packing and any(self.product_missing(p) for p in self.products)
 
+    @property
+    def is_archived(self):
+        return self.id and self.id.startswith("archive/")
+
     @classmethod
     def init_fs(cls):
         cls.get_root().mkdir(parents=True, exist_ok=True)
+        cls.get_root().joinpath("archive").mkdir(exist_ok=True)
 
     @classmethod
     def get_root(cls):
@@ -210,12 +221,21 @@ class Delivery(Base):
         path = cls.get_root() / f"{id}.yml"
         if not path.exists():
             raise DoesNotExist
-        return cls(**yaml.safe_load(path.read_text()))
+        data = yaml.safe_load(path.read_text())
+        # Tolerate extra fields (but we'll lose them if instance is persisted)
+        data = {k: v for k, v in data.items() if k in cls.__dataclass_fields__}
+        delivery = cls(**data)
+        delivery.id = id
+        return delivery
 
     @classmethod
-    def all(cls):
-        for path in cls.get_root().glob("*.yml"):
-            yield Delivery.load(path.stem)
+    def all(cls, is_archived=False):
+        root = cls.get_root()
+        if is_archived:
+            root = root / "archive"
+        for path in root.glob("*.yml"):
+            id = str(path.relative_to(cls.get_root()))[:-4]
+            yield Delivery.load(id)
 
     @classmethod
     def incoming(cls):
@@ -225,10 +245,30 @@ class Delivery(Base):
     def former(cls):
         return [d for d in cls.all() if not d.is_foreseen]
 
+    @property
+    def path(self):
+        assert self.id, "Cannot operate on unsaved deliveries"
+        return self.get_root() / f"{self.id}.yml"
+
     def persist(self):
         with self.__lock__:
-            path = self.get_root() / f"{self.id}.yml"
-            path.write_text(self.dump())
+            if not self.id:
+                self.id = uuid.uuid4().hex
+            self.path.write_text(self.dump())
+
+    def archive(self):
+        if self.is_archived:
+            raise ValueError("La livraison est déjà archivée")
+        current = self.path
+        self.id = f"archive/{self.id}"
+        current.rename(self.path)
+
+    def unarchive(self):
+        if not self.is_archived:
+            raise ValueError("La livraison n'est pas archivée")
+        current = self.path
+        self.id = self.path.stem
+        current.rename(self.path)
 
     def product_wanted(self, product):
         total = 0

@@ -20,7 +20,7 @@ def test_can_create_delivery():
     assert delivery.producer == "Andines"
     assert delivery.where == "Marché de la Briche"
     assert delivery.from_date.year == now().year
-    assert delivery.id
+    assert not delivery.id
 
 
 def test_wrong_datetime_raise_valueerror():
@@ -106,7 +106,12 @@ def test_order_has_adjustments():
 
 
 def test_can_persist_delivery(delivery):
+    with pytest.raises(AssertionError):
+        delivery.path
+    assert not delivery.id
     delivery.persist()
+    assert delivery.id
+    assert delivery.path.exists()
 
 
 def test_can_load_delivery(delivery):
@@ -138,3 +143,23 @@ def test_productorder_quantity():
     assert choice.quantity == 5
     choice = ProductOrder(wanted=3, adjustment=-1)
     assert choice.quantity == 2
+
+
+def test_archive_delivery(delivery):
+    delivery.persist()
+    old_id = delivery.id
+    old_path = delivery.path
+    assert str(old_path).endswith(f"delivery/{delivery.id}.yml")
+    assert old_path.exists()
+    delivery.archive()
+    assert delivery.is_archived
+    assert delivery.id.startswith("archive/")
+    new_path = delivery.path
+    assert str(new_path).endswith(f"delivery/archive/{old_id}.yml")
+    assert not old_path.exists()
+    assert new_path.exists()
+    delivery.unarchive()
+    assert not delivery.id.startswith("archive/")
+    assert old_path.exists()
+    assert not new_path.exists()
+    assert not delivery.is_archived
