@@ -163,6 +163,7 @@ class Delivery(Base):
     products: List[Product] = field(default_factory=list)
     orders: Dict[str, Order] = field(default_factory=dict)
     id: str = field(default_factory=lambda *a, **k: uuid.uuid4().hex)
+    infos_url: str = ""
 
     @property
     def status(self):
