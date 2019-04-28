@@ -1,4 +1,5 @@
 import csv
+from collections import defaultdict
 from pathlib import Path
 
 import ujson as json
@@ -382,7 +383,31 @@ async def import_commande(request, response, id):
     delivery = Delivery.load(id)
     delivery.orders[email] = order
     delivery.persist()
-    response.message(f"Yallah! La commande de {email} a bien été importée!")
+    response.message(f"Yallah! La commande de {email} a bien été importée !")
+    response.redirect = f"/livraison/{delivery.id}"
+
+@app.route("/livraison/{id}/importer/commandes", methods=["POST"])
+@staff_only
+async def import_multiple_commands(request, response, id):
+    reader = csv.DictReader(
+        request.files.get("data").read().decode().splitlines(), delimiter=";"
+    )
+    orders = defaultdict(Order)
+    
+    current_ref = None
+    for row in reader:
+        for label, value in row.items():
+            if label == 'ref':
+                current_ref = value
+            else:
+                wanted = int(value or 0)
+                if wanted:
+                    orders[label].products[current_ref] = ProductOrder(wanted=wanted)
+    delivery = Delivery.load(id)
+    for email, order in orders.items():
+        delivery.orders[email] = order
+    delivery.persist()
+    response.message(f"Yes ! Les commandes ont bien été importées !")
     response.redirect = f"/livraison/{delivery.id}"
 
 

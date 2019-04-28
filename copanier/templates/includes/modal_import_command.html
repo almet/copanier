@@ -9,4 +9,11 @@
         <input type="email" name="email" placeholder="email">
         <input type="submit" name="Importer">
     </form>
+
+    <h4>Importer plusieurs commandes</h4>
+    <p>Colonnes: ref*, toto@domain.tld, etc.</p>
+    <form action="/livraison/{{ delivery.id }}/importer/commandes" method="post" enctype="multipart/form-data">
+        <input type="file" name="data">
+        <input type="submit" name="Importer">
+    </form>
 {% endblock modal_body %}
