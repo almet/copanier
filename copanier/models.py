@@ -189,8 +189,12 @@ class Delivery(Base):
         return round(sum(o.total(self.products) for o in self.orders.values()), 2)
 
     @property
+    def producers(self):
+        return list(set([p.producer for p in self.products]))
+
+    @property
     def has_multiple_producers(self):
-        return len(set([p.producer for p in self.products])) > 1
+        return len(self.producers) > 1
 
     @property
     def is_open(self):
