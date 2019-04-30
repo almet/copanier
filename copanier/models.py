@@ -234,8 +234,8 @@ class Delivery(Base):
         if is_archived:
             root = root / "archive"
         for path in root.glob("*.yml"):
-            id = str(path.relative_to(cls.get_root()))[:-4]
-            yield Delivery.load(id)
+            id_ = str(path.relative_to(cls.get_root())).replace(".yml", "")
+            yield Delivery.load(id_)
 
     @classmethod
     def incoming(cls):
@@ -265,7 +265,9 @@ class Delivery(Base):
 
     def unarchive(self):
         if not self.is_archived:
-            raise ValueError("La livraison n'est pas archivée")
+            raise ValueError(
+                "Impossible de désarchiver une livraison qui n'est pas archivée"
+            )
         current = self.path
         self.id = self.path.stem
         current.rename(self.path)
