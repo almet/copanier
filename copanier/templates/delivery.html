@@ -58,6 +58,7 @@
 </article>
 <hr>
 <ul class="toolbox">
+    {% if not delivery.is_archived %}
     <li>
         <a href="/livraison/{{ delivery.id }}/bon-de-commande.xlsx"><i class="icon-ribbon"></i> Bon de commande</a>
     </li>
@@ -67,33 +68,40 @@
     <li>
         <a href="/livraison/{{ delivery.id }}/émargement" target="_blank"><i class="icon-document"></i> Liste d'émargement</a>
     </li>
-    {% if request.user and request.user.is_staff %}
-    <li>
-        <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> Télécharger les produits</a>
-    </li>
-    <li>
-        <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison</a>
-    </li>
-    <li>
-        {% with unique_id="import-command" %}
-            {% include "includes/modal_import_command.html" %}
-        {% endwith %}
-    </li>
-    <li>
-        {% with unique_id="add-command" %}
-            {% include "includes/modal_add_command.html" %}
-        {% endwith %}
-    </li>
-    <li>
-        {% with unique_id="copy-emails" %}
-            {% include "includes/modal_copy_emails.html" %}
-        {% endwith %}
-    </li>
-    {% if delivery.is_passed %}
-    <li>
-        <a href="/livraison/{{ delivery.id }}/solde"><i class="icon-wallet"></i> Gérer les soldes</a>
-    </li>
-    {% endif %}
+        {% if request.user and request.user.is_staff %}
+        <li>
+            <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> Télécharger les produits</a>
+        </li>
+        <li>
+            <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison</a>
+        </li>
+        <li>
+            {% with unique_id="import-command" %}
+                {% include "includes/modal_import_command.html" %}
+            {% endwith %}
+        </li>
+        <li>
+            {% with unique_id="add-command" %}
+                {% include "includes/modal_add_command.html" %}
+            {% endwith %}
+        </li>
+        <li>
+            {% with unique_id="copy-emails" %}
+                {% include "includes/modal_copy_emails.html" %}
+            {% endwith %}
+        </li>
+            {% if delivery.is_passed %}
+            <li>
+                <a href="/livraison/{{ delivery.id }}/solde"><i class="icon-wallet"></i> Gérer les soldes</a>
+            </li>
+            {% endif %}
+        {% endif %}
+    {% else %}
+        {% if request.user and request.user.is_staff %}
+        <li>
+            <a href="/livraison/{{ delivery.id }}/désarchiver" class="button danger"><i class="icon-hazardous"></i>&nbsp;Désarchiver</a>
+        </li>
+        {% endif %}
     {% endif %}
 </ul>
 {% endblock body %}

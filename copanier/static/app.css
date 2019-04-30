@@ -208,11 +208,25 @@ input[type=submit].primary {
   background: var(--primary-color);
 }
 
+button.primary:hover,
+a.button.primary:hover,
+input[type=submit].primary:hover {
+  background-color: #fff;
+  color: var(--primary-color);
+}
+
 button.danger,
 a.button.danger,
 input[type=submit].danger {
   color: #d9534f;
   border-color: #d9534f;
+}
+
+button.danger:hover,
+a.button.danger:hover,
+input[type=submit].danger:hover {
+  background-color: #d9534f;
+  color: #fff;
 }
 
 
@@ -445,7 +459,6 @@ hr {
   background: white;
   padding: 5px;
   z-index: 100;
-  text-align: center;
   overflow-y: auto;
   white-space: normal;
 }

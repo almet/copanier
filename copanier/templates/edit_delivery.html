@@ -45,32 +45,17 @@
 </form>
 <hr>
 {% if delivery %}
-<h3>Importer des produits</h3>
-<p>Formats pris en charge: xlsx, csv</p>
-<details>
-    <summary>Détails des colonnes</summary>
-    <dl>
-        <dt class="mandatory">ref</dt>
-        <dd>Référence unique du produit (permet de mettre à jour les produits en cours de commande ou d'importer des commandes individuelles).</dd>
-        <dt class="mandatory">name</dt>
-        <dd>Nom du produit: mettre juste assez d'info pour distinguer les produits les uns des autres.</dd>
-        <dt class="mandatory">price</dt>
-        <dd>Prix d'une unité, en euros.</dd>
-        <dt>unit</dt>
-        <dd>Conditionnement d'une unité: 1kg, 33cl…</dd>
-        <dt>description</dt>
-        <dd>Plus de détails sur le produit.</dd>
-        <dt>packing</dt>
-        <dd>Contionnement final pour grouper les commandes, le cas échéant, en nombre d'unités.</dd>
-        <dt>url</dt>
-        <dd>Une URL éventuelle pointant sur une page présentant le produit.</dd>
-        <dt>img</dt>
-        <dd>Une URL éventuelle pointant sur une image du produit (attention, utiliser seulement des liens https).</dd>
-    </dl>
-</details>
-<form action="/livraison/{{ delivery.id }}/importer/produits" method="post" enctype="multipart/form-data">
-    <input type="file" name="data" required>
-    <input type="submit" value="Mettre à jour les produits">
-</form>
+<ul class="toolbox">
+    {% if delivery.status == delivery.CLOSED %}
+    <li>
+        <a href="/livraison/{{ delivery.id }}/archiver" class="button danger"><i class="icon-hazardous"></i>&nbsp;Archiver</a>
+    </li>
+    {% endif %}
+    <li>
+        {% with unique_id="import-products" %}
+            {% include "includes/modal_import_products.html" %}
+        {% endwith %}
+    </li>
+</ul>
 {% endif %}
 {% endblock body %}
