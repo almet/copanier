@@ -4,84 +4,18 @@
 <h3>{{ delivery.name }} {% include "includes/order_button.html" %}</h3>
 {% include "includes/delivery_head.html" %}
 <article class="delivery">
-    <table class="delivery">
-        <thead>
-            <tr>
-                {% if delivery.has_multiple_producers %}
-                    <th class="producer">Producteur</th>
-                {% endif %}
-                <th class="product">Produit</th>
-                <th class="price">Prix</th>
-                {% if delivery.has_packing %}
-                    <th class="packing">Conditionnement</th>
-                {% endif %}
-                <th class="amount">Total</th>
-                {% for email, order in delivery.orders.items() %}
-                    <th class="person{% if delivery.is_passed and not order.paid %} not-paid{% endif %}">
-                        {% if request.user and request.user.is_staff %}
-                            <a href="/livraison/{{ delivery.id }}/commander?email={{ email }}" title="{{ email }}">{{ email }}</a>
-                        {% else %}
-                            <span title="{{ email }}">{{ email }}</span>
-                        {% endif %}
-                    </th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in delivery.products %}
-            <tr>
-                {% if delivery.has_multiple_producers and (loop.first or loop.previtem.producer != product.producer) %}
-                    <th class="producer" rowspan="{{ delivery.get_products_by(product.producer) | length }}">{{ product.producer }}</th>
-                {% endif %}
-                <th class="product">{{ product }}</th>
-                <td>{{ product.price | round(2) }} €</td>
-                {% if delivery.has_packing %}
-                    <td class="packing">{{ product.packing or '—'}}</td>
-                {% endif %}
-                <th{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>
-                    {{ delivery.product_wanted(product) }}
-                    {% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (−{{ delivery.product_missing(product) }})
-                        {% if request.user.is_staff %}<a href="/livraison/{{ delivery.id }}/ajuster/{{ product.ref }}" class="button" title="ajuster le produit">ajuster</a>{% endif %}
-                    {% endif %}
-                </th>
-                {% for email, order in delivery.orders.items() %}
-                    <td title="Commandé: {{ order[product.ref].wanted }} — Ajusté: {{ "%+d"|format(order[product.ref].adjustment) }}">{{ order[product.ref].quantity or "—" }}</td>
-                {% endfor %}
-            </tr>
-            {% if delivery.has_multiple_producers and (loop.last or loop.nextitem.producer != product.producer) %}
-            <tr class="subtotal">
-              <td>—</td>
-              <th>Sous Total {{ product.producer }}</th>
-              <td>—</td>
-              {% if delivery.has_packing %}
-                    <td></td>
-                {% endif %}
-              <th>{{ delivery.total_for_producer(product.producer) }} €</th>
-              {% for email in delivery.orders.keys() %}
-              <th>{{ delivery.total_for_producer(product.producer, email) }} €</th>
-              {% endfor %}
-            </tr>
-            {% endif %}
-            {% endfor %}
-            <tr>
-                <th class="total"><i class="icon-pricetags"></i> Total</th><td>—</td>
-                {% if delivery.has_multiple_producers %}
-                    <td>—</td>
-                {% endif %}
-                {% if delivery.has_packing %}
-                    <td>—</td>
-                {% endif %}
-                <th class="total">{{ delivery.total }} €</th>
-                {% for email, order in delivery.orders.items() %}
-                <td class="total">{{ order.total(delivery.products) }} €</td>
-                {% endfor %}
-            </tr>
-        </tbody>
-    </table>
+{% if delivery.has_products %}
+    {% include "includes/delivery_table.html" %}
+{% else %}
+<p>Mince, aucun produit n'est encore défini pour cette livraison !</p>
+{% if request.user and request.user.is_staff %}
+<div class="inline-text">Pour rajouter des produits, il faut d'abord <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> télécharger le tableur avec les produits</a>, le modifier localement sur votre machine puis &nbsp;</div> <div class="inline-text">{% with unique_id="import-products" %}{% include "includes/modal_import_products.html" %}{% endwith %}.</div>
+{% endif %}
+{% endif %}
 </article>
 <hr>
 <ul class="toolbox">
-    {% if not delivery.is_archived %}
+    {% if not delivery.is_archived and delivery.status == delivery.CLOSED %}
     <li>
         <a href="/livraison/{{ delivery.id }}/bon-de-commande.xlsx"><i class="icon-ribbon"></i> Bon de commande</a>
     </li>
@@ -91,40 +25,34 @@
     <li>
         <a href="/livraison/{{ delivery.id }}/émargement" target="_blank"><i class="icon-document"></i> Liste d'émargement</a>
     </li>
-        {% if request.user and request.user.is_staff %}
-        <li>
-            <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> Télécharger les produits</a>
-        </li>
-        <li>
-            <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison</a>
-        </li>
-        <li>
-            {% with unique_id="import-command" %}
-                {% include "includes/modal_import_command.html" %}
-            {% endwith %}
-        </li>
-        <li>
-            {% with unique_id="add-command" %}
-                {% include "includes/modal_add_command.html" %}
-            {% endwith %}
-        </li>
-        <li>
-            {% with unique_id="copy-emails" %}
-                {% include "includes/modal_copy_emails.html" %}
-            {% endwith %}
-        </li>
-            {% if delivery.is_passed %}
-            <li>
-                <a href="/livraison/{{ delivery.id }}/solde"><i class="icon-wallet"></i> Gérer les soldes</a>
-            </li>
-            {% endif %}
-        {% endif %}
-    {% else %}
-        {% if request.user and request.user.is_staff %}
-        <li>
-            <a href="/livraison/{{ delivery.id }}/désarchiver" class="button danger"><i class="icon-hazardous"></i>&nbsp;Désarchiver</a>
-        </li>
-        {% endif %}
+    {% endif %}
+    {% if request.user and request.user.is_staff %}
+    <li>
+        <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> Télécharger les produits</a>
+    </li>
+    <li>
+        <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison</a>
+    </li>
+    <li>
+        {% with unique_id="import-command" %}
+            {% include "includes/modal_import_command.html" %}
+        {% endwith %}
+    </li>
+    <li>
+        {% with unique_id="add-command" %}
+            {% include "includes/modal_add_command.html" %}
+        {% endwith %}
+    </li>
+    <li>
+        {% with unique_id="copy-emails" %}
+            {% include "includes/modal_copy_emails.html" %}
+        {% endwith %}
+    </li>
+    {% if delivery.is_passed %}
+    <li>
+        <a href="/livraison/{{ delivery.id }}/solde"><i class="icon-wallet"></i> Gérer les soldes</a>
+    </li>
+    {% endif %}
     {% endif %}
 </ul>
 {% endblock body %}

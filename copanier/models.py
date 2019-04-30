@@ -183,6 +183,10 @@ class Delivery(Base):
         if self.needs_adjustment:
             return self.ADJUSTMENT
         return self.CLOSED
+    
+    @property
+    def has_products(self):
+        return len(self.products) > 0
 
     @property
     def total(self):

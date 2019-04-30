@@ -392,6 +392,11 @@ article.delivery {
   width: 100%;
   overflow-x: auto;
 }
+
+article.delivery .inline-text {
+  float: left;
+}
+
 article.delivery th.person {
   max-width: 7rem;
 }
