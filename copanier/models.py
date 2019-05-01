@@ -239,7 +239,9 @@ class Delivery(Base):
 
     @classmethod
     def incoming(cls):
-        return [d for d in cls.all() if d.is_foreseen]
+        return sorted(
+            [d for d in cls.all() if d.is_foreseen], key=lambda d: d.order_before
+        )
 
     @classmethod
     def former(cls):

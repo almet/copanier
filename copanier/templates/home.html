@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 {% block body %}
-    <h2>Livraisons à venir</h2>
     {% with deliveries=incoming %}
         {% include "includes/delivery_list.html" %}
     {% endwith %}
-    <h2>Livraisons passées</h2>
     {% with deliveries=former %}
         {% include "includes/delivery_list.html" %}
     {% endwith %}
-    <a href="/archives">Voir les livraisons archivées</a>
+    <a href="/archives"><i class="icon-layers"></i> Voir les livraisons archivées</a>
 {% endblock body %}
