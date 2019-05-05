@@ -70,9 +70,6 @@
     </li>
         {% if request.user and request.user.is_staff %}
         <li>
-            <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> Télécharger les produits</a>
-        </li>
-        <li>
             <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison</a>
         </li>
         <li>
@@ -103,5 +100,8 @@
         </li>
         {% endif %}
     {% endif %}
+    <li>
+        <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> Télécharger les produits</a>
+    </li>
 </ul>
 {% endblock body %}
