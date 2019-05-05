@@ -260,6 +260,12 @@ async def export_products(request, response, id):
     response.xlsx(reports.products(delivery))
 
 
+@app.route("/livraison/archive/{id}/exporter/produits", methods=["GET"])
+async def export_archived_products(request, response, id):
+    delivery = Delivery.load(f"archive/{id}")
+    response.xlsx(reports.products(delivery))
+
+
 @app.route("/livraison/{id}/edit", methods=["GET"])
 @staff_only
 async def edit_delivery(request, response, id):
