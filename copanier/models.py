@@ -290,3 +290,8 @@ class Delivery(Base):
 
     def has_order(self, person):
         return person.email in self.orders
+
+    def total_for(self, person):
+        if person.email not in self.orders:
+            return 0
+        return self.orders[person.email].total(self.products)
