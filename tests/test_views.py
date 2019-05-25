@@ -154,6 +154,21 @@ async def test_get_place_order_with_closed_delivery_but_adjustments(client, deli
     assert doc('[name="adjustment:123"]')
 
 
+async def test_get_place_order_with_closed_delivery_but_force(client, delivery):
+    delivery.order_before = datetime.now() - timedelta(days=1)
+    delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=1)})
+    delivery.persist()
+    assert delivery.status == delivery.CLOSED
+    resp = await client.get(f"/livraison/{delivery.id}/commander")
+    doc = pq(resp.body)
+    assert doc('[name="wanted:123"]').attr("readonly") is not None
+    assert not doc('[name="adjustment:123"]')
+    resp = await client.get(f"/livraison/{delivery.id}/commander?adjust")
+    doc = pq(resp.body)
+    assert doc('[name="wanted:123"]').attr("readonly") is not None
+    assert doc('[name="adjustment:123"]')
+
+
 async def test_cannot_place_order_on_closed_delivery(client, delivery, monkeypatch):
     monkeypatch.setattr("copanier.config.STAFF", ["someone@else.org"])
     delivery.order_before = datetime.now() - timedelta(days=1)

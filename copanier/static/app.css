@@ -181,7 +181,8 @@ input[type=submit] {
   cursor: pointer;
 }
 input[type=submit],
-input[type=submit] + a.button {
+input[type=submit] + a.button,
+a.button + a.button {
   margin-top: 5px;
 }
 

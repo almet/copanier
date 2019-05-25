@@ -346,9 +346,13 @@ async def place_order(request, response, id):
         response.redirect = f"/livraison/{delivery.id}"
     else:
         order = delivery.orders.get(email) or Order()
+        force_adjustment = "adjust" in request.query and user and user.is_staff
         response.html(
             "place_order.html",
-            {"delivery": delivery, "person": Person(email=email), "order": order},
+            delivery=delivery,
+            person=Person(email=email),
+            order=order,
+            force_adjustment=force_adjustment,
         )
 
 
