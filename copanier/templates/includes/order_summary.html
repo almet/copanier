@@ -1,10 +1,12 @@
 <table class="order">
-    <tr><th class="product">Produit</th><th class="price">Prix unitaire</th><th class="amount">Quantité</th></tr>
+    <tr><th>Réf.</th><th class="product">Produit</th><th class="price">Prix unitaire</th><th class="amount">Quantité</th></tr>
     {% for product in delivery.products %}
     {% if order[product].quantity %}
     <tr>
+        <td>{{ product.ref }}</td>
         <th class="product" style="text-align: left;">{{ product }}</th>
-        <td>{{ product.price | round(2) }} €</td><td>{{ order[product].quantity }}</td>
+        <td>{{ product.price | round(2) }} €</td>
+        <td>{{ order[product].quantity }}</td>
     </tr>
     {% endif %}
     {% endfor %}
