@@ -131,6 +131,7 @@ async def test_get_place_order_with_adjustment_status(client, delivery):
     assert doc('[name="wanted:123"]').attr("readonly")
     assert doc('[name="adjustment:123"]')
     assert not doc('[name="adjustment:123"]').attr("readonly")
+    assert doc('[name="adjustment:123"]').attr("min") == "-1"
     assert doc('[name="wanted:456"]').attr("readonly")
     assert doc('[name="adjustment:456"]')
     # Already adjusted.

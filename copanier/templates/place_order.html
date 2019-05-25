@@ -33,7 +33,7 @@
             {% endif %}
             <td class="with-input"><input {% if delivery.status != delivery.OPEN %}type="text" readonly{% else%}type="number"{% endif%} min=0 name="wanted:{{ product.ref }}" value="{{ order[product].wanted }}"></td>
             {% if delivery.status == delivery.ADJUSTMENT or order.has_adjustments or force_adjustment %}
-            <td class="with-input"><input type="number" name="adjustment:{{ product.ref }}" value="{{ order[product].adjustment }}" {% if not (delivery.product_missing(product) or  force_adjustment) %}readonly{% endif %}></td>
+            <td class="with-input"><input type="number" name="adjustment:{{ product.ref }}" value="{{ order[product].adjustment }}" min="{{ order[product].wanted * -1 }}" {% if not (delivery.product_missing(product) or  force_adjustment) %}readonly{% endif %}></td>
             {% endif %}
         </tr>
         {% endfor %}
