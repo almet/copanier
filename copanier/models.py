@@ -134,9 +134,12 @@ class Order(Base):
 
     def total(self, products):
         products = {p.ref: p for p in products}
-        return round(
-            sum(p.quantity * products[ref].price for ref, p in self.products.items()), 2
+        total = sum(
+            p.quantity * products[ref].price
+            for ref, p in self.products.items()
+            if ref in products
         )
+        return round(total, 2)
 
     @property
     def has_adjustments(self):
