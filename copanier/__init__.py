@@ -141,15 +141,19 @@ async def sesame(request, response):
 async def send_sesame(request, response, unprotected=True):
     email = request.form.get("email")
     token = utils.create_token(email)
-    emails.send_from_template(
-        env,
-        "access_granted",
-        email,
-        f"Sésame {config.SITE_NAME}",
-        hostname=request.host,
-        token=token.decode(),
-    )
-    response.message(f"Un sésame vous a été envoyé à l'adresse '{email}'")
+    try:
+        emails.send_from_template(
+            env,
+            "access_granted",
+            email,
+            f"Sésame {config.SITE_NAME}",
+            hostname=request.host,
+            token=token.decode(),
+        )
+    except RuntimeError:
+        response.message("Oops, impossible d'envoyer le courriel…", status="error")
+    else:
+        response.message(f"Un sésame vous a été envoyé à l'adresse '{email}'")
     response.redirect = "/"
 
 
@@ -339,10 +343,20 @@ async def place_order(request, response, id):
         delivery.persist()
         if user and user.email == email:
             # Only send email if order has been placed by the user itself.
-            emails.send_order(
-                request, env, person=Person(email=email), delivery=delivery, order=order
-            )
-        response.message(f"La commande pour «{email}» a bien été prise en compte!")
+            try:
+                emails.send_order(
+                    request,
+                    env,
+                    person=Person(email=email),
+                    delivery=delivery,
+                    order=order,
+                )
+            except RuntimeError:
+                response.message("Impossible d'envoyer le courriel…", status="error")
+            else:
+                response.message(
+                    f"La commande pour «{email}» a bien été prise en compte!"
+                )
         response.redirect = f"/livraison/{delivery.id}"
     else:
         order = delivery.orders.get(email) or Order()
@@ -364,10 +378,14 @@ async def send_order(request, response, id):
     if not order:
         response.message(f"Aucune commande pour «{email}»", status="warning")
     else:
-        emails.send_order(
-            request, env, person=Person(email=email), delivery=delivery, order=order
-        )
-        response.message(f"Résumé de commande envoyé à «{email}»")
+        try:
+            emails.send_order(
+                request, env, person=Person(email=email), delivery=delivery, order=order
+            )
+        except RuntimeError:
+            response.message("Oops, impossible d'envoyer le courriel…", status="error")
+        else:
+            response.message(f"Résumé de commande envoyé à «{email}»")
     response.redirect = f"/livraison/{delivery.id}"
 
 
