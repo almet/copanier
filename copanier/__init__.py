@@ -111,11 +111,13 @@ async def auth_required(request, response):
         request["groups"] = groups
 
         group = groups.get_user_group(email)
-        user = Person(
-            email=email,
-            group_id=group.id,
-            group_name=group.name)
-
+        user_info = {'email': email}
+        if group:
+            user_info.update(dict(
+                group_id=group.id,
+                group_name=group.name)
+            )
+        user = Person(**user_info)
         request["user"] = user
         session.user.set(user)
 
