@@ -7,9 +7,11 @@ import minicli
 from jinja2 import Environment, PackageLoader, select_autoescape
 from roll import Roll, Response, HttpError
 from roll.extensions import traceback, simple_server, static
+from slugify import slugify
+
 
 from . import config, reports, session, utils, emails, loggers, imports
-from .models import Delivery, Order, Person, Product, ProductOrder
+from .models import Delivery, Order, Person, Product, ProductOrder, Groups,  Group
 
 
 class Response(Response):
@@ -131,6 +133,7 @@ async def log_request(request, response):
 async def on_startup():
     configure()
     Delivery.init_fs()
+    Groups.init_fs()
 
 
 @app.route("/sésame", methods=["GET"], unprotected=True)
@@ -177,6 +180,66 @@ async def logout(request, response):
 async def home(request, response):
     response.html("home.html", incoming=Delivery.incoming(), former=Delivery.former())
 
+
+@app.route("/groupes", methods=["GET"])
+async def handle_groups(request, response):
+    response.html("groups.html", {"groups": Groups.load()})
+
+@app.route("/groupes/{id}/rejoindre", method=["GET"])
+async def join_group(request, response, id):
+    groups = Groups.load()
+    user = session.user.get(None)
+    group = groups.add_user(user.email, id)
+    groups.persist()
+    response.message(f"Vous avez bien rejoint le groupe '{group.name}'")
+    response.redirect = "/groupes"
+
+
+@app.route("/groupes/créer", methods=["GET", "POST"])
+async def create_group(request, response):
+    group = None
+    if request.method == "POST":
+        form = request.form
+        members = []
+        if form.get('members'):
+            members = [m.strip() for m in form.get('members').split(',')]
+        group = Group.create(
+            id=slugify(form.get('name')),
+            name=form.get('name'),
+            members=members)
+        groups = Groups.load()
+        groups.add_group(group)
+        groups.persist()
+        response.message(f"Le groupe {group.name} à bien été créé")
+        response.redirect = "/groupes"
+    response.html("edit_group.html", group=group)
+
+
+@app.route("/groupes/{id}/éditer", methods=["GET", "POST"])
+async def edit_group(request, response, id):
+    groups = Groups.load()
+    assert id in groups.groups, "Impossible de trouver le groupe"
+    group = groups.groups[id]
+    if request.method == "POST":
+        form = request.form
+        members = []
+        if form.get('members'):
+            members = [m.strip() for m in form.get('members').split(',')]
+        group.members = members
+        group.name = form.get('name')
+        groups.groups[id] = group
+        groups.persist()
+        response.redirect = "/groupes"
+    response.html("edit_group.html", group=group)
+
+@app.route("/groupes/{id}/supprimer", methods=["GET"])
+async def delete_group(request, response, id):
+    groups = Groups.load()
+    assert id in groups.groups, "Impossible de trouver le groupe"
+    deleted = groups.groups.pop(id)
+    groups.persist()
+    response.message(f"Le groupe {deleted.name} à bien été supprimé")
+    response.redirect = "/groupes"
 
 @app.route("/archives", methods=["GET"])
 async def view_archives(request, response):

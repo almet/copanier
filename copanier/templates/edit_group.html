@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block body %}
+{% if group.id %}
+    <h1>Modifier le groupe</h1>
+{% else %}
+    <h1>Créer un nouveau groupe (coloc / famille)</h1>
+{% endif %}
+<form method="post">
+    <label>
+        <p>Nom</p>
+        <input type="text" name="name" value="{{ group.name or '' }}" required>
+    </label>
+    <label>
+        <p>Membres du groupe (emails, séparés par des virgules)</p>
+        <input type="text" name="members" value="{{ ', '.join(group.members) if group.members else '' }}">
+    </label>
+    <div>
+        <input type="submit" name="submit" value="Valider" class="primary">
+    </div>
+</form>
+<hr>
+{% if group.id %}
+<ul class="toolbox">
+    <li>
+        <a href="/groupes/{{ group.id }}/supprimer" class="button danger"><i class="icon-hazardous"></i>&nbsp;Supprimer ce groupe</a>
+    </li>
+</ul>
+{% endif %}
+{% endblock body %}

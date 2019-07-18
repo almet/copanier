@@ -74,6 +74,13 @@ class Base:
     def dump(self):
         return yaml.dump(asdict(self), allow_unicode=True)
 
+@dataclass
+class PersistedBase(Base):
+
+    @classmethod
+    def get_root(cls):
+        return Path(config.DATA_ROOT) / cls.__root__
+
 
 @dataclass
 class Person(Base):
@@ -85,6 +92,53 @@ class Person(Base):
     def is_staff(self):
         return not config.STAFF or self.email in config.STAFF
 
+@dataclass
+class Group(Base):
+    id: str
+    name: str
+    members: List[str]
+
+
+@dataclass
+class Groups(PersistedBase):
+    __root__ = "groups"
+    __lock__ = threading.Lock()
+    groups: Dict[str, Group]
+    
+    @classmethod
+    def load(cls):
+        path = cls.get_root() / "groups.yml"
+        if path.exists():
+            data = yaml.safe_load(path.read_text())
+            data = {k: v for k, v in data.items() if k in cls.__dataclass_fields__}
+        else:
+            data = {'groups': {}}
+        groups = cls(**data)
+        groups.path = path
+        return groups
+    
+    def persist(self):
+        with self.__lock__:
+            self.path.write_text(self.dump())
+    
+    def add_group(self, group):
+        assert group.id not in self.groups, "Un groupe avec ce nom existe déjà."
+        self.groups[group.id] = group
+    
+    def add_user(self, email, group_id):
+        self.remove_user(email)
+        group = self.groups[group_id]
+        group.members.append(email)
+        return group
+
+    def remove_user(self, email):
+        for group in self.groups.values():
+            if email in group.members:
+                group.members.remove(email)
+
+    @classmethod
+    def init_fs(cls):
+        cls.get_root().mkdir(parents=True, exist_ok=True)
 
 @dataclass
 class Product(Base):
@@ -149,7 +203,7 @@ class Order(Base):
 
 
 @dataclass
-class Delivery(Base):
+class Delivery(PersistedBase):
 
     __root__ = "delivery"
     __lock__ = threading.Lock()
@@ -228,10 +282,6 @@ class Delivery(Base):
     def init_fs(cls):
         cls.get_root().mkdir(parents=True, exist_ok=True)
         cls.get_root().joinpath("archive").mkdir(exist_ok=True)
-
-    @classmethod
-    def get_root(cls):
-        return Path(config.DATA_ROOT) / cls.__root__
 
     @classmethod
     def load(cls, id):

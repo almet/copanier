@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h2>Liste des colocs / familles <a class="button" href="/groupes/créer"><i class="icon-globe"></i>&nbsp;Créer un nouveau groupe</a></h2>
+
+
+{% for group in groups.groups.values() %}
+<h3>{{ group.name }} <a class="button" href="/groupes/{{ group.id}}/rejoindre">rejoindre</a> <a class="button" href="/groupes/{{ group.id }}/éditer">éditer</a></h3>
+<ul>
+    {% for member in group.members %}
+    <li>{{ member }}</li>
+    {% endfor %}
+</ul>
+{% endfor %}
+{% endblock %}
