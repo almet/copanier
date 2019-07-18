@@ -2,15 +2,15 @@
 
 {% block body %}
 <article class="order">
-<h3><a href="/livraison/{{ delivery.id }}">{{ delivery.name }}</a> — Commande de « {{ person.email }} »</h3>
+<h3><a href="/livraison/{{ delivery.id }}">{{ delivery.name }}</a> — Commande pour « {{ person.email }} »</h3>
 {% include "includes/delivery_head.html" %}
 <form method="post">
+
+    {% for producer in delivery.producers %}
+    <h2>{{ producer }}</h2>
     <table class="order">
         <thead>
         <tr>
-            {% if delivery.has_multiple_producers %}
-                <th class="producer">Producteur</th>
-            {% endif %}
             <th class="product">Produit</th>
             <th class="price">Prix</th>
             {% if delivery.has_packing %}
@@ -23,11 +23,8 @@
         </tr>
         </thead>
         <tbody>
-        {% for product in delivery.products %}
+        {% for product in delivery.get_products_by(producer) %}
         <tr>
-            {% if delivery.has_multiple_producers and (loop.first or loop.previtem.producer != product.producer) %}
-              <th class="producer" rowspan="{{ delivery.get_products_by(product.producer) | length }}">{{ product.producer }}</th>
-            {% endif %}
             <th class="product">{{ product }}
                 {% if product.description or product.img %}
                     {% with unique_id=loop.index %}
@@ -39,7 +36,7 @@
             {% if delivery.has_packing %}
                 <td {% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>{{ product.packing or "—" }}{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (−{{ delivery.product_missing(product) }}){% endif %}</td>
             {% endif %}
-            <td class="with-input"><input {% if delivery.status != delivery.OPEN %}type="text" readonly{% else%}type="number"{% endif%} min=0 name="wanted:{{ product.ref }}" value="{{ order[product].wanted }}"></td>
+            <td class="with-input"><input {% if delivery.status != delivery.OPEN %}type="text" readonly{% else%}type="number"{% endif%} min=0 name="wanted:{{ product.ref }}" value="{{ order[product].wanted }}"> x {{ product.unit }}</td>
             {% if delivery.status == delivery.ADJUSTMENT or order.has_adjustments %}
                 <td class="with-input"><input type="number" name="adjustment:{{ product.ref }}" value="{{ order[product].adjustment }}" {% if not delivery.product_missing(product) %}readonly{% endif %}></td>
             {% endif %}
@@ -47,6 +44,7 @@
         {% endfor %}
         </tbody>
     </table>
+    {% endfor %}
     <p>Total: {{ order.total(delivery.products) if order else 0 }} €</p>
     {% if delivery.is_passed %}
     <p>Commande soldée: <input type="checkbox" name="paid" {% if order.paid %}checked{% endif %}></p>

@@ -5,9 +5,9 @@
 {% include "includes/delivery_head.html" %}
 <article class="delivery">
 {% if delivery.has_products %}
-    {% include "includes/delivery_table.html" %}
+    {% include "includes/delivery_list.html" %}
 {% else %}
-<p>Mince, aucun produit n'est encore défini pour cette livraison !</p>
+<p>Aucun produit n'est encore défini pour cette livraison.</p>
 {% if request.user and request.user.is_staff %}
 <div class="inline-text">Pour rajouter des produits, il faut d'abord <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> télécharger le tableur avec les produits</a>, le modifier localement sur votre machine puis &nbsp;</div> <div class="inline-text">{% with unique_id="import-products" %}{% include "includes/modal_import_products.html" %}{% endwith %}.</div>
 {% endif %}

@@ -163,8 +163,8 @@ class Product(Base):
 
     def __str__(self):
         out = self.name
-        if self.unit:
-            out += f" ({self.unit})"
+        # if self.unit:
+        #     out += f" ({self.unit})"
         return out
 
 
