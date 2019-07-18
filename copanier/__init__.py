@@ -106,7 +106,16 @@ async def auth_required(request, response):
         if not email:
             response.redirect = f"/sésame?next={request.path}"
             return response
-        user = Person(email=email)
+        
+        groups = Groups.load()
+        request["groups"] = groups
+
+        group = groups.get_user_group(email)
+        user = Person(
+            email=email,
+            group_id=group.id,
+            group_name=group.name)
+
         request["user"] = user
         session.user.set(user)
 
@@ -183,14 +192,14 @@ async def home(request, response):
 
 @app.route("/groupes", methods=["GET"])
 async def handle_groups(request, response):
-    response.html("groups.html", {"groups": Groups.load()})
+    response.html("groups.html", {"groups": request["groups"]})
+
 
 @app.route("/groupes/{id}/rejoindre", method=["GET"])
 async def join_group(request, response, id):
-    groups = Groups.load()
     user = session.user.get(None)
-    group = groups.add_user(user.email, id)
-    groups.persist()
+    group = request["groups"].add_user(user.email, id)
+    request['groups'].persist()
     response.message(f"Vous avez bien rejoint le groupe '{group.name}'")
     response.redirect = "/groupes"
 
@@ -207,9 +216,8 @@ async def create_group(request, response):
             id=slugify(form.get('name')),
             name=form.get('name'),
             members=members)
-        groups = Groups.load()
-        groups.add_group(group)
-        groups.persist()
+        request["groups"].add_group(group)
+        request["groups"].persist()
         response.message(f"Le groupe {group.name} à bien été créé")
         response.redirect = "/groupes"
     response.html("edit_group.html", group=group)
@@ -217,9 +225,8 @@ async def create_group(request, response):
 
 @app.route("/groupes/{id}/éditer", methods=["GET", "POST"])
 async def edit_group(request, response, id):
-    groups = Groups.load()
-    assert id in groups.groups, "Impossible de trouver le groupe"
-    group = groups.groups[id]
+    assert id in request["groups"].groups, "Impossible de trouver le groupe"
+    group = request["groups"].groups[id]
     if request.method == "POST":
         form = request.form
         members = []
@@ -227,19 +234,20 @@ async def edit_group(request, response, id):
             members = [m.strip() for m in form.get('members').split(',')]
         group.members = members
         group.name = form.get('name')
-        groups.groups[id] = group
-        groups.persist()
+        request["groups"].groups[id] = group
+        request["groups"].persist()
         response.redirect = "/groupes"
     response.html("edit_group.html", group=group)
 
+
 @app.route("/groupes/{id}/supprimer", methods=["GET"])
 async def delete_group(request, response, id):
-    groups = Groups.load()
-    assert id in groups.groups, "Impossible de trouver le groupe"
-    deleted = groups.groups.pop(id)
-    groups.persist()
+    assert id in request["groups"].groups, "Impossible de trouver le groupe"
+    deleted = request["groups"].groups.pop(id)
+    request["groups"].persist()
     response.message(f"Le groupe {deleted.name} à bien été supprimé")
     response.redirect = "/groupes"
+
 
 @app.route("/archives", methods=["GET"])
 async def view_archives(request, response):

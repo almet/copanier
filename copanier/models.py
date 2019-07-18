@@ -87,10 +87,13 @@ class Person(Base):
     email: str
     first_name: str = ""
     last_name: str = ""
+    group_id: str = ""
+    group_name: str = ""
 
     @property
     def is_staff(self):
         return not config.STAFF or self.email in config.STAFF
+
 
 @dataclass
 class Group(Base):
@@ -135,6 +138,12 @@ class Groups(PersistedBase):
         for group in self.groups.values():
             if email in group.members:
                 group.members.remove(email)
+
+    def get_user_group(self, email):
+        for group in self.groups.values():
+            if email in group.members:
+                return group
+        return None
 
     @classmethod
     def init_fs(cls):

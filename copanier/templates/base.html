@@ -23,7 +23,7 @@
                 {% if request.user.is_staff %}
                 <a class="button" href="/livraison"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle livraison</a>&nbsp;
                 {% endif %}
-                <i class="icon-lock"></i>&nbsp;<span>{{ request["user"].email }}</span>
+                <i class="icon-lock"></i>&nbsp;<span>{{ request["user"].email }} {% if request["user"].group_name %}({{ request["user"].group_name }}){% endif %}</span>
             {% endif %}
         </nav>
     </section>
