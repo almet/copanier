@@ -5,7 +5,7 @@
 {% include "includes/delivery_head.html" %}
 <article class="delivery">
 {% if delivery.has_products %}
-    {% include "includes/delivery_list.html" %}
+    {% include "includes/delivery_table.html" %}
 {% else %}
 <p>Aucun produit n'est encore défini pour cette livraison.</p>
 {% if request.user and request.user.is_staff %}
