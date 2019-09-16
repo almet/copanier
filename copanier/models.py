@@ -82,6 +82,7 @@ class PersistedBase(Base):
         return Path(config.DATA_ROOT) / cls.__root__
 
 
+
 @dataclass
 class Person(Base):
     email: str
@@ -148,6 +149,14 @@ class Groups(PersistedBase):
     @classmethod
     def init_fs(cls):
         cls.get_root().mkdir(parents=True, exist_ok=True)
+
+@dataclass
+class Producer(Base):
+    id: str
+    referent: str = ""
+    contact: str = ""
+    location: str = ""
+
 
 @dataclass
 class Product(Base):
@@ -230,6 +239,7 @@ class Delivery(PersistedBase):
     instructions: str = ""
     where: str = "Marché de la Briche"
     products: List[Product] = field(default_factory=list)
+    producers: Dict[str, Producer] = field(default_factory=dict)
     orders: Dict[str, Order] = field(default_factory=dict)
     infos_url: str = ""
 
@@ -255,13 +265,13 @@ class Delivery(PersistedBase):
     def total(self):
         return round(sum(o.total(self.products) for o in self.orders.values()), 2)
 
-    @property
-    def producers(self):
-        return list(set([p.producer for p in self.products]))
+    # @property
+    # def producers(self):
+    #     return list(set([p.producer for p in self.products]))
 
-    @property
-    def has_multiple_producers(self):
-        return len(self.producers) > 1
+    # @property
+    # def has_multiple_producers(self):
+    #     return len(self.producers) > 1
 
     @property
     def is_open(self):

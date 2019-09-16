@@ -3,7 +3,7 @@ from dataclasses import fields as get_fields
 from openpyxl import Workbook
 from openpyxl.writer.excel import save_virtual_workbook
 
-from .models import Product
+from .models import Product, Producer
 
 def summary_for_products(wb, title, delivery, total=None, products=None):
     if products == None:
@@ -87,10 +87,17 @@ def products(delivery):
     wb = Workbook()
     ws = wb.active
     ws.title = f"{delivery.name} produits"
-    fields = [f.name for f in get_fields(Product)]
-    ws.append(fields)
+    product_fields = [f.name for f in get_fields(Product)]
+    ws.append(product_fields)
     for product in delivery.products:
-        ws.append([getattr(product, field) for field in fields])
+        ws.append([getattr(product, field) for field in product_fields])
+
+    producer_sheet = wb.create_sheet(f"producteur⋅ice⋅s et référent⋅e⋅s")
+    producer_fields = [f.name for f in get_fields(Producer)]
+    producer_sheet.append(producer_fields)
+    for producer in delivery.producers.values():
+        producer_sheet.append([getattr(producer, field) for field in producer_fields])
+    
     return save_virtual_workbook(wb)
 
 

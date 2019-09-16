@@ -301,6 +301,9 @@ async def create_delivery(request, response):
     response.redirect = f"/livraison/{delivery.id}"
 
 
+
+
+
 @app.route("/livraison/{id}/importer/produits", methods=["POST"])
 @staff_only
 async def import_products(request, response, id):
@@ -309,12 +312,9 @@ async def import_products(request, response, id):
     data = request.files.get("data")
     error_path = f"/livraison/{delivery.id}/edit"
 
-    if data.filename.endswith((".csv", ".xlsx")):
+    if data.filename.endswith(".xlsx"):
         try:
-            if data.filename.endswith(".csv"):
-                imports.products_from_csv(delivery, data.read().decode())
-            else:
-                imports.products_from_xlsx(delivery, data)
+            imports.products_and_producers_from_xlsx(delivery, data)
         except ValueError as err:
             message = f"Impossible d'importer le fichier. {err.args[0]}"
             response.message(message, status="error")
@@ -324,7 +324,7 @@ async def import_products(request, response, id):
         response.message("Format de fichier inconnu", status="error")
         response.redirect = error_path
         return
-    response.message("Les produits de la livraison ont bien été mis à jour!")
+    response.message("Les produits et producteur⋅ice⋅s ont bien été mis à jour!")
     response.redirect = f"/livraison/{delivery.id}"
 
 
