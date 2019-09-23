@@ -2,7 +2,7 @@
 
 {% block body %}
 <article class="order">
-<h3><a href="/livraison/{{ delivery.id }}">{{ delivery.name }}</a> — Commande pour « {{ person.email }} »</h3>
+<h3><a href="/livraison/{{ delivery.id }}">{{ delivery.name }}</a> — Commande pour « {{ person.name }} »</h3>
 {% include "includes/delivery_head.html" %}
 <form method="post">
 

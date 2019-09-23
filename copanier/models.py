@@ -94,6 +94,14 @@ class Person(Base):
     @property
     def is_staff(self):
         return not config.STAFF or self.email in config.STAFF
+    
+    @property
+    def id(self):
+        return self.group_id or self.email
+    
+    @property
+    def name(self):
+        return self.group_name or self.email
 
 
 @dataclass
@@ -145,7 +153,7 @@ class Groups(PersistedBase):
             if email in group.members:
                 return group
         return None
-
+    
     @classmethod
     def init_fs(cls):
         cls.get_root().mkdir(parents=True, exist_ok=True)

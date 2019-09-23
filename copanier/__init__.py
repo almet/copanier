@@ -365,20 +365,29 @@ async def view_delivery(request, response, id):
 @app.route("/livraison/{id}/commander", methods=["POST", "GET"])
 async def place_order(request, response, id):
     delivery = Delivery.load(id)
-    email = request.query.get("email", None)
+    # email = request.query.get("email", None)
     user = session.user.get(None)
+    orderer = request.query.get("orderer", None)
+    if orderer:
+        orderer = Person(email=orderer, group_id=orderer)
+
     delivery_url = f"/livraison/{delivery.id}"
-    if not email and user:
-        email = user.email
-    if not email:
+    if not orderer and user:
+        orderer = user
+
+    if not orderer:
         response.message("Impossible de comprendre pour qui passer commande…", "error")
         response.redirect = delivery_url
         return
+
     if request.method == "POST":
-        if not (user and user.is_staff) and delivery.status == delivery.CLOSED:
+        
+        # When the delivery is closed, only staff can access.
+        if delivery.status == delivery.CLOSED and not (user and user.is_staff) :
             response.message("La livraison est fermée", "error")
             response.redirect = delivery_url
             return
+        
         form = request.form
         order = Order(paid=form.bool("paid", False))
         for product in delivery.products:
@@ -394,29 +403,41 @@ async def place_order(request, response, id):
                 order.products[product.ref] = ProductOrder(
                     wanted=wanted, adjustment=adjustment
                 )
+        
         if not delivery.orders:
             delivery.orders = {}
+
         if not order.products:
-            if email in delivery.orders:
-                del delivery.orders[email]
+            if orderer.id in delivery.orders:
+                del delivery.orders[orderer.id]
                 delivery.persist()
             response.message("La commande est vide.", status="warning")
             response.redirect = delivery_url
             return
-        delivery.orders[email] = order
+        delivery.orders[orderer.id] = order
         delivery.persist()
-        if user and user.email == email:
+        
+        if user and orderer.id == user.id:
             # Only send email if order has been placed by the user itself.
-            emails.send_order(
-                request, env, person=Person(email=email), delivery=delivery, order=order
-            )
-        response.message(f"La commande pour «{email}» a bien été prise en compte!")
+            # Send the emails to everyone in the group.
+            from pdb import set_trace; set_trace()
+            groups = request['groups'].groups
+            if orderer.group_id in groups.keys():
+                for email in groups[orderer.group_id].members:
+                    emails.send_order(
+                        request, env, person=Person(email=email), delivery=delivery, order=order
+                    )
+            else:
+                emails.send_order(
+                        request, env, person=Person(email=orderer.email), delivery=delivery, order=order
+                    )
+        response.message(f"La commande pour « {orderer.name} » a bien été prise en compte!")
         response.redirect = f"/livraison/{delivery.id}"
     else:
-        order = delivery.orders.get(email) or Order()
+        order = delivery.orders.get(orderer.id) or Order()
         response.html(
             "place_order.html",
-            {"delivery": delivery, "person": Person(email=email), "order": order},
+            {"delivery": delivery, "person": orderer, "order": order},
         )
 
 
