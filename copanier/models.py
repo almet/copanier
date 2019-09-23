@@ -154,6 +154,7 @@ class Groups(PersistedBase):
 class Producer(Base):
     id: str
     referent: str = ""
+    tel_referent: str = ""
     contact: str = ""
     location: str = ""
 
@@ -169,6 +170,7 @@ class Product(Base):
     img: str = ""
     packing: int = None
     producer: str = ""
+    rupture: bool = False
 
     def __str__(self):
         out = self.name

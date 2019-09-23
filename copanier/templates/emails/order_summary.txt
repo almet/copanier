@@ -1,14 +1,11 @@
 Salut salut,
 
-Voici le résumé de votre commande «{{ delivery.name }}»
+Voici le résumé de votre commande «{{ delivery.name }}» pour « {{ request['user']['group_name'] }} ».
 
 Produit | Prix unitaire | Quantité
 
-{% for product in delivery.products %}
-{% if order[product].quantity %}
-{{ product.name }} | {{ product.price }} € | {{ order[product].quantity }}
-{% endif %}
-{% endfor %}
+{% for product in delivery.products %}{% if order[product].quantity %}{{ product.name }} | {{ product.price }} € | {{ order[product].quantity }}
+{% endif %}{% endfor %}
 
 Total: {{ order.total(delivery.products) if order else 0 }} €
 

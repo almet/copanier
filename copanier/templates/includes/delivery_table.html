@@ -26,7 +26,7 @@
             <th class="product">{{ product }}</th>
             <td>{{ product.price | round(2) }} €</td>
             {% if delivery.has_packing %}
-                <td class="packing">{{ product.packing or '—'}}</td>
+                <td class="packing">{% if product.packing %}{{ product.packing }} x {% endif %} {{ product.unit }}</td>
             {% endif %}
             <th{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>
                 {{ delivery.product_wanted(product) }}
