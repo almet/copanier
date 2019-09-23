@@ -1,5 +1,6 @@
 {% for producer in delivery.producers %}
     <h2>{{ producer }}</h2>
+    <h4>Référent⋅e : {{ delivery.producers[producer].referent }} / {{ delivery.producers[producer].tel_referent }}</h4>
 <table class="delivery">
     <thead>
         <tr>

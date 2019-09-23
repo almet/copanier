@@ -4,7 +4,7 @@ Voici le résumé de votre commande «{{ delivery.name }}» pour « {{ request['
 
 Produit | Prix unitaire | Quantité
 
-{% for product in delivery.products %}{% if order[product].quantity %}{{ product.name }} | {{ product.price }} € | {{ order[product].quantity }}
+{% for product in delivery.products %}{% if order[product].quantity %}{{ product.name }} | {{ product.price }} € | {{ order[product].quantity }} x {{ product.unit }}
 {% endif %}{% endfor %}
 
 Total: {{ order.total(delivery.products) if order else 0 }} €

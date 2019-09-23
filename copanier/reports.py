@@ -39,17 +39,14 @@ def summary_for_products(wb, title, delivery, total=None, products=None):
 def summary(delivery):
     wb = Workbook()
     wb.remove(wb.active)
-    if delivery.has_multiple_producers:
-        for producer in delivery.producers:
-            summary_for_products(
-                wb,
-                producer,
-                delivery,
-                total=delivery.total_for_producer(producer),
-                products=delivery.get_products_by(producer)
-            )
-    else:
-        summary_for_products(wb, f"{delivery.name} {delivery.from_date.date()}", delivery)
+    for producer in delivery.producers:
+        summary_for_products(
+            wb,
+            producer,
+            delivery,
+            total=delivery.total_for_producer(producer),
+            products=delivery.get_products_by(producer)
+        )
     
     return save_virtual_workbook(wb)
 
@@ -59,13 +56,11 @@ def full(delivery):
     ws = wb.active
     ws.title = f"{delivery.name} {delivery.from_date.date()}"
     headers = ["ref", "produit", "prix"] + [e for e in delivery.orders] + ["total"]
-    if delivery.has_multiple_producers:
-        headers.insert(1, "producer")
+    headers.insert(1, "producer")
     ws.append(headers)
     for product in delivery.products:
         row = [product.ref, str(product), product.price]
-        if delivery.has_multiple_producers:
-            row.insert(1, product.producer)
+        row.insert(1, product.producer)
         for order in delivery.orders.values():
             wanted = order.products.get(product.ref)
             row.append(wanted.quantity if wanted else 0)
@@ -76,8 +71,7 @@ def full(delivery):
         + [round(o.total(delivery.products),2) for o in delivery.orders.values()]
         + [round(delivery.total, 2)]
     )
-    if delivery.has_multiple_producers:
-        footer.insert(1, "")
+    footer.insert(1, "")
 
     ws.append(footer)
     return save_virtual_workbook(wb)

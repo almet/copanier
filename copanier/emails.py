@@ -38,6 +38,7 @@ def send_order(request, env, person, delivery, order):
         "order_summary",
         person.email,
         f"{config.SITE_NAME} : résumé de la commande {delivery.name}",
+        display_prices=True,
         order=order,
         delivery=delivery,
         request=request

@@ -1,10 +1,10 @@
 <table class="order">
-    <tr><th class="product">Produit</th><th class="price">Prix unitaire</th><th class="amount">Quantité</th></tr>
+    <tr><th class="product">Produit</th>{% if display_prices %}<th class="price">Prix unitaire</th>{% endif %}<th class="amount">Quantité</th></tr>
     {% for product in delivery.products %}
     {% if order[product].quantity %}
     <tr>
         <th class="product" style="text-align: left;">{{ product }}</th>
-        <td>{{ product.price | round(2) }} €</td><td>{{ order[product].quantity }}</td>
+        {% if display_prices %}<td>{{ product.price | round(2) }} €</td>{% endif %}<td>{{ order[product].quantity }} x {{ product.unit }}</td>
     </tr>
     {% endif %}
     {% endfor %}

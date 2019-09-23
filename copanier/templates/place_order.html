@@ -34,7 +34,7 @@
             </th>
             <td>{{ product.price | round(2) }} €</td>
             {% if delivery.has_packing %}
-                <td {% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>{{ product.packing or "—" }}{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (−{{ delivery.product_missing(product) }}){% endif %}</td>
+                <td {% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>{{ product.packing or "—" }}{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (manque {{ delivery.product_missing(product) }}){% endif %}</td>
             {% endif %}
             <td class="with-input"><input {% if delivery.status != delivery.OPEN %}type="text" readonly{% else%}type="number"{% endif%} min=0 name="wanted:{{ product.ref }}" value="{{ order[product].wanted }}"> x {{ product.unit }}</td>
             {% if delivery.status == delivery.ADJUSTMENT or order.has_adjustments %}

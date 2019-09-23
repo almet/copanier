@@ -4,12 +4,16 @@
     {% with deliveries=incoming %}
         {% include "includes/delivery_list.html" %}
     {% endwith %}
+    {% if former %}
     <h2>Livraisons passées</h2>
     {% with deliveries=former %}
         {% include "includes/delivery_list.html" %}
     {% endwith %}
+    {% endif %}
+    {% if archives %}
     <a href="/archives">Voir les livraisons archivées</a>
     <hr>
+    {% endif %}
     <ul class="toolbox">
         <li>
             <a href="/groupes" class="button"><i class="icon-globe"></i>&nbsp;Gérer les groupes</a>

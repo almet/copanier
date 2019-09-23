@@ -192,7 +192,11 @@ async def home(request, response):
     if not request['user'].group_id:
         response.redirect = "/groupes"
         return
-    response.html("home.html", incoming=Delivery.incoming(), former=Delivery.former())
+    response.html(
+        "home.html",
+        incoming=Delivery.incoming(),
+        former=Delivery.former(),
+        archives=list(Delivery.all(is_archived=True)))
 
 
 @app.route("/groupes", methods=["GET"])
@@ -516,13 +520,15 @@ async def import_multiple_commands(request, response, id):
 @app.route("/livraison/{id}/bon-de-commande.xlsx", methods=["GET"])
 async def xls_report(request, response, id):
     delivery = Delivery.load(id)
-    response.xlsx(reports.summary(delivery))
+    date = delivery.to_date.strftime("%Y-%m-%d")
+    response.xlsx(reports.summary(delivery), filename=f"{config.SITE_NAME}-{date}-bon-de-commande.xlsx")
 
 
 @app.route("/livraison/{id}/rapport-complet.xlsx", methods=["GET"])
 async def xls_full_report(request, response, id):
     delivery = Delivery.load(id)
-    response.xlsx(reports.full(delivery))
+    date = delivery.to_date.strftime("%Y-%m-%d")
+    response.xlsx(reports.full(delivery), filename=f"{config.SITE_NAME}-{date}-rapport-complet.xlsx")
 
 
 @app.route("/livraison/{id}/ajuster/{ref}", methods=["GET", "POST"])
