@@ -420,7 +420,6 @@ async def place_order(request, response, id):
         if user and orderer.id == user.id:
             # Only send email if order has been placed by the user itself.
             # Send the emails to everyone in the group.
-            from pdb import set_trace; set_trace()
             groups = request['groups'].groups
             if orderer.group_id in groups.keys():
                 for email in groups[orderer.group_id].members:
