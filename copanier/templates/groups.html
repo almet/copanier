@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 
 {% block body %}
-<h2>Liste des colocs / familles <a class="button" href="/groupes/créer"><i class="icon-globe"></i>&nbsp;Créer un nouveau groupe</a></h2>
+{% if not request['user'].group_id %}
+<p>Bienvenue ! Avant de pouvoir commander, peux-tu nous indiquer de quelle coloc / famille fais-tu partie ? </p>
+{% endif %}
+<p>Voici la liste des colocs / familles déjà renseignées. Tu peux aussi <a class="button" href="/groupes/créer"><i class="icon-globe"></i>&nbsp;créer un nouveau groupe</a></p>
 
 
 {% for group in groups.groups.values() %}

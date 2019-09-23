@@ -1,10 +1,5 @@
 {% extends "base.html" %}
 {% block body %}
-{% if not request['user'].group_id %}
-<p class="notification warning">Vous ne faites partie d'aucun groupe (coloc / famille). Si vous faites des commandes pour plusieurs personnes, merci de rejoindre un groupe.
-    <a href="/groupes" class="button">Rejoindre un groupe</a>
-</p>
-{% endif %}
     <h2>Livraisons à venir</h2>
     {% with deliveries=incoming %}
         {% include "includes/delivery_list.html" %}

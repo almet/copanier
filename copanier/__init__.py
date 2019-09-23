@@ -189,6 +189,9 @@ async def logout(request, response):
 
 @app.route("/", methods=["GET"])
 async def home(request, response):
+    if not request['user'].group_id:
+        response.redirect = "/groupes"
+        return
     response.html("home.html", incoming=Delivery.incoming(), former=Delivery.former())
 
 
@@ -202,8 +205,10 @@ async def join_group(request, response, id):
     user = session.user.get(None)
     group = request["groups"].add_user(user.email, id)
     request['groups'].persist()
+    redirect = '/' if not request['user'].group_id else '/groupes'
+        
     response.message(f"Vous avez bien rejoint le groupe '{group.name}'")
-    response.redirect = "/groupes"
+    response.redirect = redirect
 
 
 @app.route("/groupes/créer", methods=["GET", "POST"])
@@ -214,6 +219,10 @@ async def create_group(request, response):
         members = []
         if form.get('members'):
             members = [m.strip() for m in form.get('members').split(',')]
+        
+        if not request['user'].group_id and request['user'].email not in members:
+            members.append(request['user'].email)
+            
         group = Group.create(
             id=slugify(form.get('name')),
             name=form.get('name'),
@@ -221,7 +230,7 @@ async def create_group(request, response):
         request["groups"].add_group(group)
         request["groups"].persist()
         response.message(f"Le groupe {group.name} à bien été créé")
-        response.redirect = "/groupes"
+        response.redirect = "/"
     response.html("edit_group.html", group=group)
 
 
