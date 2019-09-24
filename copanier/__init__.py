@@ -9,6 +9,9 @@ from roll import Roll, Response, HttpError
 from roll.extensions import traceback, simple_server, static
 from slugify import slugify
 
+from debts.solver import order_balance, check_balance, reduce_balance
+from collections import defaultdict
+from functools import partial
 
 from . import config, reports, session, utils, emails, loggers, imports
 from .models import Delivery, Order, Person, Product, ProductOrder, Groups,  Group
@@ -492,6 +495,7 @@ async def import_commande(request, response, id):
     response.message(f"Yallah! La commande de {email} a bien été importée !")
     response.redirect = f"/livraison/{delivery.id}"
 
+
 @app.route("/livraison/{id}/importer/commandes", methods=["POST"])
 @staff_only
 async def import_multiple_commands(request, response, id):
@@ -556,20 +560,42 @@ async def adjust_product(request, response, id, ref):
         response.html("adjust_product.html", {"delivery": delivery, "product": product})
 
 
-@app.route("/livraison/{id}/solde", methods=["GET", "POST"])
+@app.route("/livraison/{id}/solde", methods=["GET"])
 @staff_only
 async def delivery_balance(request, response, id):
     delivery = Delivery.load(id)
+    groups = request['groups']
     delivery_url = f"/livraison/{delivery.id}"
-    if request.method == "POST":
-        form = request.form
-        for email, order in delivery.orders.items():
-            order.paid = form.bool(email, False)
-        delivery.persist()
-        response.message(f"Les soldes ont bien été mis à jour!")
-        response.redirect = delivery_url
-    else:
-        response.html("delivery_balance.html", {"delivery": delivery})
+
+    balance = []
+    for group_id, order in delivery.orders.items():
+        balance.append((group_id, order.total(delivery.products) * -1))
+    
+    for producer in delivery.producers.values():
+        group = groups.get_user_group(producer.referent)
+        group_id = group.id if group else producer.referent
+        amount = delivery.total_for_producer(producer.id)
+        if amount:
+            balance.append((group_id, amount))
+    
+    debiters, crediters = order_balance(balance)
+    check_balance(debiters, crediters)
+    results = reduce_balance(debiters[:], crediters[:])
+
+    results_dict = defaultdict(partial(defaultdict, float))
+
+    for debiter, amount, crediter in results:
+        results_dict[debiter][crediter] = amount
+
+    # from pdb import set_trace; set_trace()
+
+    response.html("delivery_balance.html", {
+        "delivery": delivery,
+        "debiters": debiters,
+        "crediters": crediters,
+        "results": results_dict,
+        "groups": groups.groups,
+    })
 
 
 @app.route("/livraison/{id}/solde.xlsx", methods=["GET"])

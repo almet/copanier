@@ -48,11 +48,9 @@
             {% include "includes/modal_copy_emails.html" %}
         {% endwith %}
     </li>
-    {% if delivery.is_passed %}
     <li>
-        <a href="/livraison/{{ delivery.id }}/solde"><i class="icon-wallet"></i> Gérer les soldes</a>
+        <a href="/livraison/{{ delivery.id }}/solde"><i class="icon-wallet"></i> Répartition des paiements</a>
     </li>
-    {% endif %}
     {% endif %}
 </ul>
 {% endblock body %}
