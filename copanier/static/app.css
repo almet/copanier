@@ -543,3 +543,7 @@ dt.mandatory:after {
 details summary {
   cursor: pointer;
 }
+
+.rupture {
+  background-color: #ff000083;
+}
