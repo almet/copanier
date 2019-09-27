@@ -28,25 +28,10 @@
     {% endif %}
     {% if request.user and request.user.is_staff %}
     <li>
-        <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> Télécharger les produits</a>
+        <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> Liste des produits</a>
     </li>
     <li>
         <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison</a>
-    </li>
-    <li>
-        {% with unique_id="import-command" %}
-            {% include "includes/modal_import_command.html" %}
-        {% endwith %}
-    </li>
-    <li>
-        {% with unique_id="add-command" %}
-            {% include "includes/modal_add_command.html" %}
-        {% endwith %}
-    </li>
-    <li>
-        {% with unique_id="copy-emails" %}
-            {% include "includes/modal_copy_emails.html" %}
-        {% endwith %}
     </li>
     <li>
         <a href="/livraison/{{ delivery.id }}/solde"><i class="icon-wallet"></i> Répartition des paiements</a>

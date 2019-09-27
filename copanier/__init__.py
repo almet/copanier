@@ -317,9 +317,6 @@ async def create_delivery(request, response):
     response.redirect = f"/livraison/{delivery.id}"
 
 
-
-
-
 @app.route("/livraison/{id}/importer/produits", methods=["POST"])
 @staff_only
 async def import_products(request, response, id):
@@ -586,8 +583,6 @@ async def delivery_balance(request, response, id):
 
     for debiter, amount, crediter in results:
         results_dict[debiter][crediter] = amount
-
-    # from pdb import set_trace; set_trace()
 
     response.html("delivery_balance.html", {
         "delivery": delivery,
