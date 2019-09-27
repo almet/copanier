@@ -3,3 +3,5 @@ __pycache__
 tmp/
 db/
 venv
+.env
+.vscode

@@ -178,7 +178,7 @@ class Product(Base):
     img: str = ""
     packing: int = None
     producer: str = ""
-    rupture: bool = False
+    rupture: str = None
 
     def __str__(self):
         out = self.name

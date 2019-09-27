@@ -24,7 +24,7 @@
     <tbody>
         {% for product in delivery.get_products_by(producer) %}
         <tr>
-            <th class="product">{{ product }}</th>
+            <th class="product {% if product.rupture %}rupture{% endif %}">{{ product }} {% if product.rupture %}(RUPTURE !){% endif %}
             <td>{{ product.price | round(2) }} €</td>
             {% if delivery.has_packing %}
                 <td class="packing">{% if product.packing %}{{ product.packing }} x {% endif %} {{ product.unit }}</td>
