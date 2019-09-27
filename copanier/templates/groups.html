@@ -8,7 +8,7 @@
 
 
 {% for group in groups.groups.values() %}
-<h3>{{ group.name }} <a class="button" href="/groupes/{{ group.id}}/rejoindre">rejoindre</a> <a class="button" href="/groupes/{{ group.id }}/éditer">éditer</a></h3>
+<h3>{{ group.name }} {% if group.id != request['user'].group_id %}<a class="button" href="/groupes/{{ group.id}}/rejoindre">rejoindre</a>{% endif %} <a class="button" href="/groupes/{{ group.id }}/éditer">éditer</a></h3>
 <ul>
     {% for member in group.members %}
     <li>{{ member }}</li>
