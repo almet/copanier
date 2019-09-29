@@ -152,7 +152,7 @@ class Groups(PersistedBase):
         for group in self.groups.values():
             if email in group.members:
                 return group
-        return None
+        return email
     
     @classmethod
     def init_fs(cls):
@@ -164,7 +164,7 @@ class Producer(Base):
     referent: str = ""
     tel_referent: str = ""
     contact: str = ""
-    location: str = ""
+    description: str = ""
 
 
 @dataclass
@@ -185,6 +185,20 @@ class Product(Base):
         # if self.unit:
         #     out += f" ({self.unit})"
         return out
+    
+    def update_from_form(self, form):
+        self.name = form.get('name')
+        self.price = form.float('price')
+        self.unit = form.get('unit')
+        self.description = form.get('description')
+        self.url = form.get('url')
+        if form.get('packing'):
+            self.packing = form.int('packing')
+        if 'rupture' in form:
+            self.rupture = form.get('rupture')
+        else:
+            self.rupture = None
+        return self
 
 
 @dataclass
@@ -387,9 +401,24 @@ class Delivery(PersistedBase):
 
     def get_products_by(self, producer):
         return [p for p in self.products if p.producer == producer]
+    
+    def get_product(self, ref):
+        products = [p for p in self.products if p.ref == ref]
+        if products:
+            return products[0]
 
     def total_for_producer(self, producer, person=None):
         producer_products = [p for p in self.products if p.producer == producer]
         if person:
             return self.orders.get(person).total(producer_products)
         return round(sum(o.total(producer_products) for o in self.orders.values()), 2)
+    
+    def get_producers_for_referent(self, referent):
+        return {
+            id: producer
+                for id, producer in self.producers.items()
+            if producer.referent == referent
+        }
+
+    def get_referents(self):
+        return [producer.referent for producer in self.producers.values()]

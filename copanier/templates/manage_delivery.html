@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h1>Gérer « {{ delivery.name }} »</h1>
+
+<h3>Avant et pendant la distribution</h3>
+<a class="button" href="/livraison/{{ delivery.id }}/edit"><i class="icon-pencil"></i>&nbsp; Modifier la commande (dates, lieu, référent⋅e, etc)</a>
+<a class="button" href="/livraison/{{ delivery.id }}/producteurices"><i class="icon-pencil"></i>&nbsp; Modifier les produits, les product⋅rices⋅eurs</a>
+<a class="button" href="/groupes"><i class="icon-globe"></i>&nbsp; Gérer les groupes / colocs</a>
+
+<h3>Une fois les commandes passées (après le {{ delivery.order_before|date }})</h3>
+<a class="button" href="/livraison/{{ delivery.id }}/rapport-complet.xlsx"><i class="icon-download"></i>&nbsp; Télécharger le récap (global) des commandes</a>
+<a class="button" href="/livraison/{{ delivery.id }}/envoi-email-referentes"><i class="icon-envelope"></i>&nbsp; Envoyer les infos de commande aux référent⋅e⋅s</a>
+
+<h3>Pour préparer la distribution (le {{ delivery.from_date|date }})</h3>   
+<a class="button" href="/livraison/{{ delivery.id }}/émargement"><i class="icon-document"></i>&nbsp; Fiches de commandes par groupe</a>
+<a class="button" href="/livraison/{{ delivery.id }}/rapport-complet.xlsx"><i class="icon-grid"></i>&nbsp; Télécharger le résumé général des commandes</a>
+<a class="button" href="/livraison/{{ delivery.id }}/solde"><i class="icon-gears"></i>&nbsp; Faire la répartition des paiements</a>
+
+{% endblock %}

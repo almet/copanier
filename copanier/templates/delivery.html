@@ -3,13 +3,18 @@
 {% block body %}
 <h3>{{ delivery.name }} {% include "includes/order_button.html" %}</h3>
 {% include "includes/delivery_head.html" %}
+{% if request['user'].email == delivery.contact %}
+<div class="notification info"><i class="icon-lightbulb"></i> Vous êtes la personne référente de cette distribution <a class="button" href="/livraison/{{ delivery.id }}/gérer">Gérer la distribution</a></div>
+{% elif request['user'].email in delivery.get_referents() %}
+<div class="notification info"><i class="icon-lightbulb"></i> Vous êtes référent⋅e pour cette distribution (merci !). Voici <a class="button" href="/livraison/{{ delivery.id }}/producteurices?referent={{request['user'].email}}">un petit lien pour aller voir les produits dont vous vous occupez !</a></div>
+{% endif %}
 <article class="delivery">
 {% if delivery.has_products %}
     {% include "includes/delivery_table.html" %}
 {% else %}
 <p>Aucun produit n'est encore défini pour cette livraison.</p>
 {% if request.user and request.user.is_staff %}
-<div class="inline-text">Pour rajouter des produits, il faut d'abord <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> télécharger le tableur avec les produits</a>, le modifier localement sur votre machine puis &nbsp;</div> <div class="inline-text">{% with unique_id="import-products" %}{% include "includes/modal_import_products.html" %}{% endwith %}.</div>
+<div class="inline-text">Pour rajouter des produits, il faut d'abord <a href="/livraison/{{ delivery.id }}/exporter"><i class="icon-layers"></i> télécharger le tableur avec les produits</a>, le modifier localement sur votre machine puis &nbsp;</div> <div class="inline-text">{% with unique_id="import-products" %}{% include "includes/modal_import_products.html" %}{% endwith %}.</div>
 {% endif %}
 {% endif %}
 </article>
@@ -28,7 +33,7 @@
     {% endif %}
     {% if request.user and request.user.is_staff %}
     <li>
-        <a href="/livraison/{{ delivery.id }}/exporter/produits"><i class="icon-layers"></i> Liste des produits</a>
+        <a href="/livraison/{{ delivery.id }}/exporter"><i class="icon-layers"></i> Liste des produits</a>
     </li>
     <li>
         <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison</a>

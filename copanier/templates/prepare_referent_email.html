@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h1>Envoi d'un mail aux référent⋅e⋅s</h1>
+<p>Le mail ci dessous (vous pouvez le modifier !) va être envoyé aux référent⋅e⋅s, avec en pièce jointe le tableau comportant les commandes pour les product⋅eurs⋅rices.</p>
+
+<form method="post">
+<input type="text" name="email_subject" style="width:800px" value="{{ config.SITE_NAME }} - Les commandes pour vos producteurs⋅rices" /><br />
+<textarea name="email_body" cols="80" rows="10">
+Bonjour,
+
+Et voilà, les commandes maintenant terminées, il est maintenant temps de passer à l'action !
+En pièce-jointe, les informations pour les producteurs⋅rices dont tu est référent⋅e.
+
+Rendez-vous pour la distribution, le {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }} à {{ delivery.where }}.
+
+A bientôt !
+</textarea><br />
+<input type="submit" name="submit" value="Envoyer le mail aux référent⋅e⋅s (avec le tableur en PJ)" class="primary">
+</form>
+{% endblock %}

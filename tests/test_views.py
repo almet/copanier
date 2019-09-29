@@ -239,7 +239,7 @@ async def test_post_delivery_balance(client, delivery):
 
 async def test_export_products(client, delivery):
     delivery.persist()
-    resp = await client.get(f"/livraison/{delivery.id}/exporter/produits")
+    resp = await client.get(f"/livraison/{delivery.id}/exporter")
     wb = load_workbook(filename=BytesIO(resp.body))
     assert list(wb.active.values) == [
         ("name", "ref", "price", "unit", "description", "url", "img", "packing", "producer"),

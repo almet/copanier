@@ -450,6 +450,11 @@ hr {
 .notification.warning {
   background-color: #f9b42d;
 }
+.notification.info {
+  background-color: #aed1b175;
+  color: #000;
+}
+
 .notification i {
   font-size: 2rem;
 }
@@ -515,6 +520,7 @@ ul.delivery-head li {
   list-style: none;
   padding: 0;
   margin: 0;
+  font-size: 0.8em;
 }
 ul.delivery-head li i{
   float: left;

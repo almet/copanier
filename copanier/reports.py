@@ -35,11 +35,12 @@ def summary_for_products(wb, title, delivery, total=None, products=None):
     ws.append(["", "", "", "", "Total", total])
 
 
-
-def summary(delivery):
+def summary(delivery, producers=None):
     wb = Workbook()
     wb.remove(wb.active)
-    for producer in delivery.producers:
+    if not producers:
+        producers = delivery.producers
+    for producer in producers:
         summary_for_products(
             wb,
             producer,

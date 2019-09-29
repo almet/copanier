@@ -16,7 +16,7 @@
         <input type="text" name="description" value="{{ delivery.description or '' }}">
     </label>
     <label>
-        <p>Référent</p>
+        <p>Référent⋅e</p>
         <input type="email" name="contact" value="{{ delivery.contact or request.user.email }}" required>
     </label>
     <label>
@@ -55,6 +55,9 @@
         {% with unique_id="import-products" %}
             {% include "includes/modal_import_products.html" %}
         {% endwith %}
+    </li>
+    <li>
+        <a href="/livraison/{{ delivery.id }}/producteurices"><i class="icon-pencil"></i> Gérer les produits / product⋅eur⋅rice⋅s</a>
     </li>
 </ul>
 {% endif %}

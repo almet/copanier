@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block body %}
+<h3>{{ delivery.name }}</h3>
+{% if referent %}<p>Voici la liste des product⋅eurs⋅rices dont {{ referent }} est référent⋅e. <a class="button" href="/livraison/{{delivery.id}}/producteurices">voir tous les produits</a></p>{% endif %}
+<article class="delivery">
+{% include "includes/delivery_table.html" %}
+</article>
+{% endblock body %}

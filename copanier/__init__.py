@@ -341,7 +341,114 @@ async def import_products(request, response, id):
     response.redirect = f"/livraison/{delivery.id}"
 
 
-@app.route("/livraison/{id}/exporter/produits", methods=["GET"])
+@app.route("/livraison/{delivery_id}/producteurices")
+async def list_producers(request, response, delivery_id):
+    delivery = Delivery.load(delivery_id)
+    response.html("list_products.html", {
+        'list_only': True,
+        'edit_mode': True,
+        'delivery': delivery,
+        'referent': request.query.get('referent', None),
+    })
+    
+
+@app.route("/livraison/{delivery_id}/{producer_id}/éditer", methods=["GET", "POST"])
+async def edit_producer(request, response, delivery_id, producer_id):
+    delivery = Delivery.load(delivery_id)
+    producer = delivery.producers.get(producer_id)
+    if request.method == 'POST':
+        form = request.form
+        producer.referent = form.get('referent')
+        producer.tel_referent = form.get('tel_referent')
+        producer.description = form.get('description')
+        producer.contact = form.get('contact')
+        delivery.producers[producer_id] = producer
+        delivery.persist()
+
+    response.html("edit_producer.html", {
+        'delivery': delivery,
+        'producer': producer,
+        'products': delivery.get_products_by(producer.id)
+    })
+
+
+@app.route("/livraison/{delivery_id}/{producer_id}/{product_ref}/éditer", methods=["GET", "POST"])
+async def edit_product(request, response, delivery_id, producer_id, product_ref):
+    delivery = Delivery.load(delivery_id)
+    product = delivery.get_product(product_ref)
+
+    if request.method == 'POST':
+        form = request.form
+        product.name = form.get('name')
+        product.price = form.float('price')
+        product.unit = form.get('unit')
+        product.description = form.get('description')
+        product.url = form.get('url')
+        if form.get('packing'):
+            product.packing = form.int('packing')
+        if 'rupture' in form:
+            product.rupture = form.get('rupture')
+        else:
+            product.rupture = None
+        delivery.persist()
+        response.message('Le produit à bien été édité')
+        response.redirect = f'/livraison/{delivery_id}/producteurice/{producer_id}/éditer'
+
+    response.html("edit_product.html", {
+        'delivery': delivery,
+        'product': product
+    })
+
+@app.route("/livraison/{delivery_id}/{producer_id}/ajouter-produit", methods=["GET", "POST"])
+async def create_product(request, response, delivery_id, producer_id):
+    delivery = Delivery.load(delivery_id)
+    product = Product(name="", ref="", price=0)
+
+    if request.method == 'POST':
+        product.producer = producer_id
+        form = request.form
+        product.update_from_form(form)
+        product.ref = slugify(f"{producer_id}-{product.name}")
+
+        delivery.products.append(product)
+        delivery.persist()
+        response.message('Le produit à bien été créé')
+        response.redirect = f'/livraison/{delivery_id}/producteurice/{producer_id}/éditer'
+
+    response.html("edit_product.html", {
+        'delivery': delivery,
+        'producer_id': producer_id,
+        'product': product,
+    })
+
+@app.route("/livraison/{id}/gérer", methods=['GET'])
+async def manage_delivery(request, response, id):
+    delivery = Delivery.load(id)
+    response.html("manage_delivery.html",{
+        'delivery': delivery
+    })
+
+@app.route("/livraison/{id}/envoi-email-referentes", methods=['GET', 'POST'])
+async def send_referent_emails(request, response, id):
+    delivery = Delivery.load(id)
+    date = delivery.to_date.strftime("%Y-%m-%d")
+    if request.method == 'POST':
+        email_body = request.form.get('email_body')
+        email_subject = request.form.get('email_subject')
+        for referent in delivery.get_referents():
+            producers = delivery.get_producers_for_referent(referent)
+            summary = reports.summary(delivery, producers)
+            emails.send(referent, email_subject, email_body, copy=delivery.contact, attachments=[
+                (f"{config.SITE_NAME}-{date}-{referent}.xlsx", summary)
+            ])
+        response.message("Le mail à bien été envoyé")
+        response.redirect = f"/livraison/{id}/gérer"
+
+    response.html("prepare_referent_email.html", {
+        'delivery': delivery
+    })
+
+@app.route("/livraison/{id}/exporter", methods=["GET"])
 async def export_products(request, response, id):
     delivery = Delivery.load(id)
     response.xlsx(reports.products(delivery))
@@ -570,7 +677,10 @@ async def delivery_balance(request, response, id):
     
     for producer in delivery.producers.values():
         group = groups.get_user_group(producer.referent)
-        group_id = group.id if group else producer.referent
+        if hasattr(group, 'id'):
+            group_id = group.id
+        else:
+            group_id = group
         amount = delivery.total_for_producer(producer.id)
         if amount:
             balance.append((group_id, amount))

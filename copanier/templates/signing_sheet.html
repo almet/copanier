@@ -9,7 +9,7 @@
 <body>
     <h2>{{ delivery.name }} {{ delivery.from_date.date() }} - liste d'émargement</h2>
     {% for email, order in delivery.orders.items() %}
-        <h3>{{ email }}</h3>
+        <h3>{{ request.groups.groups[email].name }}</h3>
         {% include "includes/order_summary.html" %}
         <hr>
     {% endfor %}

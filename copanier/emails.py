@@ -1,18 +1,32 @@
 import smtplib
 from email.message import EmailMessage
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email.mime.base import MIMEBase
+from email import encoders
 
 from . import config
 
 
-def send(to, subject, body, html=None):
-    msg = EmailMessage()
-    msg.set_content(body)
+def send(to, subject, body, html=None, copy=None, attachments=None):
+    msg = MIMEMultipart()
+    msg.attach(MIMEText(body, "plain"))
+    if html:
+        msg.attach(MIMEText(html, "html"))
     msg["Subject"] = subject
     msg["From"] = config.FROM_EMAIL
     msg["To"] = to
-    msg["Bcc"] = config.FROM_EMAIL
-    if html:
-        msg.add_alternative(html, subtype="html")
+    msg["Bcc"] = copy if copy else config.FROM_EMAIL
+    
+    for file_name, attachment in attachments:
+        part = MIMEBase('application','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8')
+        part.set_payload(attachment)
+        part.add_header('Content-Disposition',
+                        'attachment',
+                        filename=file_name)
+        encoders.encode_base64(part)
+        msg.attach(part)
     if not config.SEND_EMAILS:
         return print("Sending email", str(msg))
     try:
