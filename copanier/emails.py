@@ -10,6 +10,9 @@ from . import config
 
 
 def send(to, subject, body, html=None, copy=None, attachments=None):
+    if not attachments:
+        attachments = []
+
     msg = MIMEMultipart()
     msg.attach(MIMEText(body, "plain"))
     if html:
@@ -28,7 +31,7 @@ def send(to, subject, body, html=None, copy=None, attachments=None):
         encoders.encode_base64(part)
         msg.attach(part)
     if not config.SEND_EMAILS:
-        return print("Sending email", str(msg))
+        return print("Sending email", str(body))
     try:
         server = smtplib.SMTP_SSL(config.SMTP_HOST)
         server.login(config.SMTP_LOGIN, config.SMTP_PASSWORD)
