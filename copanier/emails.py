@@ -13,10 +13,7 @@ def send(to, subject, body, html=None, copy=None, attachments=None):
     if not attachments:
         attachments = []
 
-    msg = MIMEMultipart()
-    msg.attach(MIMEText(body, "plain"))
-    if html:
-        msg.attach(MIMEText(html, "html"))
+    msg = MIMEMultipart('alternative')
     msg["Subject"] = subject
     msg["From"] = config.FROM_EMAIL
     msg["To"] = to
@@ -30,6 +27,11 @@ def send(to, subject, body, html=None, copy=None, attachments=None):
                         filename=file_name)
         encoders.encode_base64(part)
         msg.attach(part)
+
+    msg.attach(MIMEText(body, "plain"))
+    if html:
+        msg.attach(MIMEText(html, "html"))
+    
     if not config.SEND_EMAILS:
         return print("Sending email", str(body))
     try:
