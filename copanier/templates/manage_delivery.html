@@ -3,12 +3,20 @@
 {% block body %}
 <h1>Gérer « {{ delivery.name }} »</h1>
 
+{% set display_counts = True %}
+{% include "includes/delivery_head.html" %}
+
+<h3>Emails des référent⋅e⋅s</h3>
+<p>Au cas où, quoi.</p>
+<textarea class="list-emails" rows=5>{{ referents | join(', ') }}</textarea>
+
 <h3>Avant et pendant la distribution</h3>
 <a class="button" href="/livraison/{{ delivery.id }}/edit"><i class="icon-pencil"></i>&nbsp; Modifier la commande (dates, lieu, référent⋅e, etc)</a>
 <a class="button" href="/livraison/{{ delivery.id }}/producteurices"><i class="icon-pencil"></i>&nbsp; Modifier les produits, les product⋅rices⋅eurs</a>
 <a class="button" href="/groupes"><i class="icon-globe"></i>&nbsp; Gérer les groupes / colocs</a>
 
 <h3>Une fois les commandes passées (après le {{ delivery.order_before|date }})</h3>
+<a class="button" href="/livraison/{{ delivery.id }}/bon-de-commande.xlsx"><i class="icon-download"></i>&nbsp; Télécharger le bon de commande global</a>
 <a class="button" href="/livraison/{{ delivery.id }}/rapport-complet.xlsx"><i class="icon-download"></i>&nbsp; Télécharger le récap (global) des commandes</a>
 <a class="button" href="/livraison/{{ delivery.id }}/envoi-email-referentes"><i class="icon-envelope"></i>&nbsp; Envoyer les infos de commande aux référent⋅e⋅s</a>
 

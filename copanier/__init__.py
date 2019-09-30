@@ -425,7 +425,8 @@ async def create_product(request, response, delivery_id, producer_id):
 async def manage_delivery(request, response, id):
     delivery = Delivery.load(id)
     response.html("manage_delivery.html",{
-        'delivery': delivery
+        'delivery': delivery,
+        'referents': [p.referent for p in delivery.producers.values()]
     })
 
 @app.route("/livraison/{id}/envoi-email-referentes", methods=['GET', 'POST'])
