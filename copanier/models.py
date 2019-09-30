@@ -152,7 +152,6 @@ class Groups(PersistedBase):
         for group in self.groups.values():
             if email in group.members:
                 return group
-        return email
     
     @classmethod
     def init_fs(cls):
