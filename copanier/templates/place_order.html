@@ -36,7 +36,7 @@
             {% if delivery.has_packing %}
                 <td {% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>{{ product.packing or "—" }}{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (manque {{ delivery.product_missing(product) }}){% endif %}</td>
             {% endif %}
-            <td class="with-input"><input {% if delivery.status != delivery.OPEN or product.rupture %}type="text" readonly{% else%}type="number"{% endif%} min=0 name="wanted:{{ product.ref }}" value="{{ order[product].wanted }}"> x {{ product.unit }}</td>
+            <td class="with-input"><input {% if not request.user.is_referent(delivery) and delivery.status != delivery.OPEN or product.rupture %}type="text" readonly{% else%}type="number"{% endif%} min=0 name="wanted:{{ product.ref }}" value="{{ order[product].wanted }}"> x {{ product.unit }}</td>
             {% if delivery.status == delivery.ADJUSTMENT or order.has_adjustments %}
                 <td class="with-input"><input type="number" name="adjustment:{{ product.ref }}" value="{{ order[product].adjustment }}" {% if not delivery.product_missing(product) %}readonly{% endif %}></td>
             {% endif %}

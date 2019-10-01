@@ -95,6 +95,9 @@ class Person(Base):
     def is_staff(self):
         return not config.STAFF or self.email in config.STAFF
     
+    def is_referent(self, delivery):
+        return self.email in delivery.get_referents() or self.email == delivery.contact
+    
     @property
     def id(self):
         return self.group_id or self.email

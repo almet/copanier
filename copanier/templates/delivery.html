@@ -6,7 +6,7 @@
 {% if request['user'].email == delivery.contact %}
 <div class="notification info"><i class="icon-lightbulb"></i> Vous êtes la personne référente de cette distribution <a class="button" href="/livraison/{{ delivery.id }}/gérer">Voir la boîte à outils</a></div>
 {% elif request['user'].email in delivery.get_referents() %}
-<div class="notification info"><i class="icon-lightbulb"></i> Vous êtes référent⋅e pour cette distribution (merci !). <a class="button" href="/livraison/{{ delivery.id }}/producteurices?referent={{request['user'].email}}">Gérer les produits dont vous vous occupez !</a></div>
+<div class="notification info"><i class="icon-lightbulb"></i> Vous êtes référent⋅e pour cette distribution (merci !). <a class="button" href="/livraison/{{ delivery.id }}/producteurices?referent={{request['user'].email}}">Gérer les produits dont vous vous occupez</a></div>
 {% endif %}
 <article class="delivery">
 {% if delivery.has_products %}
