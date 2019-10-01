@@ -345,7 +345,6 @@ async def import_products(request, response, id):
 async def list_producers(request, response, delivery_id):
     delivery = Delivery.load(delivery_id)
     response.html("list_products.html", {
-        'list_only': True,
         'edit_mode': True,
         'delivery': delivery,
         'referent': request.query.get('referent', None),

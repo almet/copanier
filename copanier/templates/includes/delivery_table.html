@@ -4,9 +4,13 @@
 {% set producers = delivery.producers %}
 {% endif %}
 {% for producer in producers %}
-    <h2>{{ producer }} {% if edit_mode %}<a class="button" href="/livraison/{{ delivery.id }}/{{ producer }}/éditer"><i class="icon-ribbon"></i>Éditer</a> <a class="button" href="/livraison/{{ delivery.id }}/{{ producer }}/ajouter-produit"><i class="icon-puzzle"></i>Ajouter un produit </a>{% endif %}
-        {% if delivery.can_generate_reports and (request.user.is_staff or delivery.producers[producer].referent == request.user.email) %}
-        <a class="button" href="/livraison/{{ delivery.id }}/{{ producer }}/bon-de-commande"><i class="icon-grid"></i>&nbsp; Télécharger le bon de commande</a> 
+    <h2>{{ producer }}
+        {% if edit_mode or request.user.is_staff or delivery.producers[producer].referent == request.user.email %}
+            <a class="button" href="/livraison/{{ delivery.id }}/{{ producer }}/éditer"><i class="icon-ribbon"></i>&nbsp; Éditer</a>
+            <a class="button" href="/livraison/{{ delivery.id }}/{{ producer }}/ajouter-produit"><i class="icon-puzzle"></i>&nbsp; Ajouter un produit </a>    
+            {% if delivery.can_generate_reports %}
+                <a class="button" href="/livraison/{{ delivery.id }}/{{ producer }}/bon-de-commande"><i class="icon-grid"></i>&nbsp; Télécharger le bon de commande</a> 
+            {% endif %}
         {% endif %}
     </h2>
     <h5>{% if delivery.producers[producer].description %}{{ delivery.producers[producer].description }}{% endif %}. Référent⋅e : {{ delivery.producers[producer].referent }} / {{ delivery.producers[producer].tel_referent }}</h5>
@@ -41,6 +45,7 @@
             {% if delivery.has_packing %}
                 <td class="packing">{% if product.packing %}{{ product.packing }} x {% endif %} {{ product.unit }}</td>
             {% endif %}
+            {% if edit_mode %}<td><a href="/livraison/{{ delivery.id }}/{{ product.producer }}/{{ product.ref }}/éditer">modifier</a></td>{% endif %}
             {% if not list_only %}
             <th{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>
                 {{ delivery.product_wanted(product) }}
@@ -52,7 +57,6 @@
                 <td title="Commandé: {{ order[product.ref].wanted }} — Ajusté: {{ "%+d"|format(order[product.ref].adjustment) }}">{{ order[product.ref].quantity or "—" }}</td>
             {% endfor %}
             {% endif %}
-            {% if edit_mode %}<td><a href="/livraison/{{ delivery.id }}/{{ product.producer }}/{{ product.ref }}/éditer">modifier</a></td>{% endif %}
         </tr>
         {% endfor %}
         {% if not list_only %}
