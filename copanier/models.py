@@ -288,14 +288,6 @@ class Delivery(PersistedBase):
     def total(self):
         return round(sum(o.total(self.products) for o in self.orders.values()), 2)
 
-    # @property
-    # def producers(self):
-    #     return list(set([p.producer for p in self.products]))
-
-    # @property
-    # def has_multiple_producers(self):
-    #     return len(self.producers) > 1
-
     @property
     def is_open(self):
         return datetime.now().date() <= self.order_before.date()
@@ -307,6 +299,10 @@ class Delivery(PersistedBase):
     @property
     def is_passed(self):
         return not self.is_foreseen
+    
+    @property
+    def can_generate_reports(self):
+        return not self.is_open and not self.needs_adjustment
 
     @property
     def has_packing(self):

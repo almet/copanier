@@ -449,6 +449,15 @@ async def send_referent_emails(request, response, id):
         'delivery': delivery
     })
 
+
+@app.route("/livraison/{id}/{producer}/bon-de-commande", methods=["GET"])
+async def download_producer_report(request, response, id, producer):
+    delivery = Delivery.load(id)
+    summary = reports.summary(delivery, [producer, ])
+    date = delivery.to_date.strftime("%Y-%m-%d")
+    response.xlsx(summary, filename=f"{config.SITE_NAME}-{date}-{producer}-bon-de-commande.xlsx")
+    
+
 @app.route("/livraison/{id}/exporter", methods=["GET"])
 async def export_products(request, response, id):
     delivery = Delivery.load(id)

@@ -4,7 +4,11 @@
 {% set producers = delivery.producers %}
 {% endif %}
 {% for producer in producers %}
-    <h2>{{ producer }} {% if edit_mode %}<a class="button" href="/livraison/{{ delivery.id }}/{{ producer }}/éditer"><i class="icon-ribbon"></i>Éditer</a> <a class="button" href="/livraison/{{ delivery.id }}/{{ producer }}/ajouter-produit"><i class="icon-puzzle"></i>Ajouter un produit </a>{% endif %}</h2>
+    <h2>{{ producer }} {% if edit_mode %}<a class="button" href="/livraison/{{ delivery.id }}/{{ producer }}/éditer"><i class="icon-ribbon"></i>Éditer</a> <a class="button" href="/livraison/{{ delivery.id }}/{{ producer }}/ajouter-produit"><i class="icon-puzzle"></i>Ajouter un produit </a>{% endif %}
+        {% if delivery.can_generate_reports and (request.user.is_staff or delivery.producers[producer].referent == request.user.email) %}
+        <a class="button" href="/livraison/{{ delivery.id }}/{{ producer }}/bon-de-commande"><i class="icon-grid"></i>&nbsp; Télécharger le bon de commande</a> 
+        {% endif %}
+    </h2>
     <h5>{% if delivery.producers[producer].description %}{{ delivery.producers[producer].description }}{% endif %}. Référent⋅e : {{ delivery.producers[producer].referent }} / {{ delivery.producers[producer].tel_referent }}</h5>
 <table class="delivery">
     <thead>
