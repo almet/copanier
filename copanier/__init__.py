@@ -386,13 +386,15 @@ async def edit_product(request, response, delivery_id, producer_id, product_ref)
         product.url = form.get('url')
         if form.get('packing'):
             product.packing = form.int('packing')
+        else:
+            product.packing = None
         if 'rupture' in form:
             product.rupture = form.get('rupture')
         else:
             product.rupture = None
         delivery.persist()
-        response.message('Le produit à bien été édité')
-        response.redirect = f'/livraison/{delivery_id}/producteurice/{producer_id}/éditer'
+        response.message('Le produit à bien été modifié')
+        response.redirect = f'/livraison/{delivery_id}/{producer_id}/éditer'
 
     response.html("edit_product.html", {
         'delivery': delivery,
