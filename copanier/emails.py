@@ -33,6 +33,7 @@ def send(to, subject, body, html=None, copy=None, attachments=None):
         msg.attach(MIMEText(html, "html"))
     
     if not config.SEND_EMAILS:
+        body = body.replace('https', 'http')
         return print("Sending email", str(body))
     try:
         server = smtplib.SMTP_SSL(config.SMTP_HOST)
