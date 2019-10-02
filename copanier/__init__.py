@@ -451,7 +451,19 @@ async def send_referent_emails(request, response, id):
     })
 
 
-@app.route("/livraison/{id}/{producer}/bon-de-commande", methods=["GET"])
+@app.route("/livraison/{id}/bon-de-commande-referent⋅e", methods=['GET'])
+async def download_referent_summary(request, response, id):
+    delivery = Delivery.load(id)
+    date = delivery.to_date.strftime("%Y-%m-%d")
+    if not request['user'].is_referent(delivery):
+        return
+    referent = request['user'].email
+    producers = delivery.get_producers_for_referent(referent)
+    summary = reports.summary(delivery, producers)
+    response.xlsx(summary, filename=f"{config.SITE_NAME}-{date}-{referent}.xlsx")
+
+
+@app.route("/livraison/{id}/product⋅eur⋅rice/{producer}/bon-de-commande", methods=["GET"])
 async def download_producer_report(request, response, id, producer):
     delivery = Delivery.load(id)
     summary = reports.summary(delivery, [producer, ])

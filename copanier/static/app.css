@@ -559,3 +559,7 @@ details summary {
   padding: 10px 15px;
   resize: vertical;
 }
+
+.email-template {
+  height: 400px;
+}
