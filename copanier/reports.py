@@ -5,6 +5,7 @@ from openpyxl.writer.excel import save_virtual_workbook
 
 from .models import Product, Producer
 
+
 def summary_for_products(wb, title, delivery, total=None, products=None):
     if products == None:
         products = delivery.products
@@ -12,26 +13,23 @@ def summary_for_products(wb, title, delivery, total=None, products=None):
         total = delivery.total
 
     ws = wb.create_sheet(title)
-    ws.append([
-        "ref",
-        "produit",
-        "prix unitaire",
-        "quantité commandée",
-        "unité",
-        "total",
-    ])
+    ws.append(
+        ["ref", "produit", "prix unitaire", "quantité commandée", "unité", "total"]
+    )
     for product in products:
         wanted = delivery.product_wanted(product)
         if not wanted:
             continue
-        ws.append([
-            product.ref,
-            str(product),
-            product.price,
-            wanted,
-            product.unit,
-            round(product.price * wanted, 2),
-        ])
+        ws.append(
+            [
+                product.ref,
+                str(product),
+                product.price,
+                wanted,
+                product.unit,
+                round(product.price * wanted, 2),
+            ]
+        )
     ws.append(["", "", "", "", "Total", total])
 
 
@@ -46,9 +44,9 @@ def summary(delivery, producers=None):
             producer,
             delivery,
             total=delivery.total_for_producer(producer),
-            products=delivery.get_products_by(producer)
+            products=delivery.get_products_by(producer),
         )
-    
+
     return save_virtual_workbook(wb)
 
 
@@ -69,7 +67,7 @@ def full(delivery):
         ws.append(row)
     footer = (
         ["Total", "", ""]
-        + [round(o.total(delivery.products),2) for o in delivery.orders.values()]
+        + [round(o.total(delivery.products), 2) for o in delivery.orders.values()]
         + [round(delivery.total, 2)]
     )
     footer.insert(1, "")
@@ -92,7 +90,7 @@ def products(delivery):
     producer_sheet.append(producer_fields)
     for producer in delivery.producers.values():
         producer_sheet.append([getattr(producer, field) for field in producer_fields])
-    
+
     return save_virtual_workbook(wb)
 
 

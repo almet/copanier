@@ -47,9 +47,13 @@ def products_and_producers_from_xlsx(delivery, data):
         raise ValueError("Le fichier doit comporter deux onglets.")
     # First, get the products data from the first tab.
     products_sheet = data.get_sheet_by_name(sheet_names[0])
-    delivery.products = items_from_xlsx(list(products_sheet.values), [], Product, PRODUCT_FIELDS, append_list)
-    
+    delivery.products = items_from_xlsx(
+        list(products_sheet.values), [], Product, PRODUCT_FIELDS, append_list
+    )
+
     # Then import producers info
     producers_sheet = data.get_sheet_by_name(sheet_names[1])
-    delivery.producers = items_from_xlsx(list(producers_sheet.values), {}, Producer, PRODUCER_FIELDS, append_dict)
+    delivery.producers = items_from_xlsx(
+        list(producers_sheet.values), {}, Producer, PRODUCER_FIELDS, append_dict
+    )
     delivery.persist()

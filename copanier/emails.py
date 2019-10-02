@@ -13,27 +13,28 @@ def send(to, subject, body, html=None, copy=None, attachments=None):
     if not attachments:
         attachments = []
 
-    msg = MIMEMultipart('alternative')
+    msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"] = config.FROM_EMAIL
     msg["To"] = to
     msg["Bcc"] = copy if copy else config.FROM_EMAIL
-    
+
     for file_name, attachment in attachments:
-        part = MIMEBase('application','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8')
+        part = MIMEBase(
+            "application",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8",
+        )
         part.set_payload(attachment)
-        part.add_header('Content-Disposition',
-                        'attachment',
-                        filename=file_name)
+        part.add_header("Content-Disposition", "attachment", filename=file_name)
         encoders.encode_base64(part)
         msg.attach(part)
 
     msg.attach(MIMEText(body, "plain"))
     if html:
         msg.attach(MIMEText(html, "html"))
-    
+
     if not config.SEND_EMAILS:
-        body = body.replace('https', 'http')
+        body = body.replace("https", "http")
         return print("Sending email", str(body))
     try:
         server = smtplib.SMTP_SSL(config.SMTP_HOST)
@@ -61,5 +62,5 @@ def send_order(request, env, person, delivery, order):
         display_prices=True,
         order=order,
         delivery=delivery,
-        request=request
+        request=request,
     )

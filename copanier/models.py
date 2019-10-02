@@ -74,13 +74,12 @@ class Base:
     def dump(self):
         return yaml.dump(asdict(self), allow_unicode=True)
 
+
 @dataclass
 class PersistedBase(Base):
-
     @classmethod
     def get_root(cls):
         return Path(config.DATA_ROOT) / cls.__root__
-
 
 
 @dataclass
@@ -94,14 +93,14 @@ class Person(Base):
     @property
     def is_staff(self):
         return not config.STAFF or self.email in config.STAFF
-    
+
     def is_referent(self, delivery):
         return self.email in delivery.get_referents() or self.email == delivery.contact
-    
+
     @property
     def id(self):
         return self.group_id or self.email
-    
+
     @property
     def name(self):
         return self.group_name or self.email
@@ -119,7 +118,7 @@ class Groups(PersistedBase):
     __root__ = "groups"
     __lock__ = threading.Lock()
     groups: Dict[str, Group]
-    
+
     @classmethod
     def load(cls):
         path = cls.get_root() / "groups.yml"
@@ -127,19 +126,19 @@ class Groups(PersistedBase):
             data = yaml.safe_load(path.read_text())
             data = {k: v for k, v in data.items() if k in cls.__dataclass_fields__}
         else:
-            data = {'groups': {}}
+            data = {"groups": {}}
         groups = cls(**data)
         groups.path = path
         return groups
-    
+
     def persist(self):
         with self.__lock__:
             self.path.write_text(self.dump())
-    
+
     def add_group(self, group):
         assert group.id not in self.groups, "Un groupe avec ce nom existe déjà."
         self.groups[group.id] = group
-    
+
     def add_user(self, email, group_id):
         self.remove_user(email)
         group = self.groups[group_id]
@@ -155,10 +154,11 @@ class Groups(PersistedBase):
         for group in self.groups.values():
             if email in group.members:
                 return group
-    
+
     @classmethod
     def init_fs(cls):
         cls.get_root().mkdir(parents=True, exist_ok=True)
+
 
 @dataclass
 class Producer(Base):
@@ -187,17 +187,17 @@ class Product(Base):
         # if self.unit:
         #     out += f" ({self.unit})"
         return out
-    
+
     def update_from_form(self, form):
-        self.name = form.get('name')
-        self.price = form.float('price')
-        self.unit = form.get('unit')
-        self.description = form.get('description')
-        self.url = form.get('url')
-        if form.get('packing'):
-            self.packing = form.int('packing')
-        if 'rupture' in form:
-            self.rupture = form.get('rupture')
+        self.name = form.get("name")
+        self.price = form.float("price")
+        self.unit = form.get("unit")
+        self.description = form.get("description")
+        self.url = form.get("url")
+        if form.get("packing"):
+            self.packing = form.int("packing")
+        if "rupture" in form:
+            self.rupture = form.get("rupture")
         else:
             self.rupture = None
         return self
@@ -282,7 +282,7 @@ class Delivery(PersistedBase):
         if self.needs_adjustment:
             return self.ADJUSTMENT
         return self.CLOSED
-    
+
     @property
     def has_products(self):
         return len(self.products) > 0
@@ -302,7 +302,7 @@ class Delivery(PersistedBase):
     @property
     def is_passed(self):
         return not self.is_foreseen
-    
+
     @property
     def can_generate_reports(self):
         return not self.is_open and not self.needs_adjustment
@@ -399,7 +399,7 @@ class Delivery(PersistedBase):
 
     def get_products_by(self, producer):
         return [p for p in self.products if p.producer == producer]
-    
+
     def get_product(self, ref):
         products = [p for p in self.products if p.ref == ref]
         if products:
@@ -410,11 +410,11 @@ class Delivery(PersistedBase):
         if person:
             return self.orders.get(person).total(producer_products)
         return round(sum(o.total(producer_products) for o in self.orders.values()), 2)
-    
+
     def get_producers_for_referent(self, referent):
         return {
             id: producer
-                for id, producer in self.producers.items()
+            for id, producer in self.producers.items()
             if producer.referent == referent
         }
 
