@@ -66,6 +66,9 @@
             {% if delivery.has_packing %}
                 <td>—</td>
             {% endif %}
+            {% if edit_mode %}
+            <td>—</td>
+            {% endif %}
             <th class="total">{{ delivery.total_for_producer(producer) }} €</th>
             {% for email, order in delivery.orders.items() %}
             <td>{{ order.total(delivery.get_products_by(producer)) }} €</td>
