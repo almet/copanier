@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
-<h1><i class="icon-lightbulb"></i> Répartition des paiements</h1>
+<h1><i class="icon-wallet"></i> <a href="/livraison/{{ delivery.id }}">{{ delivery.name }}</a><br />Répartition des paiements</h1>
 <p class="info">Les personnes indiquées avec un <code>*</code> à côté de leur nom sont celles qui ont payé cette commande pour leur groupe.</p>
 <table class="paiements">
     <tr>
