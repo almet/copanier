@@ -5,3 +5,4 @@ db/
 venv
 .env
 .vscode
+.pytest_cache
