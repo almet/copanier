@@ -168,6 +168,10 @@ class Producer(Base):
     contact: str = ""
     description: str = ""
 
+    def has_active_products(self, delivery):
+        products = delivery.get_products_by(self.id)
+        return any([not p.rupture for p in products])
+
 
 @dataclass
 class Product(Base):

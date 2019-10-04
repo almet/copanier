@@ -451,14 +451,15 @@ async def send_referent_emails(request, response, id):
         email_subject = request.form.get("email_subject")
         for referent in delivery.get_referents():
             producers = delivery.get_producers_for_referent(referent)
-            summary = reports.summary(delivery, producers)
-            emails.send(
-                referent,
-                email_subject,
-                email_body,
-                copy=delivery.contact,
-                attachments=[(f"{config.SITE_NAME}-{date}-{referent}.xlsx", summary)],
-            )
+            if any([delivery.producers[p].has_active_products(delivery) for p in producers]):
+                summary = reports.summary(delivery, producers)
+                emails.send(
+                    referent,
+                    email_subject,
+                    email_body,
+                    copy=delivery.contact,
+                    attachments=[(f"{config.SITE_NAME}-{date}-{referent}.xlsx", summary)],
+                )
         response.message("Le mail à bien été envoyé")
         response.redirect = f"/livraison/{id}/gérer"
 
