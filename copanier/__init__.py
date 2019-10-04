@@ -1,23 +1,22 @@
 import csv
 from collections import defaultdict
 from pathlib import Path
+from functools import partial
 
 import ujson as json
 import minicli
 from jinja2 import Environment, PackageLoader, select_autoescape
-from roll import Roll, Response, HttpError
+from roll import Roll as BaseRoll, Response as RollResponse, HttpError
 from roll.extensions import traceback, simple_server, static
 from slugify import slugify
 
 from debts.solver import order_balance, check_balance, reduce_balance
-from collections import defaultdict
-from functools import partial
 
 from . import config, reports, session, utils, emails, loggers, imports
 from .models import Delivery, Order, Person, Product, ProductOrder, Groups, Group
 
 
-class Response(Response):
+class Response(RollResponse):
     def html(self, template_name, *args, **kwargs):
         self.headers["Content-Type"] = "text/html; charset=utf-8"
         context = app.context()
@@ -45,7 +44,7 @@ class Response(Response):
         self.cookies.set("message", json.dumps((text, status)))
 
 
-class Roll(Roll):
+class Roll(BaseRoll):
     Response = Response
 
     _context_func = []
@@ -152,8 +151,8 @@ async def sesame(request, response):
     response.html("sesame.html")
 
 
-@app.route("/sésame", methods=["POST"])
-async def send_sesame(request, response, unprotected=True):
+@app.route("/sésame", methods=["POST"], unprotected=True)
+async def send_sesame(request, response):
     email = request.form.get("email")
     token = utils.create_token(email)
     emails.send_from_template(
@@ -229,7 +228,9 @@ async def create_group(request, response):
             members.append(request["user"].email)
 
         group = Group.create(
-            id=slugify(form.get("name")), name=form.get("name"), members=members
+            id=slugify(form.get("name")),
+            name=form.get("name"),
+            members=members,
         )
         request["groups"].add_group(group)
         request["groups"].persist()
@@ -305,7 +306,7 @@ async def create_delivery(request, response):
     data = {}
     data["from_date"] = f"{form.get('date')} {form.get('from_time')}"
     data["to_date"] = f"{form.get('date')} {form.get('to_time')}"
-    for name, field in Delivery.__dataclass_fields__.items():
+    for name in Delivery.__dataclass_fields__.keys():
         if name in form:
             data[name] = form.get(name)
     delivery = Delivery(**data)
@@ -338,9 +339,9 @@ async def import_products(request, response, id):
     response.redirect = f"/livraison/{delivery.id}"
 
 
-@app.route("/livraison/{delivery_id}/producteurices")
-async def list_producers(request, response, delivery_id):
-    delivery = Delivery.load(delivery_id)
+@app.route("/livraison/{id}/producteurices")
+async def list_producers(request, response, id):
+    delivery = Delivery.load(id)
     response.html(
         "list_products.html",
         {
@@ -451,14 +452,18 @@ async def send_referent_emails(request, response, id):
         email_subject = request.form.get("email_subject")
         for referent in delivery.get_referents():
             producers = delivery.get_producers_for_referent(referent)
-            if any([delivery.producers[p].has_active_products(delivery) for p in producers]):
+            if any(
+                [delivery.producers[p].has_active_products(delivery) for p in producers]
+            ):
                 summary = reports.summary(delivery, producers)
                 emails.send(
                     referent,
                     email_subject,
                     email_body,
                     copy=delivery.contact,
-                    attachments=[(f"{config.SITE_NAME}-{date}-{referent}.xlsx", summary)],
+                    attachments=[
+                        (f"{config.SITE_NAME}-{date}-{referent}.xlsx", summary)
+                    ],
                 )
         response.message("Le mail à bien été envoyé")
         response.redirect = f"/livraison/{id}/gérer"
@@ -479,7 +484,8 @@ async def download_referent_summary(request, response, id):
 
 
 @app.route(
-    "/livraison/{id}/product⋅eur⋅rice/{producer}/bon-de-commande", methods=["GET"]
+    "/livraison/{id}/product⋅eur⋅rice/{producer}/bon-de-commande",
+    methods=["GET"],
 )
 async def download_producer_report(request, response, id, producer):
     delivery = Delivery.load(id)
@@ -510,7 +516,7 @@ async def post_delivery(request, response, id):
     form = request.form
     delivery.from_date = f"{form.get('date')} {form.get('from_time')}"
     delivery.to_date = f"{form.get('date')} {form.get('to_time')}"
-    for name, field in Delivery.__dataclass_fields__.items():
+    for name in Delivery.__dataclass_fields__.keys():
         if name in form:
             setattr(delivery, name, form.get(name))
     delivery.persist()
@@ -702,6 +708,7 @@ async def xls_full_report(request, response, id):
 async def adjust_product(request, response, id, ref):
     delivery = Delivery.load(id)
     delivery_url = f"/livraison/{delivery.id}"
+    product = None
     for product in delivery.products:
         if product.ref == ref:
             break
@@ -727,7 +734,6 @@ async def adjust_product(request, response, id, ref):
 async def delivery_balance(request, response, id):
     delivery = Delivery.load(id)
     groups = request["groups"]
-    delivery_url = f"/livraison/{delivery.id}"
 
     balance = []
     for group_id, order in delivery.orders.items():
@@ -742,7 +748,10 @@ async def delivery_balance(request, response, id):
         # and all the other ones are separated in the table.
         group_id = None
         if hasattr(group, "id"):
-            if group.id not in producer_groups or producer_groups[group.id] == producer.referent_name:
+            if (
+                group.id not in producer_groups
+                or producer_groups[group.id] == producer.referent_name
+            ):
                 producer_groups[group.id] = producer.referent_name
                 group_id = group.id
         if not group_id:
