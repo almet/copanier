@@ -4,3 +4,4 @@ pytest-asyncio
 usine
 pyquery
 pytest-watch
+python-emails
