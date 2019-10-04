@@ -1,45 +1,15 @@
 {% extends "base.html" %}
-{% block head %}
-<style media="screen">
-    table {
-        font-family:Arial, Helvetica, sans-serif;
-        color:#666;
-        font-size:12px;
-        text-shadow: 1px 1px 0px #fff;
-        background:#eaebec;
-        box-shadow: 0 1px 2px #d1d1d1;
-    }
-    table tr {
-        text-align: center;
-        padding-left:20px;
-    }
-    table td:first-child {
-        text-align: left;
-        padding-left:20px;
-        border-left: 0;
-    }
-    table td {
-        padding:5px;
-        border-top: 1px solid #ffffff;
-        border-bottom:1px solid #e0e0e0;
-        border-left: 1px solid #e0e0e0;
-        background: #fafafa;
-    }
-    table tr:hover td {
-        background: #f2f2f2;
-    }
-        </style>
-{% endblock head %}
 {% block body %}
 <h1><i class="icon-lightbulb"></i> Répartition des paiements</h1>
-<table>
+<p class="info">Les personnes indiquées avec un <code>*</code> à côté de leur nom sont celles qui ont payé cette commande pour leur groupe.</p>
+<table class="paiements">
     <tr>
         <td></td>
-        {% for crediter in crediters %}<td>{% if crediter[0] in groups %} {{ groups[crediter[0]].name }}{% else %}{{ crediter[0] }}{% endif %} (+{{ crediter[1] | round(2) }})</td>{% endfor %}
+        {% for crediter in crediters %}<td>{% if crediter[0] in crediters_groups %} {{ crediters_groups[crediter[0]] }}*{% else %}{{ crediter[0] }}{% endif %} (+{{ crediter[1] | round(2) }})</td>{% endfor %}
     </tr>
     {% for debiter in debiters %}
     <tr>
-        <td>{% if debiter[0] in groups %} {{ groups[debiter[0]].name }}{% else %}{{ debiter[0] }}{% endif %} ({{ debiter[1] | round(2) }})</td>
+        <td>{% if debiter[0] in debiters_groups %} {{ debiters_groups[debiter[0]].name }}{% else %}{{ debiter[0] }}{% endif %} ({{ debiter[1] | round(2) }})</td>
         {% for crediter in crediters %}
         {% set due_amount = results[debiter[0]][crediter[0]] | round(2) %}
 

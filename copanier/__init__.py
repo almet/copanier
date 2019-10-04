@@ -358,7 +358,7 @@ async def edit_producer(request, response, delivery_id, producer_id):
     if request.method == "POST":
         form = request.form
         producer.referent = form.get("referent")
-        producer.tel_referent = form.get("tel_referent")
+        producer.referent_tel = form.get("referent_tel")
         producer.description = form.get("description")
         producer.contact = form.get("contact")
         delivery.producers[producer_id] = producer
@@ -733,12 +733,21 @@ async def delivery_balance(request, response, id):
     for group_id, order in delivery.orders.items():
         balance.append((group_id, order.total(delivery.products) * -1))
 
+    producer_groups = {}
+
     for producer in delivery.producers.values():
         group = groups.get_user_group(producer.referent)
+        # When a group contains multiple producer contacts,
+        # the first one is elected to receive the money,
+        # and all the other ones are separated in the table.
+        group_id = None
         if hasattr(group, "id"):
-            group_id = group.id
-        else:
-            group_id = group
+            if group.id not in producer_groups or producer_groups[group.id] == producer.referent_name:
+                producer_groups[group.id] = producer.referent_name
+                group_id = group.id
+        if not group_id:
+            group_id = producer.referent_name
+
         amount = delivery.total_for_producer(producer.id)
         if amount:
             balance.append((group_id, amount))
@@ -759,7 +768,8 @@ async def delivery_balance(request, response, id):
             "debiters": debiters,
             "crediters": crediters,
             "results": results_dict,
-            "groups": groups.groups,
+            "debiters_groups": groups.groups,
+            "crediters_groups": producer_groups,
         },
     )
 

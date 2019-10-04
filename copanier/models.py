@@ -164,7 +164,8 @@ class Groups(PersistedBase):
 class Producer(Base):
     id: str
     referent: str = ""
-    tel_referent: str = ""
+    referent_tel: str = ""
+    referent_name: str = ""
     contact: str = ""
     description: str = ""
 
