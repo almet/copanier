@@ -1,8 +1,9 @@
 {% extends "base.html" %}
-
 {% block body %}
-<h3>{{ delivery.name }}</h3>
-{% if referent %}<p>Voici la liste des product⋅eurs⋅rices dont {{ referent }} est référent⋅e. <a class="button" href="/livraison/{{delivery.id}}/producteurices">voir tous les produits</a></p>{% endif %}
+<p class="hide-on-print">
+        <a href="/livraison/{{ delivery.id }}/producteurices.pdf{% if referent %}?referent={{ referent }}{% endif %}">Télécharger la liste des commandes en PDF</a>
+    {% if referent %}Voici la liste des product⋅eurs⋅rices dont {{ referent }} est référent⋅e. <a class="button" href="/livraison/{{delivery.id}}/producteurices">voir tous les produits</a>{% endif %}
+</p>
 <article class="delivery">
 {% include "includes/delivery_table.html" %}
 </article>

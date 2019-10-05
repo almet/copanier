@@ -22,3 +22,8 @@ def read_token(token):
         return jwt.decode(token, config.SECRET, algorithms=[config.JWT_ALGORITHM])
     except (jwt.DecodeError, jwt.ExpiredSignatureError):
         return {}
+
+
+def prefix(string, delivery):
+    date = delivery.to_date.strftime("%Y-%m-%d")
+    return f"{config.SITE_NAME}-{date}-{string}"

@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block body %}
-    <h2>Livraisons à venir</h2>
     {% with deliveries=incoming %}
         {% include "includes/delivery_list.html" %}
     {% endwith %}
@@ -15,6 +14,11 @@
     <hr>
     {% endif %}
     <ul class="toolbox">
+        {% if request.user.is_staff %}
+        <li>
+            <a class="button" href="/livraison"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle livraison</a>&nbsp;
+        </li>
+         {% endif %}
         <li>
             <a href="/groupes" class="button"><i class="icon-globe"></i>&nbsp;Gérer les groupes / colocs</a>
         </li>

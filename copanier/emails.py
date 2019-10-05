@@ -11,13 +11,10 @@ def send(to, subject, body, html=None, copy=None, attachments=None):
         text=body, html=html, subject=subject, mail_from=config.FROM_EMAIL
     )
 
-    for filename, attachment in attachments:
-        message.attach(
-            filename=filename,
-            data=attachment,
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=utf-8",
-        )
+    for filename, attachment, mime in attachments:
+        message.attach(filename=filename, data=attachment, mime=f"{mime} charset=utf-8")
 
+    config.SEND_EMAILS = False
     if not config.SEND_EMAILS:
         body = body.replace("https", "http")
         return print("Sending email", str(body))

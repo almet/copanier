@@ -18,12 +18,11 @@
     {% endif %}
     <section class="menu">
         <h1><a href="/">{{ config.SITE_NAME }}</a> <small>{{ config.SITE_DESCRIPTION }}</small></h1>
+        {% block title %}<h2>{% if delivery %}{{ delivery.name }}{% endif %}{% block actions %}{% endblock %}{% endblock %}</h2>
+        
         <nav>
             {% if request.user %}
-                {% if request.user.is_staff %}
-                <a class="button" href="/livraison"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle livraison</a>&nbsp;
-                {% endif %}
-                <i class="icon-lock"></i>&nbsp;<span>{{ request["user"].email }} {% if request["user"].group_name %}({{ request["user"].group_name }}){% endif %}</span>
+                <i class="icon-lock"></i>&nbsp;<span>{{ request["user"].email }} {% if request["user"].group_name %}({{ request["user"].group_name }}){% endif %} <a href="/déconnexion">déconnexion</a></span>
             {% endif %}
         </nav>
     </section>

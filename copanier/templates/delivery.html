@@ -1,13 +1,23 @@
 {% extends "base.html" %}
 
+{% block actions %}
+{% include "includes/order_button.html" %}
+{% endblock %}
 {% block body %}
-<h3>{{ delivery.name }} {% include "includes/order_button.html" %}</h3>
 {% include "includes/delivery_head.html" %}
+
 {% if request['user'].email == delivery.contact %}
 <div class="notification info"><i class="icon-lightbulb"></i> Vous êtes la personne référente de cette distribution <a class="button" href="/livraison/{{ delivery.id }}/gérer">Voir la boîte à outils</a></div>
 {% elif request['user'].email in delivery.get_referents() %}
 <div class="notification info"><i class="icon-lightbulb"></i> Vous êtes référent⋅e pour cette distribution (merci !). <a class="button" href="/livraison/{{ delivery.id }}/producteurices?referent={{request['user'].email}}">Gérer les produits dont vous vous occupez</a></div>
 {% endif %}
+<ul class="progressbar">
+    <li {% if delivery.status == delivery.OPEN %}class="active"{% endif %}>Mise à jour des prix</li>
+    <li {% if delivery.status == delivery.OPEN %}class="active"{% endif %}>Ouverture des commandes</li>
+    <li {% if delivery.status == delivery.ADJUSTMENT %}class="active"{% endif %}>Ajustements</li>
+    <li {% if delivery.can_generate_reports %}class="active"{% endif %}>Achats par les référent⋅e⋅s</li>
+    <li>Distribution</li>
+</ul>
 <article class="delivery">
 {% if delivery.has_products %}
     {% include "includes/delivery_table.html" %}
@@ -22,7 +32,7 @@
 <ul class="toolbox">
     {% if not delivery.is_archived and delivery.status == delivery.CLOSED %}
     <li>
-        <a href="/livraison/{{ delivery.id }}/bon-de-commande.xlsx"><i class="icon-ribbon"></i> Bon de commande</a>
+        <a href="/livraison/{{ delivery.iddelivery }}/bon-de-commande.xlsx"><i class="icon-ribbon"></i> Bon de commande</a>
     </li>
     <li>
         <a href="/livraison/{{ delivery.id }}/rapport-complet.xlsx"><i class="icon-grid"></i> Rapport complet</a>

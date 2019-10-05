@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>{% if title %}{{ title }} - {% endif %}{{ config.SITE_NAME }}</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/static/signing-sheet.css">
-</head>
-<body>
-    <h2>{{ delivery.name }} {{ delivery.from_date.date() }} - liste d'émargement</h2>
+{% extends "base.html" %}
+{% block body %}
     {% for email, order in delivery.orders.items() %}
         <h3>{{ request.groups.groups[email].name }}</h3>
         {% include "includes/order_summary.html" %}
-        <hr>
+        <hr class="page-break">
     {% endfor %}
-</body>
+{% endblock %}

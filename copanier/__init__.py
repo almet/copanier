@@ -11,22 +11,48 @@ from roll.extensions import traceback, simple_server, static
 from slugify import slugify
 
 from debts.solver import order_balance, check_balance, reduce_balance
+from weasyprint import HTML
 
 from . import config, reports, session, utils, emails, loggers, imports
 from .models import Delivery, Order, Person, Product, ProductOrder, Groups, Group
 
 
 class Response(RollResponse):
-    def html(self, template_name, *args, **kwargs):
-        self.headers["Content-Type"] = "text/html; charset=utf-8"
+    def render_template(self, template_name, *args, **kwargs):
         context = app.context()
         context.update(kwargs)
+        context["request"] = self.request
+        context["config"] = config
         context["request"] = self.request
         if self.request.cookies.get("message"):
             context["message"] = json.loads(self.request.cookies["message"])
             self.cookies.set("message", "")
-        context["config"] = config
-        self.body = env.get_template(template_name).render(*args, **context)
+        return env.get_template(template_name).render(*args, **context)
+
+    def html(self, template_name, *args, **kwargs):
+        self.headers["Content-Type"] = "text/html; charset=utf-8"
+        self.body = self.render_template(template_name, *args, **kwargs)
+
+    def render_pdf(self, template_name, *args, **kwargs):
+        html = self.render_template(template_name, *args, **kwargs)
+
+        static_folder = Path(__file__).parent / "static"
+        stylesheets = [
+            static_folder / "app.css",
+            static_folder / "icomoon.css",
+            static_folder / "page.css",
+        ]
+        if "css" in kwargs:
+            stylesheets.append(static_folder / kwargs["css"])
+
+        return HTML(string=html).write_pdf(stylesheets=stylesheets)
+
+    def pdf(self, template_name, *args, **kwargs):
+        self.body = self.render_pdf(template_name, *args, **kwargs)
+        mimetype = "application/pdf"
+        filename = kwargs.get("filename", "file.pdf")
+        self.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+        self.headers["Content-Type"] = f"{mimetype}; charset=utf-8"
 
     def xlsx(self, body, filename=f"{config.SITE_NAME}.xlsx"):
         self.body = body
@@ -228,9 +254,7 @@ async def create_group(request, response):
             members.append(request["user"].email)
 
         group = Group.create(
-            id=slugify(form.get("name")),
-            name=form.get("name"),
-            members=members,
+            id=slugify(form.get("name")), name=form.get("name"), members=members
         )
         request["groups"].add_group(group)
         request["groups"].persist()
@@ -340,15 +364,31 @@ async def import_products(request, response, id):
 
 
 @app.route("/livraison/{id}/producteurices")
+@app.route("/livraison/{id}/producteurices.pdf")
 async def list_producers(request, response, id):
     delivery = Delivery.load(id)
-    response.html(
-        "list_products.html",
-        {
+    template_name = "list_products.html"
+    template_params = {
             "edit_mode": True,
+            "list_only": True,
             "delivery": delivery,
             "referent": request.query.get("referent", None),
-        },
+    },
+
+    if request.url.endswith(b".pdf"):
+        response.pdf(template_name, template_params, filename=utils.prefix("producteurices.pdf", delivery),)
+    else:
+        response.html(template_name, template_params)
+
+
+@app.route("/livraison/{id}/{producer}/bon-de-commande.pdf", methods=["GET"])
+async def pdf_for_producer(request, response, id, producer):
+    delivery = Delivery.load(id)
+    date = delivery.to_date.strftime("%Y-%m-%d")
+    response.pdf(
+        "list_products.html",
+        {"list_only": True, "delivery": delivery, "producers": [producer]},
+        filename=utils.prefix(f"bon-de-commande-{producer}.pdf", delivery),
     )
 
 
@@ -432,10 +472,10 @@ async def create_product(request, response, delivery_id, producer_id):
 
 
 @app.route("/livraison/{id}/gérer", methods=["GET"])
-async def manage_delivery(request, response, id):
+async def delivery_toolbox(request, response, id):
     delivery = Delivery.load(id)
     response.html(
-        "manage_delivery.html",
+        "delivery_toolbox.html",
         {
             "delivery": delivery,
             "referents": [p.referent for p in delivery.producers.values()],
@@ -446,54 +486,45 @@ async def manage_delivery(request, response, id):
 @app.route("/livraison/{id}/envoi-email-referentes", methods=["GET", "POST"])
 async def send_referent_emails(request, response, id):
     delivery = Delivery.load(id)
-    date = delivery.to_date.strftime("%Y-%m-%d")
     if request.method == "POST":
         email_body = request.form.get("email_body")
         email_subject = request.form.get("email_subject")
+        sent_mails = 0
         for referent in delivery.get_referents():
             producers = delivery.get_producers_for_referent(referent)
-            if any(
-                [delivery.producers[p].has_active_products(delivery) for p in producers]
-            ):
-                summary = reports.summary(delivery, producers)
+            attachments = []
+            for producer in producers:
+                if delivery.producers[producer].has_active_products(delivery):
+                    pdf_file = response.render_pdf(
+                        "list_products.html",
+                        {
+                            "list_only": True,
+                            "delivery": delivery,
+                            "producers": [producer],
+                        },
+                    )
+
+                    attachments.append(
+                        (
+                            utils.prefix(f"{producer}.pdf", delivery),
+                            pdf_file,
+                            "application/pdf",
+                        )
+                    )
+
+            if attachments:
+                sent_mails = sent_mails + 1
                 emails.send(
                     referent,
                     email_subject,
                     email_body,
                     copy=delivery.contact,
-                    attachments=[
-                        (f"{config.SITE_NAME}-{date}-{referent}.xlsx", summary)
-                    ],
+                    attachments=attachments,
                 )
-        response.message("Le mail à bien été envoyé")
+        response.message(f"Un mail à été envoyé aux {sent_mails} référent⋅e⋅s")
         response.redirect = f"/livraison/{id}/gérer"
 
     response.html("prepare_referent_email.html", {"delivery": delivery})
-
-
-@app.route("/livraison/{id}/bon-de-commande-referent⋅e", methods=["GET"])
-async def download_referent_summary(request, response, id):
-    delivery = Delivery.load(id)
-    date = delivery.to_date.strftime("%Y-%m-%d")
-    if not request["user"].is_referent(delivery):
-        return
-    referent = request["user"].email
-    producers = delivery.get_producers_for_referent(referent)
-    summary = reports.summary(delivery, producers)
-    response.xlsx(summary, filename=f"{config.SITE_NAME}-{date}-{referent}.xlsx")
-
-
-@app.route(
-    "/livraison/{id}/product⋅eur⋅rice/{producer}/bon-de-commande",
-    methods=["GET"],
-)
-async def download_producer_report(request, response, id, producer):
-    delivery = Delivery.load(id)
-    summary = reports.summary(delivery, [producer])
-    date = delivery.to_date.strftime("%Y-%m-%d")
-    response.xlsx(
-        summary, filename=f"{config.SITE_NAME}-{date}-{producer}-bon-de-commande.xlsx"
-    )
 
 
 @app.route("/livraison/{id}/exporter", methods=["GET"])
@@ -636,7 +667,12 @@ async def send_order(request, response, id):
 @app.route("/livraison/{id}/émargement", methods=["GET"])
 async def signing_sheet(request, response, id):
     delivery = Delivery.load(id)
-    response.html("signing_sheet.html", {"delivery": delivery})
+    response.pdf(
+        "signing_sheet.html",
+        {"delivery": delivery},
+        css="signing-sheet.css",
+        filename=utils.prefix("commandes-par-groupe.pdf", delivery),
+    )
 
 
 @app.route("/livraison/{id}/importer/commande", methods=["POST"])
@@ -730,6 +766,7 @@ async def adjust_product(request, response, id, ref):
 
 
 @app.route("/livraison/{id}/solde", methods=["GET"])
+@app.route("/livraison/{id}/solde.pdf", methods=["GET"])
 @staff_only
 async def delivery_balance(request, response, id):
     delivery = Delivery.load(id)
@@ -770,17 +807,25 @@ async def delivery_balance(request, response, id):
     for debiter, amount, crediter in results:
         results_dict[debiter][crediter] = amount
 
-    response.html(
-        "delivery_balance.html",
-        {
-            "delivery": delivery,
-            "debiters": debiters,
-            "crediters": crediters,
-            "results": results_dict,
-            "debiters_groups": groups.groups,
-            "crediters_groups": producer_groups,
-        },
-    )
+    template_name = "delivery_balance.html"
+    template_args = {
+        "delivery": delivery,
+        "debiters": debiters,
+        "crediters": crediters,
+        "results": results_dict,
+        "debiters_groups": groups.groups,
+        "crediters_groups": producer_groups,
+    }
+
+    if request.url.endswith(b".pdf"):
+        date = delivery.to_date.strftime("%Y-%m-%d")
+        response.pdf(
+            template_name,
+            template_args,
+            filename=utils.prefix("répartition-des-chèques.pdf", delivery),
+        )
+    else:
+        response.html(template_name, template_args)
 
 
 @app.route("/livraison/{id}/solde.xlsx", methods=["GET"])

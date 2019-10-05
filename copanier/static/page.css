@@ -1,0 +1,28 @@
+@page {
+    size: "A4";
+    margin: 0cm;
+    size: landscape;
+}
+
+#download {
+    display: none;
+}
+
+@media print {
+    nav, .notification, .toolbox, .edit, .hide-on-print, .button{
+        display: none;
+    }
+
+    ul.delivery-head {
+        display: block !important;
+      }
+    ul.delivery-head li {
+        margin-bottom: 1.5em !important;
+    }
+    table.delivery {
+        page-break-after: always;
+    }
+    .page-break {
+        page-break-after: always;
+    }
+}
