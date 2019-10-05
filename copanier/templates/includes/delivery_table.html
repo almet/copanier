@@ -30,7 +30,7 @@
             {% if not list_only %}
             {% for orderer, order in delivery.orders.items() %}
                 {% set orderer_name = request.groups.groups[orderer].name %}
-                <th class="person{% if delivery.is_passed and not order.paid %} not-paid{% endif %}">
+                <th class="person">
                     {% if request.user and (request.user.is_staff or request.user.is_referent(delivery)) %}
                         <a href="/livraison/{{ delivery.id }}/commander?orderer={{ orderer }}" title="{{ orderer }}">{{ orderer_name }}</a>
                     {% else %}

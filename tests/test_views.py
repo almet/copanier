@@ -88,17 +88,6 @@ async def test_place_order_with_empty_string(client, delivery):
     delivery = Delivery.load(id=delivery.id)
     assert not delivery.orders
 
-
-async def test_change_paid_status_when_placing_order(client, delivery):
-    delivery.persist()
-    body = {"wanted:123": "3", "paid": 1}
-    resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
-    assert resp.status == 302
-    delivery = Delivery.load(id=delivery.id)
-    assert delivery.orders["foo@bar.org"]
-    assert delivery.orders["foo@bar.org"].paid is True
-
-
 async def test_get_place_order_with_closed_delivery(client, delivery, monkeypatch):
     monkeypatch.setattr("copanier.config.STAFF", ["someone@else.org"])
     delivery.order_before = datetime.now() - timedelta(days=1)
@@ -223,34 +212,6 @@ async def test_only_staff_can_adjust_product(client, delivery, monkeypatch):
     delivery = Delivery.load(id=delivery.id)
     assert delivery.orders["foo@bar.org"].products["123"].wanted == 2
     assert delivery.orders["foo@bar.org"].products["123"].adjustment == 0
-
-
-async def test_get_delivery_balance(client, delivery):
-    delivery.from_date = datetime.now() - timedelta(days=1)
-    delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=2)})
-    delivery.persist()
-    resp = await client.get(f"/livraison/{delivery.id}/solde")
-    doc = pq(resp.body)
-    assert doc('[name="foo@bar.org"]')
-    assert not doc('[name="foo@bar.org"]').attr("checked")
-    delivery.orders["foo@bar.org"] = Order(
-        products={"123": ProductOrder(wanted=2)}, paid=True
-    )
-    delivery.persist()
-    resp = await client.get(f"/livraison/{delivery.id}/solde")
-    doc = pq(resp.body)
-    assert doc('[name="foo@bar.org"]').attr("checked")
-
-
-async def test_post_delivery_balance(client, delivery):
-    delivery.order_before = datetime.now() - timedelta(days=1)
-    delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=2)})
-    delivery.persist()
-    body = {"foo@bar.org": "on"}
-    resp = await client.post(f"/livraison/{delivery.id}/solde", body=body)
-    assert resp.status == 302
-    delivery = Delivery.load(id=delivery.id)
-    assert delivery.orders["foo@bar.org"].paid is True
 
 
 async def test_export_products(client, delivery):
