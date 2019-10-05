@@ -221,6 +221,7 @@ class ProductOrder(Base):
 @dataclass
 class Order(Base):
     products: Dict[str, ProductOrder] = field(default_factory=dict)
+    phone_number : str = ""
 
     def __getitem__(self, ref):
         if isinstance(ref, Product):

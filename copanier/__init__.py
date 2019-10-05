@@ -602,7 +602,7 @@ async def place_order(request, response, id):
             return
 
         form = request.form
-        order = Order()
+        order = Order(phone_number=form.get('phone_number', ''))
         for product in delivery.products:
             try:
                 wanted = form.int(f"wanted:{product.ref}", 0)
