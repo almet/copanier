@@ -5,3 +5,4 @@ usine
 pyquery
 pytest-watch
 python-emails
+Weasyprint
