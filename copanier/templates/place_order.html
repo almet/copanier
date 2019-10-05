@@ -46,9 +46,6 @@
     </table>
     {% endfor %}
     <p>Total: {{ order.total(delivery.products) if order else 0 }} €</p>
-    {% if delivery.is_passed %}
-    <p>Commande soldée: <input type="checkbox" name="paid" {% if order.paid %}checked{% endif %}></p>
-    {% endif %}
     <input type="hidden" name="email" value="{{ person.email }}">
     {% if delivery.status != delivery.CLOSED or request.user.is_staff %}
     <input type="submit" value="Enregistrer la commande" class="primary">

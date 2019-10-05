@@ -16,6 +16,7 @@ The main differences are :
 - A minimal interface to add  / remove / update products from the website.
 - Support for out of stock products.
 - Automatically compute a settlement plan (using the [debts library](https://framagit.org/almet/debts))
+- Remove paiement tracking (as it conflicts with auto-settlement of debts)
 - A special page with tools to ease delivery management
 - Drop support for CSV files
 - Send emails to producers referents, with an order summary

@@ -92,15 +92,3 @@ def products(delivery):
         producer_sheet.append([getattr(producer, field) for field in producer_fields])
 
     return save_virtual_workbook(wb)
-
-
-def balance(delivery):
-    wb = Workbook()
-    ws = wb.active
-    ws.title = f"Solde {delivery.name}"
-    ws.append(["Adhérent", "Montant", "Payé"])
-    for email, order in delivery.orders.items():
-        ws.append(
-            [email, order.total(delivery.products), "oui" if order.paid else "non"]
-        )
-    return save_virtual_workbook(wb)

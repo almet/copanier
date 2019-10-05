@@ -455,9 +455,6 @@ hr {
 .notification i {
   font-size: 2rem;
 }
-.not-paid {
-  background-color: var(--warning-color);
-}
 .toggle {
   display: none;
 }

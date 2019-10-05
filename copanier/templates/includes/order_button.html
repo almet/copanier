@@ -9,7 +9,4 @@
 {% endif %}
 {% if request.user.email in delivery.orders %}
     <span class="flag" title="Mon solde"><i class="icon-wallet"></i>&nbsp;{{ delivery.total_for(request.user) }} €</span>
-    {% if delivery.status == delivery.CLOSED and delivery.is_passed and not delivery.orders[request.user.email].paid %}
-        <span class="flag warning" title="Ma commande n'est pas marquée comme soldée"><i class="icon-caution"></i>&nbsp;Commande à solder</span>
-    {% endif %}
 {% endif %}

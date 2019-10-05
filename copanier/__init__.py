@@ -595,7 +595,6 @@ async def place_order(request, response, id):
         return
 
     if request.method == "POST":
-
         # When the delivery is closed, only staff can access.
         if delivery.status == delivery.CLOSED and not (user and user.is_staff):
             response.message("La livraison est fermée", "error")
@@ -603,7 +602,7 @@ async def place_order(request, response, id):
             return
 
         form = request.form
-        order = Order(paid=form.bool("paid", False))
+        order = Order()
         for product in delivery.products:
             try:
                 wanted = form.int(f"wanted:{product.ref}", 0)
