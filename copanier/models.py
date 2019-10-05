@@ -245,6 +245,7 @@ class Order(Base):
         return round(
             sum(p.quantity * _get_price(ref) for ref, p in self.products.items()), 2
         )
+        return round(total, 2)
 
     @property
     def has_adjustments(self):
@@ -352,7 +353,9 @@ class Delivery(PersistedBase):
 
     @classmethod
     def incoming(cls):
-        return [d for d in cls.all() if d.is_foreseen]
+        return sorted(
+            [d for d in cls.all() if d.is_foreseen], key=lambda d: d.order_before
+        )
 
     @classmethod
     def former(cls):
@@ -425,3 +428,8 @@ class Delivery(PersistedBase):
 
     def get_referents(self):
         return [producer.referent for producer in self.producers.values()]
+        
+    def total_for(self, person):
+        if person.email not in self.orders:
+            return 0
+        return self.orders[person.email].total(self.products)

@@ -181,15 +181,19 @@ async def sesame(request, response):
 async def send_sesame(request, response):
     email = request.form.get("email")
     token = utils.create_token(email)
-    emails.send_from_template(
-        env,
-        "access_granted",
-        email,
-        f"Sésame {config.SITE_NAME}",
-        hostname=request.host,
-        token=token.decode(),
-    )
-    response.message(f"Un sésame vous a été envoyé à l'adresse '{email}'")
+    try:
+        emails.send_from_template(
+            env,
+            "access_granted",
+            email,
+            f"Sésame {config.SITE_NAME}",
+            hostname=request.host,
+            token=token.decode(),
+        )
+    except RuntimeError:
+        response.message("Oops, impossible d'envoyer le courriel…", status="error")
+    else:
+        response.message(f"Un sésame vous a été envoyé à l'adresse '{email}'")
     response.redirect = "/"
 
 
@@ -533,6 +537,12 @@ async def export_products(request, response, id):
     response.xlsx(reports.products(delivery))
 
 
+@app.route("/livraison/archive/{id}/exporter/produits", methods=["GET"])
+async def export_archived_products(request, response, id):
+    delivery = Delivery.load(f"archive/{id}")
+    response.xlsx(reports.products(delivery))
+
+
 @app.route("/livraison/{id}/edit", methods=["GET"])
 @staff_only
 async def edit_delivery(request, response, id):
@@ -617,7 +627,6 @@ async def place_order(request, response, id):
         delivery.persist()
 
         if user and orderer.id == user.id:
-            # Only send email if order has been placed by the user itself.
             # Send the emails to everyone in the group.
             groups = request["groups"].groups
             if orderer.group_id in groups.keys():
@@ -643,9 +652,13 @@ async def place_order(request, response, id):
         response.redirect = f"/livraison/{delivery.id}"
     else:
         order = delivery.orders.get(orderer.id) or Order()
+        force_adjustment = "adjust" in request.query and user and user.is_staff
         response.html(
             "place_order.html",
-            {"delivery": delivery, "person": orderer, "order": order},
+            delivery=delivery,
+            person=orderer,
+            order=order,
+            force_adjustment=force_adjustment,
         )
 
 
@@ -657,10 +670,14 @@ async def send_order(request, response, id):
     if not order:
         response.message(f"Aucune commande pour «{email}»", status="warning")
     else:
-        emails.send_order(
-            request, env, person=Person(email=email), delivery=delivery, order=order
-        )
-        response.message(f"Résumé de commande envoyé à «{email}»")
+        try:
+            emails.send_order(
+                request, env, person=Person(email=email), delivery=delivery, order=order
+            )
+        except RuntimeError:
+            response.message("Oops, impossible d'envoyer le courriel…", status="error")
+        else:
+            response.message(f"Résumé de commande envoyé à «{email}»")
     response.redirect = f"/livraison/{delivery.id}"
 
 

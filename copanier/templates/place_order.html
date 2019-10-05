@@ -17,7 +17,7 @@
                 <th class="packing">Conditionnement</th>
             {% endif %}
             <th class="amount">Commande</th>
-            {% if delivery.status == delivery.ADJUSTMENT or order.has_adjustments %}
+            {% if delivery.status == delivery.ADJUSTMENT or order.has_adjustments or force_adjustment %}
                 <th class="amount">Ajustement +/−</th>
             {% endif %}
         </tr>
@@ -36,8 +36,8 @@
             {% if delivery.has_packing %}
                 <td {% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>{{ product.packing or "—" }}{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (manque {{ delivery.product_missing(product) }}){% endif %}</td>
             {% endif %}
-            {% if delivery.status == delivery.ADJUSTMENT or order.has_adjustments %}
-            <td class="with-input"><input type="number" name="adjustment:{{ product.ref }}" value="{{ order[product].adjustment }}" {% if not delivery.product_missing(product) %}readonly{% endif %}></td>
+            {% if delivery.status == delivery.ADJUSTMENT or order.has_adjustments or force_adjustments %}
+            <td class="with-input"><input type="number" name="adjustment:{{ product.ref }}" value="{{ order[product].adjustment }}" min="{{ order[product].wanted * -1 }}" {% if not (delivery.product_missing(product) or force_adjustment) %}readonly{% endif %}></td>
             {% endif %}
             <td class="with-input"><input {% if not request.user.is_referent(delivery) and delivery.status != delivery.OPEN or product.rupture %}type="text" readonly{% else%}type="number"{% endif%} min=0 name="wanted:{{ product.ref }}" value="{{ order[product].wanted }}"> x {{ product.unit }}</td>
         </tr>
@@ -54,6 +54,9 @@
     <input type="submit" value="Enregistrer la commande" class="primary">
     {% endif %}
     <a class="button" href="/livraison/{{ delivery.id }}/courriel?email={{ person.email }}">Envoyer par courriel</a>
+    {% if request.user.is_staff and delivery.status == delivery.CLOSED %}
+    <a class="button danger" href="/livraison/{{ delivery.id }}/commander?email={{ person.email }}&adjust">Ajuster</a>
+    {% endif %}
 </form>
 </article>
 {% endblock body %}

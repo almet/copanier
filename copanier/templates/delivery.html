@@ -43,6 +43,9 @@
     {% endif %}
     {% if request.user and request.user.is_staff %}
     <li>
+        <a href="/livraison/{{ delivery.id }}/désarchiver" class="button danger"><i class="icon-hazardous"></i>&nbsp;Désarchiver</a>
+    </li>
+    <li>
         <a href="/livraison/{{ delivery.id }}/exporter"><i class="icon-layers"></i> Liste des produits</a>
     </li>
     <li>

@@ -131,6 +131,7 @@ async def test_get_place_order_with_adjustment_status(client, delivery):
     assert doc('[name="wanted:123"]').attr("readonly")
     assert doc('[name="adjustment:123"]')
     assert not doc('[name="adjustment:123"]').attr("readonly")
+    assert doc('[name="adjustment:123"]').attr("min") == "-1"
     assert doc('[name="wanted:456"]').attr("readonly")
     assert doc('[name="adjustment:456"]')
     # Already adjusted.
@@ -151,6 +152,21 @@ async def test_get_place_order_with_closed_delivery_but_adjustments(client, deli
     resp = await client.get(f"/livraison/{delivery.id}/commander")
     doc = pq(resp.body)
     assert doc('[name="wanted:123"]').attr("readonly")
+    assert doc('[name="adjustment:123"]')
+
+
+async def test_get_place_order_with_closed_delivery_but_force(client, delivery):
+    delivery.order_before = datetime.now() - timedelta(days=1)
+    delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=1)})
+    delivery.persist()
+    assert delivery.status == delivery.CLOSED
+    resp = await client.get(f"/livraison/{delivery.id}/commander")
+    doc = pq(resp.body)
+    assert doc('[name="wanted:123"]').attr("readonly") is not None
+    assert not doc('[name="adjustment:123"]')
+    resp = await client.get(f"/livraison/{delivery.id}/commander?adjust")
+    doc = pq(resp.body)
+    assert doc('[name="wanted:123"]').attr("readonly") is not None
     assert doc('[name="adjustment:123"]')
 
 

@@ -105,6 +105,16 @@ def test_order_has_adjustments():
     assert order.has_adjustments
 
 
+def test_order_total(delivery):
+    delivery.products = [Product(name="Lait", ref="123", price=1.5)]
+    order = Order()
+    assert order.total(delivery.products) == 0
+    order.products["123"] = ProductOrder(wanted=2)
+    assert order.total(delivery.products) == 3
+    order.products["unknown"] = ProductOrder(wanted=2)
+    assert order.total(delivery.products) == 3
+
+
 def test_can_persist_delivery(delivery):
     with pytest.raises(AssertionError):
         delivery.path
