@@ -32,21 +32,23 @@
 <ul class="toolbox">
     {% if not delivery.is_archived and delivery.status == delivery.CLOSED %}
     <li>
-        <a href="/livraison/{{ delivery.iddelivery }}/bon-de-commande.xlsx"><i class="icon-ribbon"></i> Bon de commande</a>
+        <a href="/livraison/{{ delivery.id }}/producteurices.pdf"><i class="icon-ribbon"></i> Bon de commande</a>
     </li>
     <li>
         <a href="/livraison/{{ delivery.id }}/rapport-complet.xlsx"><i class="icon-grid"></i> Rapport complet</a>
     </li>
     <li>
-        <a href="/livraison/{{ delivery.id }}/émargement" target="_blank"><i class="icon-document"></i> Liste d'émargement</a>
+        <a href="/livraison/{{ delivery.id }}/émargement" target="_blank"><i class="icon-document"></i> Résumé de commandes</a>
     </li>
     {% endif %}
     {% if request.user and request.user.is_staff %}
+    {% if delivery.is_archived %}
     <li>
         <a href="/livraison/{{ delivery.id }}/désarchiver" class="button danger"><i class="icon-hazardous"></i>&nbsp;Désarchiver</a>
     </li>
+    {% endif %}
     <li>
-        <a href="/livraison/{{ delivery.id }}/exporter"><i class="icon-layers"></i> Liste des produits</a>
+        <a href="/livraison/{{ delivery.id }}/exporter"><i class="icon-layers"></i> Télécharger les infos produits</a>
     </li>
     <li>
         <a href="/livraison/{{ delivery.id }}/edit"><i class="icon-adjustments"></i> Modifier la livraison</a>

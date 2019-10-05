@@ -373,14 +373,19 @@ async def list_producers(request, response, id):
     delivery = Delivery.load(id)
     template_name = "list_products.html"
     template_params = {
-            "edit_mode": True,
-            "list_only": True,
-            "delivery": delivery,
-            "referent": request.query.get("referent", None),
-    },
+        "edit_mode": True,
+        "list_only": True,
+        "delivery": delivery,
+        "referent": request.query.get("referent", None),
+    }
 
     if request.url.endswith(b".pdf"):
-        response.pdf(template_name, template_params, filename=utils.prefix("producteurices.pdf", delivery),)
+        template_params["edit_mode"] = False
+        response.pdf(
+            template_name,
+            template_params,
+            filename=utils.prefix("producteurices.pdf", delivery),
+        )
     else:
         response.html(template_name, template_params)
 
@@ -662,25 +667,6 @@ async def place_order(request, response, id):
         )
 
 
-@app.route("/livraison/{id}/courriel", methods=["GET"])
-async def send_order(request, response, id):
-    delivery = Delivery.load(id)
-    email = request.query.get("email")
-    order = delivery.orders.get(email)
-    if not order:
-        response.message(f"Aucune commande pour «{email}»", status="warning")
-    else:
-        try:
-            emails.send_order(
-                request, env, person=Person(email=email), delivery=delivery, order=order
-            )
-        except RuntimeError:
-            response.message("Oops, impossible d'envoyer le courriel…", status="error")
-        else:
-            response.message(f"Résumé de commande envoyé à «{email}»")
-    response.redirect = f"/livraison/{delivery.id}"
-
-
 @app.route("/livraison/{id}/émargement", methods=["GET"])
 async def signing_sheet(request, response, id):
     delivery = Delivery.load(id)
@@ -734,16 +720,6 @@ async def import_multiple_commands(request, response, id):
     delivery.persist()
     response.message(f"Yes ! Les commandes ont bien été importées !")
     response.redirect = f"/livraison/{delivery.id}"
-
-
-@app.route("/livraison/{id}/bon-de-commande.xlsx", methods=["GET"])
-async def xls_report(request, response, id):
-    delivery = Delivery.load(id)
-    date = delivery.to_date.strftime("%Y-%m-%d")
-    response.xlsx(
-        reports.summary(delivery),
-        filename=f"{config.SITE_NAME}-{date}-bon-de-commande.xlsx",
-    )
 
 
 @app.route("/livraison/{id}/rapport-complet.xlsx", methods=["GET"])
@@ -843,12 +819,6 @@ async def delivery_balance(request, response, id):
         )
     else:
         response.html(template_name, template_args)
-
-
-@app.route("/livraison/{id}/solde.xlsx", methods=["GET"])
-async def delivery_balance_report(request, response, id):
-    delivery = Delivery.load(id)
-    response.xlsx(reports.balance(delivery))
 
 
 def configure():

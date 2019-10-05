@@ -3,7 +3,6 @@
     {% for product in delivery.products %}
     {% if order[product].quantity %}
     <tr>
-        <td>{{ product.ref }}</td>
         <th class="product" style="text-align: left;">{{ product }}</th>
         {% if display_prices %}<td>{{ product.price | round(2) }} €</td>{% endif %}<td>{{ order[product].quantity }} x {{ product.unit }}</td>
     </tr>
