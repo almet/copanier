@@ -14,13 +14,13 @@ The main differences are :
 - Support for multiple producers (and persons to handle these producers)
 - A concept of groups was added : multiple persons can belong to the same group (and create / edit orders).
 - A minimal interface to add  / remove / update products from the website.
-- Support for out of stock products.
+- Support out of stock products
 - Automatically compute a settlement plan (using the [debts library](https://framagit.org/almet/debts))
 - Remove paiement tracking (as it conflicts with auto-settlement of debts)
-- A special page with tools to ease delivery management
+- Add a page with tools to ease delivery management
 - Drop support for CSV files
 - Send emails to producers referents, with an order summary
-- Generation of PDF files rather than XLS files (for order summary, signing sheet and paiements repartition)
+- Generate PDF files rather than XLS files (for order summary, signing sheet and paiements repartition)
 
 ## Philosophy
 
