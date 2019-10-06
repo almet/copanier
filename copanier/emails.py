@@ -14,7 +14,6 @@ def send(to, subject, body, html=None, copy=None, attachments=None):
     for filename, attachment, mime in attachments:
         message.attach(filename=filename, data=attachment, mime=f"{mime} charset=utf-8")
 
-    config.SEND_EMAILS = False
     if not config.SEND_EMAILS:
         body = body.replace("https", "http")
         return print("Sending email", str(body))
