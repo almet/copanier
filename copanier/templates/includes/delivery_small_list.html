@@ -1,0 +1,11 @@
+{% if deliveries %}
+<ul class="delivery">
+{% for delivery in deliveries %}
+<li>
+    <a href="/livraison/{{ delivery.id }}"><i class="icon-hotairballoon"></i> {{ delivery.name }}</a> du {{ delivery.from_date|date|capitalize }}
+</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>Aucune livraison.</p>
+{% endif %}
