@@ -431,12 +431,12 @@ hr {
     width: 50%;
 }
 .notification {
-  width: 100%;
   text-align: center;
   color: white;
   line-height: 3rem;
   height: 3rem;
   vertical-align: middle;
+  margin: 1rem;
 }
 .notification.success {
   background-color: var(--success-color);
@@ -462,6 +462,7 @@ hr {
   cursor: pointer;
   color: var(--link-color);
 }
+
 .toggle-container {
   display: none;
   position: fixed;
@@ -471,11 +472,15 @@ hr {
   width: 400px;
   border: 1px solid #999;
   background: white;
-  padding: 5px;
+  padding: 1rem;
   z-index: 100;
   overflow-y: auto;
   white-space: normal;
 }
+.toggle-container h3 {
+  margin-top: 0.2em;
+}
+
 .toggle-background {
   position: fixed;
   width: 100%;
@@ -605,6 +610,7 @@ table.paiements tr:hover td {
 }
 .progressbar {
   counter-reset: step;
+  padding-top: 2em;
 }
 .progressbar li {
   list-style-type: none;
@@ -650,4 +656,8 @@ table.paiements tr:hover td {
 }
 .progressbar li.active + li:after {
   background-color: #55b776;
+}
+
+.placeholder {
+  padding: 3rem !important;
 }

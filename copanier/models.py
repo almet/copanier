@@ -257,6 +257,7 @@ class Delivery(PersistedBase):
 
     __root__ = "delivery"
     __lock__ = threading.Lock()
+    EMPTY = -1
     CLOSED = 0
     OPEN = 1
     ADJUSTMENT = 2
@@ -281,6 +282,8 @@ class Delivery(PersistedBase):
 
     @property
     def status(self):
+        if not self.products:
+            return self.EMPTY
         if self.is_archived:
             return self.ARCHIVED
         if self.is_open:

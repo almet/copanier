@@ -6,13 +6,13 @@
 {% block body %}
 {% include "includes/delivery_head.html" %}
 
-{% if request['user'].email == delivery.contact %}
+{% if request['user'].email == delivery.contact and delivery.status > delivery.EMPTY %}
 <div class="notification info"><i class="icon-lightbulb"></i> Vous êtes la personne référente de cette distribution <a class="button" href="/livraison/{{ delivery.id }}/gérer">Voir la boîte à outils</a></div>
 {% elif request['user'].email in delivery.get_referents() %}
 <div class="notification info"><i class="icon-lightbulb"></i> Vous êtes référent⋅e pour cette distribution (merci !). <a class="button" href="/livraison/{{ delivery.id }}/producteurices?referent={{request['user'].email}}">Gérer les produits dont vous vous occupez</a></div>
 {% endif %}
 <ul class="progressbar">
-    <li {% if delivery.status == delivery.OPEN %}class="active"{% endif %}>Mise à jour des prix</li>
+    <li {% if delivery.status == delivery.EMPTY %}class="active"{% endif %}>Mise à jour des prix</li>
     <li {% if delivery.status == delivery.OPEN %}class="active"{% endif %}>Ouverture des commandes</li>
     <li {% if delivery.status == delivery.ADJUSTMENT %}class="active"{% endif %}>Ajustements</li>
     <li {% if delivery.can_generate_reports %}class="active"{% endif %}>Achats par les référent⋅e⋅s</li>
@@ -22,10 +22,18 @@
 {% if delivery.has_products %}
     {% include "includes/delivery_table.html" %}
 {% else %}
-<p>Aucun produit n'est encore défini pour cette livraison.</p>
-{% if request.user and request.user.is_staff %}
-<div class="inline-text">Pour rajouter des produits, il faut d'abord <a href="/livraison/{{ delivery.id }}/exporter"><i class="icon-layers"></i> télécharger le tableur avec les produits</a>, le modifier localement sur votre machine puis &nbsp;</div> <div class="inline-text">{% with unique_id="import-products" %}{% include "includes/modal_import_products.html" %}{% endwith %}.</div>
-{% endif %}
+<div class="placeholder">
+    <h2>Aucun produit n'est encore défini pour cette livraison.</h2>
+    {% if request.user and request.user.is_staff %}
+    <div class="inline-text">
+        Pour rajouter des produits, deux options:
+        <ol>
+            <li><a href="/livraison/{{ delivery.id }}/exporter"><i class="icon-layers"></i>Télécharger le tableur avec les produits</a>, le modifier localement sur votre machine puis &nbsp;<div class="inline-text">{% with unique_id="import-products" %}{% include "includes/modal_import_products.html" %}{% endwith %}</div></li>
+            <li>Ou bien ajouter les product⋅eurs⋅rices un⋅e par un⋅e dans l'interface</li>
+        </ol>
+    </div>
+    {% endif %}
+</div>
 {% endif %}
 </article>
 <hr>
