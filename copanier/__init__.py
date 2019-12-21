@@ -409,6 +409,7 @@ async def edit_producer(request, response, delivery_id, producer_id):
         form = request.form
         producer.referent = form.get("referent")
         producer.referent_tel = form.get("referent_tel")
+        producer.referent_name = form.get("referent_name")
         producer.description = form.get("description")
         producer.contact = form.get("contact")
         delivery.producers[producer_id] = producer

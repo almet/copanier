@@ -24,6 +24,10 @@
         <input type="email" name="referent" value="{{ producer.referent or '' }}" required>
     </label>
     <label>
+        <p>Nom de la personne référente</p>
+        <input type="text" name="referent_name" value="{{ producer.referent_name or '' }}" required>
+    </label>
+    <label>
         <p>Téléphone de la personne référente</p>
         <input type="tel" name="referent_tel" value="{{ producer.referent_tel or '' }}" required>
     </label>
