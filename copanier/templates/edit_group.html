@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 
 {% block body %}
-{% if group.id %}
+<div class="header">
+    {% if group.id %}
     <h1>Modifier le groupe</h1>
-{% else %}
-    <h1>Créer un nouveau groupe (coloc / famille)</h1>
-{% endif %}
+    {% else %}
+    <h1>Créer un nouveau groupe</h1>
+    {% endif %}
+    <h4>Les groupes permettent de gérer les commandes pour d'autres personnes (colocs, familles, etc)</h4>
+</div>
+
 <form method="post">
     <label>
         <p>Nom</p>

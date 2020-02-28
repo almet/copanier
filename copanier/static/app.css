@@ -661,3 +661,13 @@ table.paiements tr:hover td {
 .placeholder {
   padding: 3rem !important;
 }
+
+ul.actions {
+  list-style-type: none;
+  padding: 0px;
+}
+
+ul.actions > li {
+  display: inline;
+  margin-left: 1em;
+}

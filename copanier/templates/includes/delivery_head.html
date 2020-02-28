@@ -1,6 +1,5 @@
 <ul class="delivery-head">
     {% if delivery.description %}<li><i class="icon-basket"></i> <strong>Produits</strong> {{ delivery.description }}</li>{% endif %}
-    <li><i class="icon-streetsign"></i> <strong>Lieu</strong> {{ delivery.where }}</li>
     {% if display_counts %}
     <li><i class="icon-lightbulb"></i> <strong>{{ delivery.orders|length }}</strong> colocs</strong>, <strong>{{ delivery.products|length }}</strong> produits et <strong>{{ delivery.producers | length}}</strong> product⋅eurs⋅rices, <strong>{{ delivery.total }}€</strong></li>
     {% else %}

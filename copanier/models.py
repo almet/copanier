@@ -179,6 +179,7 @@ class Product(Base):
     name: str
     ref: str
     price: price_field
+    last_update: datetime_field = datetime.now()
     unit: str = ""
     description: str = ""
     url: str = ""
@@ -199,6 +200,7 @@ class Product(Base):
         self.unit = form.get("unit")
         self.description = form.get("description")
         self.url = form.get("url")
+        self.last_update = datetime.now()
         if form.get("packing"):
             self.packing = form.int("packing")
         if "rupture" in form:
@@ -221,7 +223,7 @@ class ProductOrder(Base):
 @dataclass
 class Order(Base):
     products: Dict[str, ProductOrder] = field(default_factory=dict)
-    phone_number : str = ""
+    phone_number: str = ""
 
     def __getitem__(self, ref):
         if isinstance(ref, Product):
@@ -431,7 +433,7 @@ class Delivery(PersistedBase):
 
     def get_referents(self):
         return [producer.referent for producer in self.producers.values()]
-        
+
     def total_for(self, person):
         if person.email not in self.orders:
             return 0

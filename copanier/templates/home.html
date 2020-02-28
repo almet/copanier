@@ -1,10 +1,24 @@
 {% extends "base.html" %}
 {% block body %}
+<div class="header">
+    <h1>Distributions</h1>
+    <ul class="actions">
+        <li>
+            <a class="button" href="/livraison"><i class="icon-hotairballoon"></i>&nbsp;Créer une nouvelle distribution</a>&nbsp;
+        </li>
+        <li>
+            <a class="button" href="/livraison"><i class="icon-telescope"></i>&nbsp;Voir les distribution passées</a>&nbsp;
+        </li>
+    </ul>
+</div>
+
     {% with deliveries=incoming %}
         {% include "includes/delivery_list.html" %}
     {% endwith %}
     {% if former %}
-    <h2>Livraisons passées</h2>
+    <div class="header">
+        <h1>Distributions passées</h1>
+    </div>
     {% with deliveries=former %}
         {% include "includes/delivery_small_list.html" %}
     {% endwith %}
@@ -13,14 +27,4 @@
     <a href="/archives">Voir les livraisons archivées</a>
     <hr>
     {% endif %}
-    <ul class="toolbox">
-        {% if request.user.is_staff %}
-        <li>
-            <a class="button" href="/livraison"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle livraison</a>&nbsp;
-        </li>
-         {% endif %}
-        <li>
-            <a href="/groupes" class="button"><i class="icon-globe"></i>&nbsp;Gérer les groupes / colocs</a>
-        </li>
-    </ul>
 {% endblock body %}
