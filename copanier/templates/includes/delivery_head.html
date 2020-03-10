@@ -5,7 +5,7 @@
     {% else %}
     <li class="hide-on-print"><i class="icon-strategy"></i> <strong>Référent⋅e</strong> <a href="mailto:{{ delivery.contact }}">{{ delivery.contact }}</a></li>
     {% endif %}
-    <li><i class="icon-clock"></i> <strong>Date de livraison</strong> <time datetime="{{ delivery.from_date }}">{{ delivery.from_date|date|capitalize }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}</time></li>
+    <li><i class="icon-clock"></i> <strong>Date de distribution</strong> <time datetime="{{ delivery.from_date }}">{{ delivery.from_date|date|capitalize }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}</time></li>
     <li class="hide-on-print"><i class="icon-hourglass"></i> {% if delivery.status == delivery.OPEN %}<strong>Date limite de commande</strong> <time datetime="{{ delivery.order_before.date() }}">{{ delivery.order_before|date|capitalize }}</time>{% elif delivery.status == delivery.ADJUSTMENT %}<strong>Ajustement en cours</strong>{% elif delivery.status == delivery.CLOSED %}<strong>Fermée</strong>{% else %}<strong>Archivée</strong>{% endif %}</li>
     {% if delivery.instructions %}<li><i class="icon-lightbulb"></i> <strong>À savoir</strong> {{ delivery.instructions }}</li>{% endif %}
     {% if delivery.infos_url %}<li><i class="icon-global"></i><strong>Plus d'infos</strong> <a href="{{ delivery.infos_url }}" title="{{ delivery.infos_url }}">{{ delivery.infos_url|truncate(20)}}</a></li>{% endif %}

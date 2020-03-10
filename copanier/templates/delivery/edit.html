@@ -1,19 +1,30 @@
 {% extends "base.html" %}
-
+{% block toplink %}{% if delivery.id %}<a href="/distribution/{{ delivery.id }}">↶ Retourner à la distribution</a>{% endif %}{% endblock %}
 {% block body %}
+<div class="header">
 {% if delivery.id %}
-    <h1>Modifier la livraison</h1>
+    <h1>Modifier la distribution</h1>
+    <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+            {% if delivery.status == delivery.CLOSED %}
+            <li class="pure-menu-item">
+                <a class="pure-menu-link danger" href="/distribution/{{ delivery.id }}/archiver"><i class="icon-layers"></i>&nbsp;Archiver</a>
+            </li>
+            {% endif %}
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="/distribution/{{ delivery.id }}/produits"><i class="icon-pencil"></i> Gérer les produits / product⋅eur⋅rice⋅s</a>
+            </li>
+        </ul>
+    </div>
 {% else %}
-    <h1>Nouvelle livraison</h1>
+    <h1>Nouvelle distribution</h1>
 {% endif %}
+
+</div>
 <form method="post">
     <label>
-        <p>Nom de la livraison</p>
+        <p>Nom de la distribution</p>
         <input type="text" name="name" value="{{ delivery.name or '' }}">
-    </label>
-    <label>
-        <h5>Description des produits</h5>
-        <input type="text" name="description" value="{{ delivery.description or '' }}">
     </label>
     <label>
         <p>Référent⋅e</p>
@@ -24,7 +35,7 @@
         <input type="text" name="where" value="{{ delivery.where or '' }}" required>
     </label>
     <label>
-        <p>Date de livraison</p>
+        <p>Date de distribution</p>
         <input type="date" name="date" value="{{ delivery.from_date.date() if delivery.from_date else '' }}" required> de <input type="time" name="from_time" value="{{ delivery.from_date.time() if delivery.from_date else '' }}" required> à <input type="time" name="to_time" value="{{ delivery.to_date.time() if delivery.to_date else '' }}" required>
     </label>
     <label>
@@ -35,30 +46,9 @@
         <p>Instructions particulières</p>
         <input type="text" name="instructions" value="{{ delivery.instructions or '' }}">
     </label>
-    <label>
-        <p>URL externe d'information</p>
-        <input type="url" name="infos_url" value="{{ delivery.infos_url or '' }}">
-    </label>
     <div>
         <input type="submit" name="submit" value="Valider" class="primary">
     </div>
 </form>
 <hr>
-{% if delivery %}
-<ul class="toolbox">
-    {% if delivery.status == delivery.CLOSED %}
-    <li>
-        <a href="/livraison/{{ delivery.id }}/archiver" class="button danger"><i class="icon-layers"></i>&nbsp;Archiver</a>
-    </li>
-    {% endif %}
-    <li>
-        {% with unique_id="import-products" %}
-            {% include "includes/modal_import_products.html" %}
-        {% endwith %}
-    </li>
-    <li>
-        <a href="/livraison/{{ delivery.id }}/producteurices"><i class="icon-pencil"></i> Gérer les produits / product⋅eur⋅rice⋅s</a>
-    </li>
-</ul>
-{% endif %}
 {% endblock body %}

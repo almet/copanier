@@ -1,8 +1,0 @@
-{% extends "includes/modal.html" %}
-
-{% block modal_label %}<i class="icon-clipboard"></i> Copier les emails{% endblock modal_label %}
-{% block modal_body %}
-<div>
-    <textarea>{{ ",".join(delivery.orders.keys()) }}</textarea>
-</div>
-{% endblock modal_body %}

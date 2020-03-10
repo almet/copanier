@@ -7,7 +7,7 @@ Vous êtes la personne référente pour une distribution, et vous vous demandez 
 ### Création d'une nouvelle distribution
 
 La première chose à faire, c'est de créer une nouvelle distribution.
-Dans l'interface, en bas à gauche il y a un bouton « Nouvelle livraison ».
+Dans l'interface, en bas à gauche il y a un bouton « Nouvelle distribution ».
 
 Il vous sera demandé quelques informations, puis vous pouvez valider.
 
@@ -16,15 +16,15 @@ Il vous sera demandé quelques informations, puis vous pouvez valider.
 Par défaut, une nouvelle distribution est vide. Il faut donc ajouter les produits.
 Le plus simple à cette étape est de le faire avec un tableur.
 
-Soit on télécharge un tableur vide et on le remplit, soit on récupère les infos d'une autre livraison.
+Soit on télécharge un tableur vide et on le remplit, soit on récupère les infos d'une autre distribution.
 
-### Récupérer les infos d'une autre livraison
+### Récupérer les infos d'une autre distribution
 
-Il faut aller dans la livraison en question, puis, en bas, faire « Télécharger les infos produits »
+Il faut aller dans la distribution en question, puis, en bas, faire « Télécharger les infos produits »
 
 ### Importer des produits
 
-Une fois la nouvelle livraison créée, il est possible d'importer les produits. Quand on clique dessus, il y a un bouton qui permet de le faire, on selectionne le tableur avec les infos produits et on l'importe.
+Une fois la nouvelle distribution créée, il est possible d'importer les produits. Quand on clique dessus, il y a un bouton qui permet de le faire, on selectionne le tableur avec les infos produits et on l'importe.
 
 ## Mise à jour des prix
 
@@ -43,7 +43,7 @@ Avant et pendant la distrib :
   Gérer les groupes / colocs
 
 Une fois les commandes passées (après le dimanche 26 janvier)
-  Télécharger les bons de livraison
+  Télécharger les bons de distribution
   Télécharger le tableau des commandes
   Envoyer les infos de commande aux référent⋅e⋅s
 

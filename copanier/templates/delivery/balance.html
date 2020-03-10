@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}<h1><i class="icon-wallet"></i>&nbsp; Répartition des paiements <a id="download" class="button" href="/livraison/{{ delivery.id }}/solde.pdf">Télécharger</a></h1>{% endblock %}
+{% block title %}<h1><i class="icon-wallet"></i>&nbsp; Répartition des paiements <a id="download" class="button" href="/distribution/{{ delivery.id }}/solde.pdf">Télécharger</a></h1>{% endblock %}
 {% block body %}
 <p class="info">{{ delivery.name }} du {{ delivery.to_date | date }}.</p>
 <p class="info">Les personnes indiquées avec un <code>*</code> à côté de leur nom sont celles qui ont payé cette commande pour leur groupe.</p>

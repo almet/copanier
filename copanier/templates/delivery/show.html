@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="header">
+    <h1>{{ delivery.name }}</h1>
+    <h4>{% if delivery.products %}{% if delivery.status == delivery.OPEN %}Commandes jusqu'au {{ delivery.order_before|date|capitalize }}{% elif delivery.status == delivery.ADJUSTMENT %}Ajustements en cours{% elif delivery.status == delivery.CLOSED %}Fermée{% else %}Archivée{% endif %}{% endif %}.
+        {% include "includes/order_button.html" %}
+    </h4>
+    <h4>
+        Distribution <i class="icon-clock"></i> {{ delivery.from_date|date|capitalize }}, {{ delivery.from_date|time }} - {{ delivery.to_date|time }}, à <i class="icon-streetsign"></i> {{ delivery.where }}.
+    </h4>
+    
+    <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                <a href="#" class="pure-menu-link"><i class="icon-printer"></i>&nbsp;Imprimer…</a>
+                <ul class="pure-menu-children">
+                    <li class="pure-menu-item"><a href="/distribution/{{ delivery.id }}/produits.pdf" class="pure-menu-link"><i class="icon-ribbon"></i>&nbsp;Commande producteurs⋅rices</a></li>
+                    <li class="pure-menu-item"><a href="/distribution/{{ delivery.id }}/émargement" class="pure-menu-link"><i class="icon-grid"></i>&nbsp;Résumé de commande par groupe</a></li>
+                    <li class="pure-menu-item"><a href="/distribution/{{ delivery.id }}/solde" class="pure-menu-link"><i class="icon-wallet"></i>&nbsp;Répartition des paiements</a></li>
+                </ul>
+            </li>
+        {% if request['user'].email == delivery.contact and delivery.status > delivery.EMPTY %}
+            <li class="pure-menu-item"><a class="pure-menu-link" href="/distribution/{{ delivery.id }}/gérer"><i class="icon-tools"></i>&nbsp;Boîte à outils</a></li>        {% endif %}
+        {% if request.user and request.user.is_staff %}
+        {% if delivery.is_archived %}
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="/distribution/{{ delivery.id }}/désarchiver"><i class="icon-hazardous"></i>&nbsp;Désarchiver</a>
+            </li>
+        {% endif %}
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="/distribution/{{ delivery.id }}/edit"><i class="icon-adjustments"></i>&nbsp;Modifier la distrib</a>
+            </li>
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="/distribution/{{ delivery.id }}/produits"><i class="icon-pricetags"></i>&nbsp;Produits</a>
+            </li>
+        {% endif %}
+            </ul
+            </li>
+        </ul>
+    </div>
+
+        
+    </ul>
+</div>
+
+<article class="delivery">
+{% if delivery.has_products %}
+    {% include "includes/delivery_table.html" %}
+{% else %}
+<div class="placeholder">
+    <h2>😔 Pour le moment, cette distribution est bien vide…</h2>
+    {% if request.user and request.user.is_staff %}
+        Occupons-nous donc de ça ! Deux options :
+        <ol>
+            <li><a href="/producteurices/créer/{{ delivery.id }}">Ajouter les product⋅eurs⋅rices</a> à la main ;</li>
+            <li>Ou bien <a href="/distribution/{{ delivery.id }}/copier">copier les produits d'une autre distribution</a>.</li>
+        </ol>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+</article>
+<hr>
+<ul class="toolbox">
+ 
+</ul>
+{% endblock body %}

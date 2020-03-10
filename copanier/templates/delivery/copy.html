@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="header">
+    <h1>Copier les produits d'une autre distribution</h1>
+</div>
+
+<form method="post">
+    <label>
+        <p>Distribution à copier</p>
+        <select name="to_copy">
+            {% for delivery in deliveries %}
+            <option value="{{ delivery.id }}">{{ delivery.name }} / {{ delivery.to_date | date }}</option>
+            {% endfor %}
+          </select>
+    </label>
+    <div>
+        <input type="submit" name="submit" value="Valider" class="primary">
+    </div>
+</form>
+<hr>
+{% endblock body %}

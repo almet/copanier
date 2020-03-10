@@ -2,7 +2,7 @@
 
 {% block body %}
 <article>
-    <h3><a href="/livraison/{{ delivery.id }}">{{ delivery.producer }}</a> — Ajuster le produit «{{ product.name }}»</h3>
+    <h3><a href="/distribution/{{ delivery.id }}">{{ delivery.producer }}</a> — Ajuster le produit «{{ product.name }}»</h3>
     <p><strong>Conditionnement</strong> {{ product.packing }} x {{ product.unit }}</p>
     <p><strong>Total commandé</strong> {{ delivery.product_wanted(product) }}</p>
     <p><strong>Manquant</strong> {{ delivery.product_missing(product) }}</p>

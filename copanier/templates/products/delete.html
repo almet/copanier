@@ -1,19 +1,15 @@
 {% extends "base.html" %}
 
 {% block body %}
-{% if product.ref %}
-    <h1>Modifier le produit « {{ product.name }} »</h1>
-{% else %}
-    <h1>{{ producer_id }} : Nouveau produit</h1>
-{% endif %}
+    <h1>Supprimer le produit « {{ product.name }} »</h1>
 <form method="post">
     <label>
-        <p>Nom</p>
+        <p>Êtes vous sur⋅e de vouloir supprimer ce produit ?</p>
         <input type="text" name="name" value="{{ product.name or '' }}" required>
     </label>
     <label>
         <p>Prix (en €), pour une unité</p>
-        <input type="number" step="0.01" name="price" value="{{ product.price or '' }}" required>
+        <input type="number" step="0.001" name="price" value="{{ product.price or '' }}" required>
     </label>
     <label>
         <p>Unité de commande</p>
@@ -24,12 +20,8 @@
         <input type="text" name="description" placeholder="Bière type American Pale Ale" value="{{ product.description or '' }}">
     </label>
     <label>
-        <h5>URL d'une image du produit</h5>
-        <input type="url" name="url" placeholder="https://example.com/image.png" value="{{ product.url or '' }}">
-    </label>
-    <label>
-        <h5>Conditionnement (par combien d'unités est vendu ce produit ?)</h5>
-        <h5><em>par exemple, entrez 6 si ce sont des cartons de 6 bouteilles</em></h5>
+        <h5>Conditionnement</h5>
+        <h5><strong>A indiquer uniquement si ces produits ne peuvent pas être achetés à l'unité</strong>. Par exemple, si il est uniquement possible d'acheter des cartons de 12 bouteilles, alors indiquez « 12 » ici. Dans le doute, laissez vide.</h5>
         <input type="number" name="packing" placeholder="6" value="{{ product.packing or '' }}">
     </label>
     <br />
@@ -59,13 +51,13 @@
     </thead>
 {% for product in products %}
 <tr>
-    <td><a href="/livraison/{{ delivery.id }}/produit/{{ product.ref }}/éditer">{{ product.name }}</a></td>
+    <td><a href="/distribution/{{ delivery.id }}/produit/{{ product.ref }}/éditer">{{ product.name }}</a></td>
     <td>{{ product.price }}€</td>
     <td>{{ product.unit }}</td>
     <td>{{ product.description }}</td>
     <td>{% if product.packing %}{{ product.packing }}{% endif %}</td>
     <td>{% if product.rupture %}RUPTURE !!{% endif %}</td>
-    <td><a href="/livraison/{{ delivery.id }}/produit/{{ product.ref }}/éditer">éditer</a></td>
+    <td><a href="/distribution/{{ delivery.id }}/produit/{{ product.ref }}/éditer">éditer</a></td>
 </tr>
 {% endfor %}
 </table>

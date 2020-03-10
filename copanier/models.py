@@ -163,6 +163,7 @@ class Groups(PersistedBase):
 @dataclass
 class Producer(Base):
     id: str
+    name: str
     referent: str = ""
     referent_tel: str = ""
     referent_name: str = ""
@@ -182,8 +183,6 @@ class Product(Base):
     last_update: datetime_field = datetime.now()
     unit: str = ""
     description: str = ""
-    url: str = ""
-    img: str = ""
     packing: int = None
     producer: str = ""
     rupture: str = None
@@ -199,7 +198,6 @@ class Product(Base):
         self.price = form.float("price")
         self.unit = form.get("unit")
         self.description = form.get("description")
-        self.url = form.get("url")
         self.last_update = datetime.now()
         if form.get("packing"):
             self.packing = form.int("packing")
@@ -241,13 +239,12 @@ class Order(Base):
     def total(self, products):
         def _get_price(ref):
             product = products.get(ref)
-            return product.price if product else 0
+            return product.price if product and not product.rupture else 0
 
         products = {p.ref: p for p in products}
         return round(
             sum(p.quantity * _get_price(ref) for ref, p in self.products.items()), 2
         )
-        return round(total, 2)
 
     @property
     def has_adjustments(self):
@@ -270,13 +267,11 @@ class Delivery(PersistedBase):
     to_date: datetime_field
     order_before: datetime_field
     contact: str
-    description: str = ""
     instructions: str = ""
     where: str = "Marché de la Briche"
     products: List[Product] = field(default_factory=list)
     producers: Dict[str, Producer] = field(default_factory=dict)
     orders: Dict[str, Order] = field(default_factory=dict)
-    infos_url: str = ""
 
     def __post_init__(self):
         self.id = None  # Not a field because we don't want to persist it.
@@ -379,7 +374,7 @@ class Delivery(PersistedBase):
 
     def archive(self):
         if self.is_archived:
-            raise ValueError("La livraison est déjà archivée")
+            raise ValueError("La distribution est déjà archivée")
         current = self.path
         self.id = f"archive/{self.id}"
         current.rename(self.path)
@@ -387,7 +382,7 @@ class Delivery(PersistedBase):
     def unarchive(self):
         if not self.is_archived:
             raise ValueError(
-                "Impossible de désarchiver une livraison qui n'est pas archivée"
+                "Impossible de désarchiver une distribution qui n'est pas archivée"
             )
         current = self.path
         self.id = self.path.stem
@@ -417,6 +412,12 @@ class Delivery(PersistedBase):
         products = [p for p in self.products if p.ref == ref]
         if products:
             return products[0]
+
+    def delete_product(self, ref):
+        product = self.get_product(ref)
+        if product:
+            self.products.remove(product)
+            return product
 
     def total_for_producer(self, producer, person=None):
         producer_products = [p for p in self.products if p.producer == producer]

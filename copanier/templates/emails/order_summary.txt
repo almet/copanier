@@ -1,6 +1,6 @@
 Salut salut,
 
-Voici le résumé de votre commande «{{ delivery.name }}» pour « {{ request['user']['group_name'] }} ».
+Voici le résumé de la commande « {{ delivery.name }} » pour « {{ request['user']['group_name'] }} ».
 
 Produit | Prix unitaire | Quantité
 
@@ -9,12 +9,12 @@ Produit | Prix unitaire | Quantité
 
 Total: {{ order.total(delivery.products) if order else 0 }} €
 
-Livraison: {{ delivery.where }}, le {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}
+Distribution: {{ delivery.where }}, le {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}
 
 {% if delivery.is_open %}
 Tu peux la modifier (jusqu'au {{ delivery.order_before|date }}) en cliquant ici:
 
-https://{{ request.host }}/livraison/{{ delivery.id }}/commander
+https://{{ request.host }}/distribution/{{ delivery.id }}/commander
 
 {% endif %}
 
