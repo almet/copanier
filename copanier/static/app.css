@@ -671,3 +671,13 @@ ul.actions > li {
   display: inline;
   margin-left: 1em;
 }
+
+#groups ul, #groups li{
+  list-style-type: none;
+}
+
+.toplink {
+  padding-left: 0.5em;
+  padding-top: 0.5em;
+  padding-bottom: -0.5em;
+}

@@ -1,9 +1,9 @@
 <p>Bonjour,</p>
 <p>Voici le résumé de ta commande «{{ delivery.name }}»</p>
 {% include "includes/order_summary.html" %}
-<p>Livraison: {{ delivery.where }}, le {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}</p>
+<p>Distribution: {{ delivery.where }}, le {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}</p>
 {% if delivery.is_open %}
-<p>Tu peux la modifier (jusqu'au {{ delivery.order_before|date }}) <a href="https://{{ request.host }}/livraison/{{ delivery.id }}/commander">en cliquant ici</a>.</p>
+<p>Tu peux la modifier (jusqu'au {{ delivery.order_before|date }}) <a href="https://{{ request.host }}/distribution/{{ delivery.id }}/commander">en cliquant ici</a>.</p>
 {% endif %}
 <p>Bonne journée!</p>
 <p>{{ config.EMAIL_SIGNATURE }}</p>

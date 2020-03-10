@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block body %}
-{% set group_name = request.groups.groups[person.name].name %}
+{% set group_name = request.groups.groups.get(person.name, person).name %}
 <article class="order">
 <h3>
-    <a href="/livraison/{{ delivery.id }}">{{ delivery.name }}</a>
+    <a href="/distribution/{{ delivery.id }}">{{ delivery.name }}</a>
     — Commande pour {{ group_name }} 
     {% if order.phone_number %}
     (<a href="tel:{{ order.phone_number }}">{{ order.phone_number }}</a>)
@@ -13,8 +13,8 @@
 {% include "includes/delivery_head.html" %}
 
 <form method="post">
-    {% for producer in delivery.producers %}
-    <h2>{{ producer }}</h2>
+    {% for producer in delivery.producers.values() %}
+    <h2>{{ producer.name }}</h2>
     <table class="order">
         <thead>
         <tr>
@@ -30,7 +30,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for product in delivery.get_products_by(producer) %}
+        {% for product in delivery.get_products_by(producer.id) %}
         <tr>
             <th class="product {% if product.rupture %}rupture{% endif %}">{{ product }} {% if product.rupture %}(RUPTURE !){% endif %}
                 {% if product.description or product.img %}
@@ -54,13 +54,12 @@
     {% endfor %}
     <p>On y est presque ! Est-ce que tu peux entrer un numéro de téléphone au cas où on ait besoin de vous joindre ?</p>
     <input type="text" name="phone_number" value="{{ order.phone_number }}" placeholder="06 12 34 56 78">
-    <p>Total: {{ order.total(delivery.products) if order else 0 }} €</p>
     <input type="hidden" name="email" value="{{ person.email }}">
     {% if delivery.status != delivery.CLOSED or request.user.is_staff %}
     <input type="submit" value="Enregistrer la commande" class="primary">
     {% endif %}
     {% if request.user.is_staff and delivery.status == delivery.CLOSED %}
-    <a class="button danger" href="/livraison/{{ delivery.id }}/commander?email={{ person.email }}&adjust">Ajuster</a>
+    <a class="button danger" href="/distribution/{{ delivery.id }}/commander?email={{ person.email }}&adjust">Ajuster</a>
     {% endif %}
 </form>
 </article>

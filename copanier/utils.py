@@ -27,3 +27,11 @@ def read_token(token):
 def prefix(string, delivery):
     date = delivery.to_date.strftime("%Y-%m-%d")
     return f"{config.SITE_NAME}-{date}-{string}"
+
+
+def date_filter(value):
+    return value.strftime(r"%A %d&nbsp;%B")
+
+
+def time_filter(value):
+    return value.strftime(r"%H:%M")

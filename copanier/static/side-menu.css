@@ -250,3 +250,9 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 .pure-menu-item a {
     display: block;
 }
+
+#sitename {
+    color: #ccc;
+    display: block;
+    padding-left: 1em;
+}

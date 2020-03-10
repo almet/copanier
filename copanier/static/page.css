@@ -9,7 +9,7 @@
 }
 
 @media print {
-    nav, .notification, .toolbox, .edit, .hide-on-print, .button{
+    nav, .notification, .toolbox, .edit, .hide-on-print, .header, #menu, .toplink, .button{
         display: none;
     }
 

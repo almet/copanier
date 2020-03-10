@@ -40,7 +40,7 @@ async def test_create_delivery(client):
         "order_before": "2019-02-12",
         "contact": "lucky@you.me",
     }
-    resp = await client.post("/livraison", body=body)
+    resp = await client.post("/distribution", body=body)
     assert resp.status == 302
     assert len(list(Delivery.all())) == 1
     delivery = list(Delivery.all())[0]
@@ -56,7 +56,7 @@ async def test_create_delivery(client):
 async def test_place_order_with_session(client, delivery):
     delivery.persist()
     body = {"wanted:123": "3"}
-    resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
+    resp = await client.post(f"/distribution/{delivery.id}/commander", body=body)
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
     assert delivery.orders["foo@bar.org"]
@@ -65,7 +65,7 @@ async def test_place_order_with_session(client, delivery):
 
 async def test_place_empty_order(client, delivery):
     delivery.persist()
-    resp = await client.post(f"/livraison/{delivery.id}/commander", body={})
+    resp = await client.post(f"/distribution/{delivery.id}/commander", body={})
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
     assert not delivery.orders
@@ -74,7 +74,7 @@ async def test_place_empty_order(client, delivery):
 async def test_place_empty_order_should_delete_previous(client, delivery):
     delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=1)})
     delivery.persist()
-    resp = await client.post(f"/livraison/{delivery.id}/commander", body={})
+    resp = await client.post(f"/distribution/{delivery.id}/commander", body={})
     assert resp.status == 302
     delivery = Delivery.load(delivery.id)
     assert not delivery.orders
@@ -83,7 +83,7 @@ async def test_place_empty_order_should_delete_previous(client, delivery):
 async def test_place_order_with_empty_string(client, delivery):
     delivery.persist()
     body = {"wanted:123": ""}  # User deleted the field value.
-    resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
+    resp = await client.post(f"/distribution/{delivery.id}/commander", body=body)
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
     assert not delivery.orders
@@ -94,7 +94,7 @@ async def test_get_place_order_with_closed_delivery(client, delivery, monkeypatc
     delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=1)})
     delivery.persist()
     assert delivery.status == delivery.CLOSED
-    resp = await client.get(f"/livraison/{delivery.id}/commander")
+    resp = await client.get(f"/distribution/{delivery.id}/commander")
     doc = pq(resp.body)
     assert doc('[name="wanted:123"]').attr("readonly")
     assert not doc('[name="adjustment:123"]')
@@ -102,7 +102,7 @@ async def test_get_place_order_with_closed_delivery(client, delivery, monkeypatc
 
 
 async def test_get_place_order_with_adjustment_status(client, delivery):
-    resp = await client.get(f"/livraison/{delivery.id}/commander")
+    resp = await client.get(f"/distribution/{delivery.id}/commander")
     doc = pq(resp.body)
     assert not doc('[name="wanted:123"]').attr("readonly")
     assert not doc('[name="adjustment:123"]')
@@ -115,7 +115,7 @@ async def test_get_place_order_with_adjustment_status(client, delivery):
     )
     delivery.persist()
     assert delivery.status == delivery.ADJUSTMENT
-    resp = await client.get(f"/livraison/{delivery.id}/commander")
+    resp = await client.get(f"/distribution/{delivery.id}/commander")
     doc = pq(resp.body)
     assert doc('[name="wanted:123"]').attr("readonly")
     assert doc('[name="adjustment:123"]')
@@ -138,7 +138,7 @@ async def test_get_place_order_with_closed_delivery_but_adjustments(client, deli
     )
     delivery.persist()
     assert delivery.status == delivery.CLOSED
-    resp = await client.get(f"/livraison/{delivery.id}/commander")
+    resp = await client.get(f"/distribution/{delivery.id}/commander")
     doc = pq(resp.body)
     assert doc('[name="wanted:123"]').attr("readonly")
     assert doc('[name="adjustment:123"]')
@@ -149,11 +149,11 @@ async def test_get_place_order_with_closed_delivery_but_force(client, delivery):
     delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=1)})
     delivery.persist()
     assert delivery.status == delivery.CLOSED
-    resp = await client.get(f"/livraison/{delivery.id}/commander")
+    resp = await client.get(f"/distribution/{delivery.id}/commander")
     doc = pq(resp.body)
     assert doc('[name="wanted:123"]').attr("readonly") is not None
     assert not doc('[name="adjustment:123"]')
-    resp = await client.get(f"/livraison/{delivery.id}/commander?adjust")
+    resp = await client.get(f"/distribution/{delivery.id}/commander?adjust")
     doc = pq(resp.body)
     assert doc('[name="wanted:123"]').attr("readonly") is not None
     assert doc('[name="adjustment:123"]')
@@ -164,7 +164,7 @@ async def test_cannot_place_order_on_closed_delivery(client, delivery, monkeypat
     delivery.order_before = datetime.now() - timedelta(days=1)
     delivery.persist()
     body = {"wanted:123": "3"}
-    resp = await client.post(f"/livraison/{delivery.id}/commander", body=body)
+    resp = await client.post(f"/distribution/{delivery.id}/commander", body=body)
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
     assert not delivery.orders
@@ -178,7 +178,7 @@ async def test_get_adjust_product(client, delivery):
     )
     delivery.persist()
     assert delivery.status == delivery.ADJUSTMENT
-    resp = await client.get(f"/livraison/{delivery.id}/ajuster/123")
+    resp = await client.get(f"/distribution/{delivery.id}/ajuster/123")
     doc = pq(resp.body)
     assert doc('[name="foo@bar.org"]')
     assert doc('[name="foo@bar.org"]').attr("value") == "1"
@@ -191,7 +191,7 @@ async def test_post_adjust_product(client, delivery):
     delivery.persist()
     assert delivery.status == delivery.ADJUSTMENT
     body = {"foo@bar.org": "1"}
-    resp = await client.post(f"/livraison/{delivery.id}/ajuster/123", body=body)
+    resp = await client.post(f"/distribution/{delivery.id}/ajuster/123", body=body)
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
     assert delivery.orders["foo@bar.org"].products["123"].wanted == 2
@@ -204,10 +204,10 @@ async def test_only_staff_can_adjust_product(client, delivery, monkeypatch):
     delivery.orders["foo@bar.org"] = Order(products={"123": ProductOrder(wanted=2)})
     delivery.persist()
     monkeypatch.setattr("copanier.config.STAFF", ["someone@else.org"])
-    resp = await client.get(f"/livraison/{delivery.id}/ajuster/123")
+    resp = await client.get(f"/distribution/{delivery.id}/ajuster/123")
     assert resp.status == 302
     body = {"foo@bar.org": "1"}
-    resp = await client.post(f"/livraison/{delivery.id}/ajuster/123", body=body)
+    resp = await client.post(f"/distribution/{delivery.id}/ajuster/123", body=body)
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
     assert delivery.orders["foo@bar.org"].products["123"].wanted == 2
@@ -216,7 +216,7 @@ async def test_only_staff_can_adjust_product(client, delivery, monkeypatch):
 
 async def test_export_products(client, delivery):
     delivery.persist()
-    resp = await client.get(f"/livraison/{delivery.id}/exporter")
+    resp = await client.get(f"/distribution/{delivery.id}/exporter")
     wb = load_workbook(filename=BytesIO(resp.body))
     assert list(wb.active.values) == [
         ("name", "ref", "price", "unit", "description", "url", "img", "packing", "producer"),

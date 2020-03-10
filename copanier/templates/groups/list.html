@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="header">
+    <h1>Groupes</h1>
+    <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="/groupes/créer"><i class="icon-globe"></i>&nbsp;Créer un nouveau groupe</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+{% if not request['user'].group_id %}
+<p>Bienvenue ! Avant de pouvoir commander, peux-tu nous indiquer de quelle coloc / famille fais-tu partie ? </p>
+{% endif %}
+
+
+<table id="groups" class="pure-table">
+    <thead>
+        <tr>
+            <th>Groupe</th>
+            <th>Membres</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for group in groups.groups.values() %}
+        <tr>
+            <th>{{ group.name }}</th>
+            <td>
+                <ul>
+                    {% for member in group.members %}
+                    <li>{{ member }}</li>
+                    {% endfor %}
+                </ul>
+            </td>
+            <td>{% if group.id != request['user'].group_id %}<a class="pure-button" href="/groupes/{{ group.id}}/rejoindre">rejoindre</a>{% endif %} <a class="pure-button" href="/groupes/{{ group.id }}/éditer">éditer</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p>Tu ne fais partie d'aucun des groupes listés ici ? Tu peux <a class="button" href="/groupes/créer"><i class="icon-globe"></i>&nbsp;en créer un nouveau</a></p>
+
+{% endblock %}

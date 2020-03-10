@@ -1,6 +1,3 @@
-import csv
-import functools
-
 from zipfile import BadZipFile
 
 from openpyxl import load_workbook, Workbook
@@ -30,7 +27,7 @@ def items_from_xlsx(data, items, model_class, required_fields, append_method):
         raw = {k: v for k, v in dict(zip(headers, row)).items() if v}
         try:
             append_method(items, model_class(**raw))
-        except TypeError as e:
+        except TypeError:
             raise ValueError(f"Erreur durant l'importation de {raw['ref']}")
     return items
 

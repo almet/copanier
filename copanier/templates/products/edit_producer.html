@@ -1,18 +1,28 @@
 {% extends "base.html" %}
+{% block toplink %}<a href="/distribution/{{ delivery.id }}/produits">↶ Retourner aux produits</a>{% endblock %}
 
 {% block body %}
-{% if producer.id %}
-    <h1>Modifier les informations pour « {{ producer.id }} »</h1>
+<div class="header">
+{% if producer and producer.id %}
+    <h1>Modifier les informations pour « {{ producer.name }} »</h1>
+    <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="/distribution/{{ delivery.id}}/{{ producer.id }}/ajouter-produit">Ajouter un produit</a>
+            </li>
+        </ul>
+    </div>
 {% else %}
-    <h1>Nouve⋅eau⋅lle product⋅eur⋅rice</h1>
+    <h1>Ajouter un⋅e producteur⋅rice</h1>
 {% endif %}
+</div>
 <form method="post">
     {% if producer.id %}
     <input type="hidden" name="id" value="{{ producer.id }}">
     {% else %}
     <label>
-        <p>Nom du / de la product⋅eur⋅rice</p>
-        <input type="text" name="id" value="{{ producer.id or '' }}">
+        <p>Nom</p>
+        <input type="text" name="name" value="{{ producer.name or '' }}">
     </label>
     {% endif %}
     <label>
@@ -32,7 +42,7 @@
         <input type="tel" name="referent_tel" value="{{ producer.referent_tel or '' }}" required>
     </label>
     <label>
-        <h5>Contact du⋅la product⋅eur⋅rice</h5>
+        <h5>Contact product⋅eur⋅rice</h5>
         <input type="text" name="contact" value="{{ producer.contact or '' }}">
     </label>
     <div>
@@ -41,9 +51,9 @@
 </form>
 
 {% if products %}
-<h3>Produits <a class="button" href="/livraison/{{ delivery.id}}/{{ producer.id }}/ajouter-produit">Ajouter un produit</a></h3>
-
-<table>
+<h3>Produits <a class="button" href="/distribution/{{ delivery.id}}/{{ producer.id }}/ajouter-produit">Ajouter un produit</a></h3>
+<p>Vous pouvez éditer les produits en cliquant sur leur nom.</p>
+<table class="pure-table">
     <thead>
         <tr>
             <th>Produit</th>
@@ -57,13 +67,13 @@
     </thead>
 {% for product in products %}
 <tr>
-    <td><a href="/livraison/{{ delivery.id }}/{{ producer.id }}/{{ product.ref }}/éditer">{{ product.name }}</a></td>
+    <td><a href="/distribution/{{ delivery.id }}/{{ producer.id }}/produit/{{ product.ref }}/éditer">{{ product.name }}</a></td>
     <td>{{ product.price }}€</td>
     <td>{{ product.unit }}</td>
     <td>{{ product.description }}</td>
     <td>{% if product.packing %}{{ product.packing }}{% endif %}</td>
     <td>{% if product.rupture %}RUPTURE !!{% endif %}</td>
-    <td><a href="/livraison/{{ delivery.id }}/{{ producer.id }}/{{ product.ref }}/éditer">éditer</a></td>
+    <td><a href="/distribution/{{ delivery.id }}/{{ producer.id }}/{{ product.ref }}/supprimer">supprimer</a></td>
 </tr>
 {% endfor %}
 </table>

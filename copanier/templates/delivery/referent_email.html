@@ -1,8 +1,9 @@
 {% extends "base.html" %}
+{% block toplink %}<a href="/distribution/{{ delivery.id }}/gérer">↶ Retourner à la boîte à outils</a>{% endblock %}
 
 {% block body %}
 <h1>Envoi d'un mail aux référent⋅e⋅s</h1>
-<p>Le mail ci dessous (vous pouvez le modifier !) va être envoyé aux référent⋅e⋅s, avec en pièce jointe le tableau comportant les commandes pour les product⋅eurs⋅rices.</p>
+<p>Le mail ci dessous (modifiable) va être envoyé aux référent⋅e⋅s, avec en pièce jointe les commandes pour les product⋅eurs⋅rices de chaque référent⋅e.</p>
 
 <form method="post">
 <input type="text" name="email_subject" style="width:800px" value="{{ config.SITE_NAME }} - Les commandes pour vos producteurs⋅rices" /><br />
@@ -12,7 +13,7 @@ Bonjour,
 Et voilà, les commandes maintenant terminées, il est maintenant temps de passer à l'action !
 En pièce-jointe, les informations pour les producteurs⋅rices dont tu est référent⋅e.
 
-Tu peux aussi retrouver le doc à cette URL : https://{{ request.host }}/livraison/{{ delivery.id }}/producteurices
+Tu peux aussi retrouver le doc à cette URL : https://{{ request.host }}/distribution/{{ delivery.id }}/produits
 
 Rendez-vous pour la distribution, le {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }} à {{ delivery.where }}.
 

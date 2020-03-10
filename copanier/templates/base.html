@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/static/icomoon.css">
     <link rel="stylesheet" type="text/css" href="/static/purecss.css">
     <link rel="stylesheet" type="text/css" href="/static/side-menu.css">
+    <link rel="stylesheet" type="text/css" href="/static/flash.min.css">
 
     {% block head %}
     {% endblock head %}
@@ -20,77 +21,52 @@
         <a href="#menu" id="menuLink" class="menu-link">
             <span></span>
         </a>
-    
+        {% if request.user %}
         <div id="menu">
             <div class="pure-menu">
-        
-                <h1>{{ config.SITE_NAME }}</h1>
+                <h1 id="sitename">{{ config.SITE_NAME }}</h1>
                 <ul class="pure-menu-list">
-                    {% if delivery %}
-                    <li class="pure-menu-heading">
-                        Cette distrib
-                    </li>
                     <li class="pure-menu-item">
-                        <a href="/livraison/{{ delivery.id }}/commander">Commander</a>
+                        <a href="/"><i class="icon-happy"></i>&nbsp;Voir les distrib</a>
                     </li>
+                    {% if request.user and request.user.is_staff %}
                     <li class="pure-menu-item">
-                        <a href="/livraison/{{ delivery.id }}/émargement">Fiches de commandes par coloc</a>
-                    </li>
-                    <li class="pure-menu-item">
-                        <a href="/livraison/{{ delivery.id }}/producteurices.pdf">Fiches commandes product⋅eurs⋅ices</a>
-                    </li>
-                    <li class="pure-menu-item">
-                        <a href="/livraison/{{ delivery.id }}/solde">Paiements</a>
-                    </li>
-                        {% if request.user.is_staff %}
-                        <li class="pure-menu-item">
-                            <a href="/livraison/{{ delivery.id }}/gérer">Boîte à outils</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="/livraison/{{ delivery.id }}/edit">Modifier les infos</a>
-                        </li>
-                        {% endif %}
-                    {% endif %}            
-                    <li class="pure-menu-heading">
-                        Actions
-                    </li>
-                    <li class="pure-menu-item">
-                        <a href="/"><i class="icon-happy"></i>&nbsp;Voir les distributions</a>
-                    </li>
-                    {% if request.user.is_staff %}
-                    <li class="pure-menu-item">
-                        <a href="/livraison"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle distribution</a>
+                        <a href="/distribution"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle distribution</a>
                     </li>
                     {% endif %}
                     <li class="pure-menu-item">
                         <a class="pure-menu-link" href="/groupes"><i class="icon-globe"></i>&nbsp;Gérer les groupes</a>
                     </li>
                     <li class="pure-menu-item">
-                        <a href="#" class="pure-menu-link"><i class="icon-lock"></i>&nbsp;Se déconnecter</a>
+                        <a href="/déconnexion" class="pure-menu-link"><i class="icon-lock"></i>&nbsp;Se déconnecter</a>
                     </li>
                 </ul>
             </div>
         </div>
-    
+        {% else %}
+        <h1 id="sitename">{{ config.SITE_NAME }}</h1>
+        {% endif %}
+        <div class="toplink">
+        {% block toplink %}{% endblock %}
+        </div>
         <div id="main">
-            {% if message %}
-            <section class="notification {{ message[1] }}"><i class="icon-megaphone"></i> {{ message[0] }}</section>
-            {% endif %} 
             <div class="content">
-            {% block body %}
-            {% endblock body %}
+                {% block body %}
+                {% endblock body %}
             </div>
         </div>
     </div>
-
-
-
-    <header>
-    <section class="menu">
-        
-    </section>
-    </header>
-    <main>
-    </main>
+    
+    
+    <script src="/static/js/flash.min.js"></script>
+    {% if message %}
+    <script>
+    new window.FlashMessage("{{ message[0] }}", "{{ message[1] }}", {
+        progress: true,
+        interactive: true,
+        timeout: 8000,
+    });
+    </script>
+    {% endif %} 
 </body>
 </html>
