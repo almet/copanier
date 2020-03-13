@@ -1,26 +1,15 @@
 # Copanier
 
-Copanier is a minimalist grouped-command management software.
+Copanier is a software to make grouped orders.
 
 It helps people to order a set of defined products, and provide a few helpers
 to ease the life of everyone involved :-)
 
 ## Fork
 
-This project is a modified version [of the project started by Yohan](https://framagit.org/ybon/copanier).
-
-The main differences are :
-
-- Support for multiple producers (and persons to handle these producers)
-- A concept of groups was added : multiple persons can belong to the same group (and create / edit orders).
-- A minimal interface to add / remove / update products from the website.
-- Support for out of stock products
-- Automatically compute a settlement plan (using the [debts library](https://framagit.org/almet/debts))
-- Remove paiement tracking (as it conflicts with auto-settlement of debts)
-- Add a page with tools to ease delivery management
-- Drop support for CSV files in favor of XLS files only
-- Send emails to producers referents, with an order summary
-- Generate PDF files rather than XLS files (for order summary, signing sheet and paiements repartition)
+This project is a continuation of the work by
+[Alexis](https://framagit.org/almet/copanier), itself took from the work Yohan
+did in the first place.
 
 ## Philosophy
 
