@@ -3,11 +3,11 @@
 
 <div class="header">
     <h1>{{ delivery.name }}</h1>
-    <h4>{% if delivery.products %}{% if delivery.status == delivery.OPEN %}Commandes jusqu'au {{ delivery.order_before|date|capitalize }}{% elif delivery.status == delivery.ADJUSTMENT %}Ajustements en cours{% elif delivery.status == delivery.CLOSED %}Fermée{% else %}Archivée{% endif %}{% endif %}.
+    <h4>{% if delivery.products %}{% if delivery.status == delivery.OPEN %}Commandes ouvertes jusqu'au {{ delivery.order_before|date }}{% elif delivery.status == delivery.ADJUSTMENT %}Ajustements en cours{% elif delivery.status == delivery.CLOSED %}Fermée{% else %}Archivée{% endif %}{% endif %}.
         {% include "includes/order_button.html" %}
     </h4>
     <h4>
-        Distribution <i class="icon-clock"></i> {{ delivery.from_date|date|capitalize }}, {{ delivery.from_date|time }} - {{ delivery.to_date|time }}, à <i class="icon-streetsign"></i> {{ delivery.where }}.
+        Distribution le <i class="icon-clock"></i> {{ delivery.from_date|date }}, {{ delivery.from_date|time }} - {{ delivery.to_date|time }}, à <i class="icon-streetsign"></i> {{ delivery.where }}.
     </h4>
     
     <div class="pure-menu pure-menu-horizontal">

@@ -54,7 +54,10 @@ async def send_sesame(request, response):
     except RuntimeError:
         response.message("Oops, impossible d'envoyer le courriel…", status="error")
     else:
-        response.message(f"Un sésame vous a été envoyé à l'adresse '{email}'")
+        response.message(
+            f"Un sésame vous a été envoyé par mail, cliquez sur le lien pour vous "
+            "connecter."
+        )
     response.redirect = "/"
 
 
