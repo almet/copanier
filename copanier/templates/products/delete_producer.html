@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block toplink %}<a href="/distribution/{{ delivery.id }}/{{producer.id}}/éditer">↶ Retourner a « {{producer.name}} »</a>{% endblock %}
+
+{% block body %}
+<div class="header">
+    <h1>Supprimer « {{ producer.name }} »</h1>
+</div>
+<p>Êtes-vous sur⋅e de vouloir supprimer cette productrice / ce producteur ? L'ensemble des produits liés sera supprimé également, ainsi que toutes les commandes pour ces produits. Il n'est pas possible de revenir en arrière.</p>
+<form method="post">
+    <div>
+        <input type="submit" name="submit" value="Oui, Supprimer {{ producer.name }}" class="primary">
+    </div>
+</form>
+{% endblock body %}
