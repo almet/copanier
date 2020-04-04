@@ -2,20 +2,21 @@
 
 {% block body %}
 {% set group_name = request.groups.groups.get(person.name, person).name %}
-<article class="order">
-<h3>
-    <a href="/distribution/{{ delivery.id }}">{{ delivery.name }}</a>
-    — Commande pour {{ group_name }} 
-    {% if order.phone_number %}
-    (<a href="tel:{{ order.phone_number }}">{{ order.phone_number }}</a>)
-    {% endif %}</p>
- </h3>
+
+<div class="header">
+    <h1>{{ delivery.name }}</h1>
+    <h4>Commande pour {{ group_name }}
+        {% if order.phone_number %}
+        (<a href="tel:{{ order.phone_number }}">{{ order.phone_number }}</a>)
+        {% endif %}
+    </h4>
 {% include "includes/delivery_head.html" %}
+</div>
 
 <form method="post">
     {% for producer in delivery.producers.values() %}
     <h2>{{ producer.name }}</h2>
-    <table class="order">
+    <table class="order pure-table">
         <thead>
         <tr>
             <th class="product">Produit</th>
@@ -34,9 +35,6 @@
         <tr>
             <th class="product {% if product.rupture %}rupture{% endif %}">{{ product }} {% if product.rupture %}(RUPTURE !){% endif %}
                 {% if product.description or product.img %}
-                    {% with unique_id=loop.index %}
-                        {% include "includes/modal_product.html" %}
-                    {% endwith %}
                 {% endif %}
             </th>
             <td>{{ product.price | round(2) }} €</td>
