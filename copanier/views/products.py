@@ -51,6 +51,35 @@ async def edit_producer(request, response, delivery_id, producer_id):
     )
 
 
+@app.route(
+    "/distribution/{delivery_id}/{producer_id}/supprimer", methods=["GET", "POST"]
+)
+async def delete_producer(request, response, delivery_id, producer_id):
+    # Delete the producer and all the related products.
+    delivery = Delivery.load(delivery_id)
+    producer = delivery.producers.get(producer_id)
+    if request.method == "POST":
+        delivery.producers.pop(producer_id)
+        products = delivery.get_products_by(producer.id)
+        for product in products:
+            delivery.products.remove(product)
+            for order in delivery.orders.values():
+                order.products.pop(product.ref)
+        delivery.persist()
+
+        response.message(f"{producer.name} à bien été supprimé !")
+        response.redirect = f"/distribution/{delivery.id}/produits"
+
+    response.html(
+        "products/delete_producer.html",
+        {
+            "delivery": delivery,
+            "producer": producer,
+            "products": delivery.get_products_by(producer.id),
+        },
+    )
+
+
 @app.route("/distribution/{delivery_id}/{producer_id}/frais", methods=["GET", "POST"])
 async def handle_shipping_fees(request, response, delivery_id, producer_id):
     delivery = Delivery.load(delivery_id)
@@ -88,7 +117,8 @@ async def create_producer(request, response, delivery_id):
 
         delivery.producers[producer_id] = producer
         delivery.persist()
-        response.redirect = f"/distribution/{delivery.id}/produits"
+        response.message(f"« {producer.name} » à bien été créé !")
+        response.redirect = f"/distribution/{delivery.id}/{producer.id}/éditer"
 
     response.html(
         "products/edit_producer.html",
@@ -159,9 +189,7 @@ async def create_product(request, response, delivery_id, producer_id):
         delivery.products.append(product)
         delivery.persist()
         response.message("Le produit à bien été créé")
-        response.redirect = (
-            f"/distribution/{delivery_id}/producteurice/{producer_id}/éditer"
-        )
+        response.redirect = f"/distribution/{delivery_id}/{producer_id}/éditer"
         return
 
     response.html(
