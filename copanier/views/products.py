@@ -211,4 +211,4 @@ async def copy_products(request, response, id):
     delivery.producers = to_copy.producers
     delivery.products = to_copy.products
     delivery.persist()
-    response.redirect = f"/distribution/{id}/producteurices"
+    response.redirect = f"/distribution/{id}"
