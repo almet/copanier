@@ -3,7 +3,13 @@
 
 <div class="header">
     <h1>{{ delivery.name }}</h1>
-    <h4>{% if delivery.products %}{% if delivery.status == delivery.OPEN %}Commandes ouvertes jusqu'au {{ delivery.order_before|date }}{% elif delivery.status == delivery.ADJUSTMENT %}Ajustements en cours{% elif delivery.status == delivery.CLOSED %}Fermée{% else %}Archivée{% endif %}{% endif %}.
+    <h4>{% if delivery.products %}
+        {% if delivery.status == delivery.OPEN %}Commandes ouvertes jusqu'au {{ delivery.order_before|date }}
+        {% elif delivery.status == delivery.ADJUSTMENT %}Ajustements en cours
+        {% elif delivery.status == delivery.CLOSED %}Fermée
+        {% elif delivery.status == delivery.ARCHIVED %}Archivée
+        {% elif delivery.status == delivery.NEED_PRICE_UPDATE %}Mise à jour des prix*
+        {% endif %}{% endif %}
         {% include "includes/order_button.html" %}
     </h4>
     <h4>
@@ -46,6 +52,11 @@
 
 <article class="delivery">
 {% if delivery.has_products %}
+    {% for (id, producer) in delivery.get_producers_for_referent(request.user.email).items() %}
+    {% if producer.needs_price_update(delivery) %}
+    <p class="notification info">Merci de <a href="/distribution/{{ delivery.id}}/{{ producer.id}}/éditer">mettre à jour les prix pour « {{ producer.name }} ».</a></p>
+    {% endif %}
+    {% endfor %}
     {% include "includes/delivery_table.html" %}
 {% else %}
 <div class="placeholder">

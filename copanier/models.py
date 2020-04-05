@@ -1,7 +1,7 @@
 import inspect
 import threading
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from typing import List, Dict
@@ -174,6 +174,10 @@ class Producer(Base):
         products = delivery.get_products_by(self.id)
         return any([not p.rupture for p in products])
 
+    def needs_price_update(self, delivery):
+        products = delivery.get_products_by(self.id)
+        return delivery.products_need_price_update(products)
+
 
 @dataclass
 class Product(Base):
@@ -258,9 +262,10 @@ class Delivery(PersistedBase):
     __lock__ = threading.Lock()
     EMPTY = -1
     CLOSED = 0
-    OPEN = 1
-    ADJUSTMENT = 2
-    ARCHIVED = 3
+    NEED_PRICE_UPDATE = 1
+    OPEN = 2
+    ADJUSTMENT = 3
+    ARCHIVED = 4
 
     name: str
     from_date: datetime_field
@@ -283,11 +288,18 @@ class Delivery(PersistedBase):
             return self.EMPTY
         if self.is_archived:
             return self.ARCHIVED
+        if self.products_need_price_update():
+            return self.NEED_PRICE_UPDATE
         if self.is_open:
             return self.OPEN
         if self.needs_adjustment:
             return self.ADJUSTMENT
         return self.CLOSED
+
+    def products_need_price_update(self, products=None):
+        products = products or self.products
+        max_age = self.from_date.date() - timedelta(days=60)
+        return any([product.last_update.date() < max_age for product in products])
 
     @property
     def has_products(self):
