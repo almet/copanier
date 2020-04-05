@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from slugify import slugify
 from .core import app
 from ..models import Delivery, Product, Producer
@@ -159,6 +161,34 @@ async def edit_product(request, response, delivery_id, producer_id, product_ref)
         "products/edit.html",
         {"delivery": delivery, "product": product, "producer": producer},
     )
+
+
+@app.route("/distribution/{delivery_id}/{producer_id}/valider-prix", methods=["GET"])
+async def mark_prices_as_ok(request, response, delivery_id, producer_id):
+    delivery = Delivery.load(delivery_id)
+    producer = delivery.producers.get(producer_id)
+
+    for product in delivery.products:
+        if product.producer == producer_id:
+            product.last_update = datetime.now()
+    delivery.persist()
+
+    response.message(
+        f"Les prix ont été marqués comme OK pour « { producer.name } », merci !"
+    )
+    response.redirect = f"/distribution/{delivery_id}/{producer_id}/éditer"
+
+
+@app.route("/distribution/{delivery_id}/valider-prix", methods=["GET"])
+async def mark_prices_as_ok(request, response, delivery_id):
+    delivery = Delivery.load(delivery_id)
+
+    for product in delivery.products:
+        product.last_update = datetime.now()
+    delivery.persist()
+
+    response.message(f"Les prix ont été marqués comme OK pour toute la distribution !")
+    response.redirect = f"/distribution/{delivery_id}/produits"
 
 
 @app.route(

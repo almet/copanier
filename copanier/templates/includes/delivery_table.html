@@ -6,6 +6,7 @@
 {% for producer in producers %}
     {% set producer_obj = delivery.producers[producer] %}
     <h2>{{ producer_obj.name }}
+        {% if producer_obj.needs_price_update(delivery) %}*{% endif %}
         {% if edit_mode or request.user.is_staff or producer_obj.referent == request.user.email %}
             <span class="edit">
             <a class="button" href="/distribution/{{ delivery.id }}/{{ producer_obj.id }}/éditer"><i class="icon-ribbon"></i>&nbsp; Gérer ce⋅tte producteur⋅rice</a>
