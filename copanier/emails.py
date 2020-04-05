@@ -37,7 +37,7 @@ def send_from_template(env, template, to, subject, **params):
     send(to, subject, body=txt, html=html)
 
 
-def send_order(request, env, person, delivery, order):
+def send_order(request, env, person, delivery, order, group_id):
     send_from_template(
         env,
         "order_summary",
@@ -47,4 +47,5 @@ def send_order(request, env, person, delivery, order):
         order=order,
         delivery=delivery,
         request=request,
+        group_id=group_id,
     )

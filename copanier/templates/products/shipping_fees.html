@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block toplink %}<a href="/distribution/{{ delivery.id }}/produits">↶ Retourner aux produits</a>{% endblock %}
+
+{% block body %}
+<div class="header">
+    <h1>Frais de port pour « {{ producer.name }} »</h1>
+</div>
+<form method="post">
+    <label>
+        <h5>Coût des frais de port (ne les indiquer qu'une fois connus)</h5>
+        <input type="number" name="shipping" value="{{ shipping }}">
+    </label>
+    <div>
+        <input type="submit" name="submit" value="Valider" class="primary">
+    </div>
+</form>
+
+{% endblock body %}

@@ -7,7 +7,7 @@ Produit | Prix unitaire | Quantité
 {% for product in delivery.products %}{% if order[product].quantity %}{{ product.name }} | {{ product.price }} € | {{ order[product].quantity }} x {{ product.unit }}
 {% endif %}{% endfor %}
 
-Total: {{ order.total(delivery.products) if order else 0 }} €
+Total: {{ order.total(delivery.products, delivery, group_id) if order else 0 }} €
 
 Distribution: {{ delivery.where }}, le {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}
 

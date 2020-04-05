@@ -13,6 +13,9 @@
             <li class="pure-menu-item">
                 <a class="pure-menu-link" href="/distribution/{{ delivery.id}}/{{ producer.id }}/supprimer">Supprimer</a>
             </li>
+            <li class="pure-menu-list">
+                <a class="pure-menu-link" href="/distribution/{{ delivery.id}}/{{ producer.id }}/frais-de-livraison">Gérer des frais de livraison</a>
+            </li>
             {% if producer.needs_price_update(delivery) %}
             <li class="pure-menu-item">
                 <a class="pure-menu-link" href="/distribution/{{ delivery.id}}/{{ producer.id }}/valider-prix">Marquer les prix comme OK</a>
@@ -60,6 +63,12 @@
         <input type="submit" name="submit" value="Valider" class="primary">
     </div>
 </form>
+
+{% if delivery.shipping.get(producer.id) %}
+<h3>Frais de livraison</h3>
+Des frais de livraison de {{ delivery.shipping[producer.id] }}€ ont été enregistrés pour ce producteur.
+<a class="button" href="/distribution/{{ delivery.id}}/{{ producer.id }}/frais-de-livraison">Modifier</a>
+{% endif %}
 
 {% if products %}
 <h3>Produits

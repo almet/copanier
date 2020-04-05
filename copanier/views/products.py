@@ -228,6 +228,34 @@ async def create_product(request, response, delivery_id, producer_id):
     )
 
 
+@app.route(
+    "/distribution/{delivery_id}/{producer_id}/frais-de-livraison",
+    methods=["GET", "POST"],
+)
+async def set_shipping_price(request, response, delivery_id, producer_id):
+    delivery = Delivery.load(delivery_id)
+    producer = delivery.producers.get(producer_id)
+
+    if request.method == "POST":
+        form = request.form
+        shipping = form.float("shipping")
+
+        delivery.shipping[producer_id] = shipping
+        delivery.persist()
+        response.message("Les frais de livraison ont bien été enregistrés, merci !")
+        response.redirect = f"/distribution/{delivery_id}/produits"
+        return
+
+    response.html(
+        "products/shipping_fees.html",
+        {
+            "delivery": delivery,
+            "producer": producer,
+            "shipping": delivery.shipping.get(producer_id, ""),
+        },
+    )
+
+
 @app.route("/distribution/{id}/copier", methods=["GET"])
 async def copy_products(request, response, id):
     deliveries = Delivery.all()
