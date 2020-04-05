@@ -1,8 +1,16 @@
 {% extends "base.html" %}
-{% block title %}<h1><i class="icon-wallet"></i>&nbsp; Répartition des paiements <a id="download" class="button" href="/distribution/{{ delivery.id }}/solde.pdf">Télécharger</a></h1>{% endblock %}
 {% block body %}
-<p class="info">{{ delivery.name }} du {{ delivery.to_date | date }}.</p>
-<p class="info">Les personnes indiquées avec un <code>*</code> à côté de leur nom sont celles qui ont payé cette commande pour leur groupe.</p>
+<div class="header">
+    <h1><i class="icon-wallet"></i>&nbsp; {{ delivery.name }} : Répartition des paiements</h1>
+    <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="/distribution/{{ delivery.id }}/solde.pdf">Télécharger</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
 <table class="paiements">
     <tr>
         <td></td>
@@ -13,11 +21,14 @@
         <td>{% if debiter[0] in debiters_groups %} {{ debiters_groups[debiter[0]].name }}{% else %}{{ debiter[0] }}{% endif %} ({{ debiter[1] | round(2) }})</td>
         {% for crediter in crediters %}
         {% set due_amount = results[debiter[0]][crediter[0]] | round(2) %}
-
+        
         <td>{% if due_amount != 0.00 %}{{due_amount}}{% endif %}</td>
         {% endfor %}
     </tr>
     {% endfor %}
 </table>
+
+<p class="info"><i class="icon-lightbulb"></i>&nbsp; <strong>Mais, comment ça marche ?</strong> La répartition des chèques se fait automatiquement, en soustrayant ce que les personnes doivent (au nom de leur coloc / groupe) à ce qui leur est du (dans le cas où elles sont référentes pour certains produits).</p>
+<p class="info">Les personnes indiquées avec un <code>*</code> à côté de leur nom sont celles qui ont payé cette commande pour leur groupe.</p>
 
 {% endblock body %}

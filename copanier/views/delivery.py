@@ -244,6 +244,7 @@ async def place_order(request, response, id):
                         person=Person(email=email),
                         delivery=delivery,
                         order=order,
+                        group_id=orderer.group_id,
                     )
             else:
                 emails.send_order(
@@ -252,6 +253,7 @@ async def place_order(request, response, id):
                     person=Person(email=orderer.email),
                     delivery=delivery,
                     order=order,
+                    group_id=orderer.email,
                 )
         response.message(
             f"La commande pour « {orderer.name} » a bien été prise en compte, "
@@ -326,7 +328,9 @@ async def delivery_balance(request, response, id):
 
     balance = []
     for group_id, order in delivery.orders.items():
-        balance.append((group_id, order.total(delivery.products) * -1))
+        balance.append(
+            (group_id, order.total(delivery.products, delivery, group_id) * -1)
+        )
 
     producer_groups = {}
 
@@ -347,6 +351,7 @@ async def delivery_balance(request, response, id):
             group_id = producer.referent_name
 
         amount = delivery.total_for_producer(producer.id)
+        print(producer.id, amount)
         if amount:
             balance.append((group_id, amount))
 

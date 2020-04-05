@@ -240,15 +240,24 @@ class Order(Base):
     def __iter__(self):
         yield from self.products.items()
 
-    def total(self, products):
+    def total(self, products, delivery, email=None, include_shipping=True):
         def _get_price(ref):
             product = products.get(ref)
             return product.price if product and not product.rupture else 0
 
+        producers = set([p.producer for p in products])
         products = {p.ref: p for p in products}
-        return round(
-            sum(p.quantity * _get_price(ref) for ref, p in self.products.items()), 2
+
+        total_products = sum(
+            p.quantity * _get_price(ref) for ref, p in self.products.items()
         )
+
+        total_shipping = 0
+        if include_shipping:
+            for producer in producers:
+                total_shipping = total_shipping + delivery.shipping_for(email, producer)
+
+        return round(total_products + total_shipping, 2)
 
     @property
     def has_adjustments(self):
@@ -277,6 +286,7 @@ class Delivery(PersistedBase):
     products: List[Product] = field(default_factory=list)
     producers: Dict[str, Producer] = field(default_factory=dict)
     orders: Dict[str, Order] = field(default_factory=dict)
+    shipping: Dict[str, price_field] = field(default_factory=dict)
 
     def __post_init__(self):
         self.id = None  # Not a field because we don't want to persist it.
@@ -307,7 +317,7 @@ class Delivery(PersistedBase):
 
     @property
     def total(self):
-        return round(sum(o.total(self.products) for o in self.orders.values()), 2)
+        return round(sum(o.total(self.products, self) for o in self.orders.values()), 2)
 
     @property
     def is_open(self):
@@ -431,11 +441,20 @@ class Delivery(PersistedBase):
             self.products.remove(product)
             return product
 
-    def total_for_producer(self, producer, person=None):
+    def total_for_producer(self, producer, person=None, include_shipping=True):
         producer_products = [p for p in self.products if p.producer == producer]
         if person:
-            return self.orders.get(person).total(producer_products)
-        return round(sum(o.total(producer_products) for o in self.orders.values()), 2)
+            return self.orders.get(person).total(
+                producer_products, self, person, include_shipping
+            )
+        return round(
+            sum(
+                o.total(producer_products, self, person, include_shipping=False)
+                for o in self.orders.values()
+            )
+            + self.shipping.get(producer, 0),
+            2,
+        )
 
     def get_producers_for_referent(self, referent):
         return {
@@ -450,4 +469,24 @@ class Delivery(PersistedBase):
     def total_for(self, person):
         if person.email not in self.orders:
             return 0
-        return self.orders[person.email].total(self.products)
+        return self.orders[person.email].total(self.products, self)
+
+    def shipping_for(self, person, producer):
+        producer_shipping = self.shipping.get(producer)
+        if not producer_shipping:
+            return 0
+
+        if not person:
+            return producer_shipping
+
+        producer_total = (
+            self.total_for_producer(producer, include_shipping=False)
+            - producer_shipping
+        )
+        person_amount = self.total_for_producer(
+            producer, person=person, include_shipping=False
+        )
+
+        percentage_person = person_amount / producer_total
+        shipping = percentage_person * producer_shipping
+        return shipping

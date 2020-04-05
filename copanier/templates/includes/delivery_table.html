@@ -61,6 +61,21 @@
             {% endif %}
         </tr>
         {% endfor %}
+        {% if delivery.shipping.get(producer) %}
+        <tr>
+            <th class="shipping"><i class="icon-map"></i>Frais de livraison</th>
+            <td>—</td>
+            {% if delivery.has_packing %}
+                <td>—</td>
+            {% endif %}
+            <th class="shipping">{{ delivery.shipping[producer] }} €</th>
+            {% if not list_only %}
+                {% for email, order in delivery.orders.items() %}
+                <td>{{ delivery.shipping_for(email, producer)|round(2) }} €</td>
+                {% endfor %}
+            {% endif %}
+        </tr>
+        {% endif %}
         <tr>
             <th class="total"><i class="icon-pricetags"></i> Total</th><td>—</td>
             {% if delivery.has_packing %}
@@ -70,7 +85,7 @@
             <th class="total">{{ delivery.total_for_producer(producer) }} €</th>
             {% if not list_only %}
                 {% for email, order in delivery.orders.items() %}
-                <td>{{ order.total(delivery.get_products_by(producer)) }} €</td>
+                <td>{{ order.total(delivery.get_products_by(producer), delivery, email) }} €</td>
                 {% endfor %}
             {% endif %}
         </tr>

@@ -9,4 +9,4 @@
     {% endif %}
     {% endfor %}
 </table>
-<p>Total: {{ order.total(delivery.products) if order else 0 }} €</p>
+<p>Total: {{ order.total(delivery.products, delivery, group_id) if order else 0 }} €</p>
