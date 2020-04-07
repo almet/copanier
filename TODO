@@ -17,9 +17,9 @@ x Ajouter une note explicative pour la répartition des chèques
 x Permettre la supression des produits (terminer)
 x Gérer le souci d'URL pour l'édition d'Apiluly
 x Rendre plus visible l'action de modifier une commande
+x Ajouter la trame (agenda d’une distribution) dans la boite à outil du coordinateur
 
-Ajouter la trame (agenda d’une distribution) dans la boite à outil du coordinateur
-
+Changer les liens d'emergement, de solde et ???, trouver de meilleurs dénominations
 Faire un refactoring des modèles
 Repasser sur les tests
 

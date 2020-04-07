@@ -495,3 +495,15 @@ class Delivery(PersistedBase):
         percentage_person = person_amount / producer_total
         shipping = percentage_person * producer_shipping
         return shipping
+
+    @property
+    def dates(self):
+        delivery_date = self.from_date.date()
+        return {
+            "creation_date": self.order_before - timedelta(weeks=4),
+            "price_update_start": self.order_before - timedelta(weeks=4),
+            "price_update_deadline": self.order_before - timedelta(weeks=2),
+            "order_before": self.order_before,
+            "adjustment_deadline": self.order_before + timedelta(days=4),
+            "delivery_date": delivery_date
+        }

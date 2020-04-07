@@ -142,7 +142,7 @@ async def send_referent_emails(request, response, id):
         response.message(f"Un mail à été envoyé aux {sent_mails} référent⋅e⋅s")
         response.redirect = f"/distribution/{id}/gérer"
 
-    response.html("delivery/referent_email.html", {"delivery": delivery})
+    response.html("delivery/prepare_referent_email.html", {"delivery": delivery})
 
 
 @app.route("/distribution/{id}/exporter", methods=["GET"])
