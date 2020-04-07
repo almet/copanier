@@ -27,7 +27,7 @@
     <h1>Ajouter un⋅e producteur⋅rice</h1>
 {% endif %}
 </div>
-{% if producer.needs_price_update(delivery) %}
+{% if producer and producer.needs_price_update(delivery) %}
 <p class="notification info">Les prix pour {{ producer.name }} ont besoin d'être validés.</p>
 {% endif %}
 <form method="post">
@@ -36,7 +36,7 @@
     {% else %}
     <label>
         <p>Nom</p>
-        <input type="text" name="name" value="{{ proneeds_price_updateducer.name or '' }}">
+        <input type="text" name="name" value="{{ producer.name or '' }}">
     </label>
     {% endif %}
     <label>

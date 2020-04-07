@@ -12,17 +12,18 @@ x Faciliter la duplication de distribution
 x Si un produit est en rupture de stock, alors il n'est pas compté dans les totaux
 x Permettre la suppression de producteurs
 x Ajouter une info « prix mis à jour » pour les référent⋅e⋅s
-
-Permettre la supression des produits (terminer)
+x Gérer les frais de livraison
+x Ajouter une note explicative pour la répartition des chèques
+x Permettre la supression des produits (terminer)
 
 Gérer le souci d'URL pour l'édition d'Apiluly
 Rendre le formulaire d'édition producteur plus compact
 
-Gérer les frais de livraison
+Faire un refactoring des modèles
+Repasser sur les tests
 
 Rendre plus visible l'action de modifier une commande
 Ajouter la trame (agenda d’une distribution) dans la boite à outil du coordinateur
 
 Explorer la possibilité de faire des ajustements automatiques
-Ajouter une note explicative pour la répartition des chèques
 Éditer directement depuis la vue « distribution »

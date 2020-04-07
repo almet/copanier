@@ -123,8 +123,7 @@ async def create_producer(request, response, delivery_id):
         response.redirect = f"/distribution/{delivery.id}/{producer.id}/éditer"
 
     response.html(
-        "products/edit_producer.html",
-        {"delivery": delivery, "producer": producer or None},
+        "products/edit_producer.html", {"delivery": delivery, "producer": producer}
     )
 
 
@@ -164,7 +163,7 @@ async def edit_product(request, response, delivery_id, producer_id, product_ref)
 
 
 @app.route("/distribution/{delivery_id}/{producer_id}/valider-prix", methods=["GET"])
-async def mark_prices_as_ok(request, response, delivery_id, producer_id):
+async def mark_producer_prices_as_ok(request, response, delivery_id, producer_id):
     delivery = Delivery.load(delivery_id)
     producer = delivery.producers.get(producer_id)
 
@@ -180,7 +179,7 @@ async def mark_prices_as_ok(request, response, delivery_id, producer_id):
 
 
 @app.route("/distribution/{delivery_id}/valider-prix", methods=["GET"])
-async def mark_prices_as_ok(request, response, delivery_id):
+async def mark_all_prices_as_ok(request, response, delivery_id):
     delivery = Delivery.load(delivery_id)
 
     for product in delivery.products:

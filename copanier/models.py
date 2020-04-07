@@ -439,6 +439,11 @@ class Delivery(PersistedBase):
         product = self.get_product(ref)
         if product:
             self.products.remove(product)
+
+            for order in self.orders.values():
+                if product.ref in order.products:
+                    order.products.pop(product.ref)
+
             return product
 
     def total_for_producer(self, producer, person=None, include_shipping=True):
