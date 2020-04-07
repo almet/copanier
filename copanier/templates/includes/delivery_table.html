@@ -43,7 +43,7 @@
     <tbody>
         {% for product in delivery.get_products_by(producer) %}
         <tr>
-            <th class="product {% if product.rupture %}rupture{% endif %}">{% if edit_mode %}<a href="/produits/{{ delivery.id }}/producteurs/{{ product.producer }}/produits/{{ product.ref }}">{% endif %}{% if edit_mode %}<i class="icon-pencil"></i>&nbsp;{% endif %}{{ product }}{% if edit_mode %}</a>{% endif %}{% if product.rupture %} {{ product.rupture }}{% endif %}
+            <th class="product {% if product.rupture %}rupture{% endif %}">{% if edit_mode %}<a href="/produits/{{ delivery.id }}/producteurs/{{ product.producer }}/produits/{{ product.ref }}">{% endif %}{% if edit_mode %}<i class="icon-pencil"></i>&nbsp;{% endif %}{% if product.rupture %} (rupture){% endif %} {{ product }}{% if edit_mode %}</a>{% endif %}
             <td>{{ product.price | round(2) }} €</td>
             {% if delivery.has_packing %}
                 <td class="packing">{% if product.packing %}{{ product.packing }} x {% endif %} {{ product.unit }}</td>
