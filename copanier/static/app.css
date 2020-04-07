@@ -686,3 +686,12 @@ ul.actions > li {
   text-decoration: underline;
   text-decoration-style: dotted;
 }
+
+.fixed-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.fixed-table td, .fixed-table th{
+  white-space:pre-wrap; 
+}
