@@ -26,7 +26,7 @@ async def test_home_should_redirect_to_login_if_not_logged(client):
     client.logout()
     resp = await client.get("/")
     assert resp.status == 302
-    assert resp.headers["Location"] == "/sésame?next=/"
+    assert resp.headers["Location"] == "/connexion?next=/"
 
 
 async def test_create_delivery(client):
@@ -87,6 +87,7 @@ async def test_place_order_with_empty_string(client, delivery):
     assert resp.status == 302
     delivery = Delivery.load(id=delivery.id)
     assert not delivery.orders
+
 
 async def test_get_place_order_with_closed_delivery(client, delivery, monkeypatch):
     monkeypatch.setattr("copanier.config.STAFF", ["someone@else.org"])
@@ -219,6 +220,16 @@ async def test_export_products(client, delivery):
     resp = await client.get(f"/distribution/{delivery.id}/exporter")
     wb = load_workbook(filename=BytesIO(resp.body))
     assert list(wb.active.values) == [
-        ("name", "ref", "price", "unit", "description", "url", "img", "packing", "producer"),
+        (
+            "name",
+            "ref",
+            "price",
+            "unit",
+            "description",
+            "url",
+            "img",
+            "packing",
+            "producer",
+        ),
         ("Lait", "123", 1.5, None, None, None, None, None, None),
     ]

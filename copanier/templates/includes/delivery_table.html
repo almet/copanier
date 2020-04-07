@@ -31,7 +31,7 @@
                 {% set orderer_name = request.groups.groups[orderer].name %}
                 <th class="person">
                     {% if request.user and (request.user.is_staff or request.user.is_referent(delivery)) %}
-                        <a href="/distribution/{{ delivery.id }}/commander?orderer={{ orderer }}" title="{{ orderer }}">{{ orderer_name }}</a>
+                        <a class="underline" href="/distribution/{{ delivery.id }}/commander?orderer={{ orderer }}" title="{{ orderer }}">{{ orderer_name }} <i class="icon-pencil"></i></a>
                     {% else %}
                         <span title="{{ orderer }}">{{ orderer_name }}</span>
                     {% endif %}
