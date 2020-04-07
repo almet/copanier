@@ -1,22 +1,22 @@
 {% extends "base.html" %}
 
-{% block toplink %}<a href="/distribution/{{ delivery.id }}/{{ producer.id }}/éditer">↶ Retourner aux produits de {{ producer.name }}</a>{% endblock %}
+{% block toplink %}<a href="/produits/{{ delivery.id }}/producteurs/{{ producer.id }}">↶ Retourner aux produits de {{ producer.name }}</a>{% endblock %}
 
 {% block body %}
 
 <div class="header">
     {% if product.ref %}
         <h1>Modifier le produit « {{ product.name }} »</h1>
+        <div class="pure-menu pure-menu-horizontal">
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item">
+                    <a class="pure-menu-link" href="/produits/{{ delivery.id}}/producteurs/{{ producer.id }}/produits/{{ product.ref }}/supprimer">Supprimer ce produit</a>
+                </li>
+            </ul>
+        </div>
     {% else %}
         <h1>{{ producer.name }} : Nouveau produit</h1>
     {% endif %}
-    <div class="pure-menu pure-menu-horizontal">
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item">
-                <a class="pure-menu-link" href="/distribution/{{ delivery.id}}/{{ producer.id }}/{{ product.ref }}/supprimer">Supprimer ce produit</a>
-            </li>
-        </ul>
-    </div>
 </div>
 
 <form method="post">
@@ -50,35 +50,6 @@
         <input type="submit" name="submit" value="Valider" class="primary">
     </div>
 </form>
-
-{% if products %}
-<h3>Produits</h3>
-
-<table>
-    <thead>
-        <tr>
-            <th>Produit</th>
-            <th>Prix</th>
-            <th>Unité</th>
-            <th>Description</th>
-            <th>Packaging</th>
-            <th>Rupture ?</th>
-            <th></th>
-        </tr>
-    </thead>
-{% for product in products %}
-<tr>
-    <td><a href="/distribution/{{ delivery.id }}/produit/{{ product.ref }}/éditer">{{ product.name }}</a></td>
-    <td>{{ product.price }}€</td>
-    <td>{{ product.unit }}</td>
-    <td>{{ product.description }}</td>
-    <td>{% if product.packing %}{{ product.packing }}{% endif %}</td>
-    <td>{% if product.rupture %}RUPTURE !!{% endif %}</td>
-    <td><a href="/distribution/{{ delivery.id }}/produit/{{ product.ref }}/éditer">éditer</a></td>
-</tr>
-{% endfor %}
-</table>
-{% endif %}
 
 <hr>
 {% endblock body %}

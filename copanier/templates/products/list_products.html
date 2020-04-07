@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block toplink %}<a href="/distribution/{{ delivery.id }}">↶ Retourner à la distribution</a>{% endblock %}
+{% block body %}
+<div class="header">
+    <h1>Gérer les produits</h1>
+    <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="/produits/{{ delivery.id }}/producteurs/créer"><i class="icon-heart"></i>&nbsp;Ajouter un⋅e producteur⋅rice</a>
+            </li>
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="/produits/{{ delivery.id }}/copier"><i class="icon-hotairballoon"></i>&nbsp;Réutiliser les produits d'une autre distrib</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<p class="hide-on-print">
+    {% if producers %}
+    <a href="/produits/{{ delivery.id }}/produits.pdf{% if referent %}?referent={{ referent }}{% endif %}">Télécharger la liste des commandes en PDF</a>
+    {% endif %}
+    {% if referent %}Voici la liste des product⋅eurs⋅rices dont {{ referent }} est référent⋅e. <a class="button" href="/produits/{{delivery.id}}">voir tous les produits</a>{% endif %}
+</p>
+
+<article class="delivery">
+{% include "includes/delivery_table.html" %}
+</article>
+{% endblock body %}

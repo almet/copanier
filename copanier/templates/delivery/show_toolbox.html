@@ -14,11 +14,11 @@
 
 <h3>Avant et pendant la distribution</h3>
 <a class="button" href="/distribution/{{ delivery.id }}/edit"><i class="icon-pencil"></i>&nbsp; Modifier la commande (dates, lieu, référent⋅e, etc)</a>
-<a class="button" href="/distribution/{{ delivery.id }}/products"><i class="icon-pencil"></i>&nbsp; Modifier les produits, les product⋅rices⋅eurs</a>
+<a class="button" href="/produits/{{ delivery.id }}"><i class="icon-pencil"></i>&nbsp; Modifier les produits, les product⋅rices⋅eurs</a>
 <a class="button" href="/groupes"><i class="icon-globe"></i>&nbsp; Gérer les groupes / colocs</a>
 
 <h3>Une fois les commandes passées (après le {{ delivery.order_before|date }})</h3>
-<a class="button" href="/distribution/{{ delivery.id }}/products.pdf"><i class="icon-download"></i>&nbsp; Télécharger les bons de distribution</a>
+<a class="button" href="/produits/{{ delivery.id }}/produits.pdf"><i class="icon-download"></i>&nbsp; Télécharger les bons de distribution</a>
 <a class="button" href="/distribution/{{ delivery.id }}/rapport-complet.xlsx"><i class="icon-download"></i>&nbsp; Télécharger le tableau des commandes</a>
 <a class="button" href="/distribution/{{ delivery.id }}/envoi-email-referentes"><i class="icon-envelope"></i>&nbsp; Envoyer les infos de commande aux référent⋅e⋅s</a>
 

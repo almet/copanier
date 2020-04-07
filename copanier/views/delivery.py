@@ -20,7 +20,7 @@ async def home(request, response):
         response.redirect = "/groupes"
         return
     response.html(
-        "delivery/list.html",
+        "delivery/list_deliveries.html",
         incoming=Delivery.incoming(),
         former=Delivery.former(),
         archives=list(Delivery.all(is_archived=True)),
@@ -30,7 +30,7 @@ async def home(request, response):
 @app.route("/archives", methods=["GET"])
 async def view_archives(request, response):
     response.html(
-        "delivery/archives.html", {"deliveries": Delivery.all(is_archived=True)}
+        "delivery/list_archives.html", {"deliveries": Delivery.all(is_archived=True)}
     )
 
 
@@ -60,7 +60,7 @@ async def unarchive_delivery(request, response, id):
 
 @app.route("/distribution", methods=["GET"])
 async def new_delivery(request, response):
-    response.html("delivery/edit.html", delivery={})
+    response.html("delivery/edit_delivery.html", delivery={})
 
 
 @app.route("/distribution", methods=["POST"])
@@ -83,7 +83,7 @@ async def create_delivery(request, response):
 async def pdf_for_producer(request, response, id, producer):
     delivery = Delivery.load(id)
     response.pdf(
-        "product_list.html",
+        "list_products.html",
         {"list_only": True, "delivery": delivery, "producers": [producer]},
         filename=utils.prefix(f"bon-de-commande-{producer}.pdf", delivery),
     )
@@ -93,7 +93,7 @@ async def pdf_for_producer(request, response, id, producer):
 async def delivery_toolbox(request, response, id):
     delivery = Delivery.load(id)
     response.html(
-        "delivery/toolbox.html",
+        "delivery/show_toolbox.html",
         {
             "delivery": delivery,
             "referents": [p.referent for p in delivery.producers.values()],
@@ -155,7 +155,7 @@ async def export_products(request, response, id):
 @staff_only
 async def edit_delivery(request, response, id):
     delivery = Delivery.load(id)
-    response.html("delivery/edit.html", {"delivery": delivery})
+    response.html("delivery/edit_delivery.html", {"delivery": delivery})
 
 
 @app.route("/distribution/{id}/edit", methods=["POST"])
@@ -176,7 +176,7 @@ async def post_delivery(request, response, id):
 @app.route("/distribution/{id}", methods=["GET"])
 async def view_delivery(request, response, id):
     delivery = Delivery.load(id)
-    response.html("delivery/show.html", {"delivery": delivery})
+    response.html("delivery/show_delivery.html", {"delivery": delivery})
 
 
 @app.route("/distribution/{id}/commander", methods=["POST", "GET"])
@@ -276,7 +276,7 @@ async def place_order(request, response, id):
 async def signing_sheet(request, response, id):
     delivery = Delivery.load(id)
     response.pdf(
-        "delivery/signing_sheet.html",
+        "delivery/show_signing_sheet.html",
         {"delivery": delivery},
         css="signing-sheet.css",
         filename=utils.prefix("commandes-par-groupe.pdf", delivery),
@@ -316,7 +316,9 @@ async def adjust_product(request, response, id, ref):
         response.message(f"Le produit «{product.ref}» a bien été ajusté!")
         response.redirect = delivery_url
     else:
-        response.html("adjust_product.html", {"delivery": delivery, "product": product})
+        response.html(
+            "delivery/adjust_product.html", {"delivery": delivery, "product": product}
+        )
 
 
 @app.route("/distribution/{id}/solde", methods=["GET"])
@@ -364,7 +366,7 @@ async def delivery_balance(request, response, id):
     for debiter, amount, crediter in results:
         results_dict[debiter][crediter] = amount
 
-    template_name = "delivery/balance.html"
+    template_name = "delivery/compute_balance.html"
     template_args = {
         "delivery": delivery,
         "debiters": debiters,

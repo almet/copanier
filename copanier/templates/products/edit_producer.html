@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block toplink %}<a href="/distribution/{{ delivery.id }}/produits">↶ Retourner aux produits</a>{% endblock %}
+{% block toplink %}<a href="/produits/{{ delivery.id }}">↶ Retourner aux produits</a>{% endblock %}
 
 {% block body %}
 <div class="header">
@@ -8,17 +8,17 @@
     <div class="pure-menu pure-menu-horizontal">
         <ul class="pure-menu-list">
             <li class="pure-menu-item">
-                <a class="pure-menu-link" href="/distribution/{{ delivery.id}}/{{ producer.id }}/ajouter-produit">Ajouter un produit</a>
+                <a class="pure-menu-link" href="/produits/{{ delivery.id}}/producteurs/{{ producer.id }}/produits/créer">Ajouter un produit</a>
             </li>
             <li class="pure-menu-item">
-                <a class="pure-menu-link" href="/distribution/{{ delivery.id}}/{{ producer.id }}/supprimer">Supprimer</a>
+                <a class="pure-menu-link" href="/produits/{{ delivery.id}}/producteurs/{{ producer.id }}/supprimer">Supprimer</a>
             </li>
             <li class="pure-menu-list">
-                <a class="pure-menu-link" href="/distribution/{{ delivery.id}}/{{ producer.id }}/frais-de-livraison">Gérer des frais de livraison</a>
+                <a class="pure-menu-link" href="/produits/{{ delivery.id}}/producteurs/{{ producer.id }}/frais-de-livraison">Gérer des frais de livraison</a>
             </li>
             {% if producer.needs_price_update(delivery) %}
             <li class="pure-menu-item">
-                <a class="pure-menu-link" href="/distribution/{{ delivery.id}}/{{ producer.id }}/valider-prix">Marquer les prix comme OK</a>
+                <a class="pure-menu-link" href="/produits/{{ delivery.id}}/producteurs/{{ producer.id }}/valider-prix">Marquer les prix comme OK</a>
             </li>
             {% endif %}
         </ul>
@@ -67,14 +67,14 @@
 {% if delivery.shipping.get(producer.id) %}
 <h3>Frais de livraison</h3>
 Des frais de livraison de {{ delivery.shipping[producer.id] }}€ ont été enregistrés pour ce producteur.
-<a class="button" href="/distribution/{{ delivery.id}}/{{ producer.id }}/frais-de-livraison">Modifier</a>
+<a class="button" href="/produits/{{ delivery.id}}/producteurs/{{ producer.id }}/frais-de-livraison">Modifier</a>
 {% endif %}
 
 {% if products %}
 <h3>Produits
-    <a class="button" href="/distribution/{{ delivery.id}}/{{ producer.id }}/ajouter-produit">Ajouter un produit</a>
+    <a class="button" href="/produits/{{ delivery.id}}/producteurs/{{ producer.id }}/produits/créer">Ajouter un produit</a>
     {% if producer.needs_price_update(delivery) %}
-        <a class="button" href="/distribution/{{ delivery.id}}/{{ producer.id }}/valider-prix">Marquer les prix comme OK</a>
+        <a class="button" href="/produits/{{ delivery.id}}/producteurs/{{ producer.id }}/valider-prix">Marquer les prix comme OK</a>
     {% endif %}
 </h3>
 <p>Vous pouvez éditer les produits en cliquant sur leur nom.</p>
@@ -92,13 +92,13 @@ Des frais de livraison de {{ delivery.shipping[producer.id] }}€ ont été enre
     </thead>
 {% for product in products %}
 <tr>
-    <td><a href="/distribution/{{ delivery.id }}/{{ producer.id }}/produit/{{ product.ref }}/éditer">{{ product.name }}</a></td>
+    <td><a href="/produits/{{ delivery.id }}/producteurs/{{ producer.id }}/produits/{{ product.ref }}">{{ product.name }}</a></td>
     <td>{{ product.price }}€</td>
     <td>{{ product.unit }}</td>
     <td>{{ product.description }}</td>
     <td>{% if product.packing %}{{ product.packing }}{% endif %}</td>
     <td>{% if product.rupture %}RUPTURE !!{% endif %}</td>
-    <td><a href="/distribution/{{ delivery.id }}/{{ producer.id }}/{{ product.ref }}/supprimer">supprimer</a></td>
+    <td><a href="/produits/{{ delivery.id }}/producteurs/{{ producer.id }}/produits/{{ product.ref }}/supprimer">supprimer</a></td>
 </tr>
 {% endfor %}
 </table>
