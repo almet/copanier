@@ -11,6 +11,7 @@
 {% set display_counts = True %}
 {% include "includes/delivery_head.html" %}
 
+<h2>Rappel des dates</h2>
 <table class="pure-table fixed-table">
     <thead>
         <tr>
@@ -63,22 +64,31 @@
     </tbody>
 </table>
 
-<h3>Emails des référent⋅e⋅s</h3>
-<p>Au cas où, quoi.</p>
+<h2>Emails des référent⋅e⋅s</h2>
+<p>Ça peut être utile pour leur envoyer un email groupé.</p>
 <textarea class="list-emails" rows=5>{{ referents | join(', ') }}</textarea>
 
-<h3>Avant et pendant la distribution</h3>
-<a class="button" href="/distribution/{{ delivery.id }}/edit"><i class="icon-pencil"></i>&nbsp; Modifier la commande (dates, lieu, référent⋅e, etc)</a>
-<a class="button" href="/produits/{{ delivery.id }}"><i class="icon-pencil"></i>&nbsp; Modifier les produits, les product⋅rices⋅eurs</a>
-<a class="button" href="/groupes"><i class="icon-globe"></i>&nbsp; Gérer les groupes / colocs</a>
+<h2>Quelques liens utiles</h2>
 
-<h3>Une fois les commandes passées (après le {{ delivery.order_before|date }})</h3>
-<a class="button" href="/produits/{{ delivery.id }}/produits.pdf"><i class="icon-download"></i>&nbsp; Télécharger les bons de distribution</a>
-<a class="button" href="/distribution/{{ delivery.id }}/rapport-complet.xlsx"><i class="icon-download"></i>&nbsp; Télécharger le tableau des commandes</a>
-<a class="button" href="/distribution/{{ delivery.id }}/envoi-email-referentes"><i class="icon-envelope"></i>&nbsp; Envoyer les infos de commande aux référent⋅e⋅s</a>
+Avant et pendant la distribution :
+<ul>
+    <li><a href="/groupes"><i class="icon-globe"></i>&nbsp; Gérer les groupes / colocs</a></li>
+    <li><a href="/distribution/{{ delivery.id }}/edit"><i class="icon-pencil"></i>&nbsp; Modifier la commande (dates, lieu, référent⋅e, etc)</a></li>
+    <li><a href="/produits/{{ delivery.id }}"><i class="icon-pencil"></i>&nbsp; Gérer les produits</a></li>
+</ul>
 
-<h3>Pour préparer la distribution (le {{ delivery.from_date|date }})</h3>   
-<a class="button" href="/distribution/{{ delivery.id }}/émargement"><i class="icon-document"></i>&nbsp; Fiches de commandes par groupe</a>
-<a class="button" href="/distribution/{{ delivery.id }}/solde"><i class="icon-gears"></i>&nbsp; Faire la répartition des paiements</a>
+Une fois les commandes passées :
+<ul>
+    <li><a href="/produits/{{ delivery.id }}/produits.pdf"><i class="icon-download"></i>&nbsp; Télécharger la liste des produits commandés</a></li>
+    <li><a href="/distribution/{{ delivery.id }}/rapport-complet.xlsx"><i class="icon-download"></i>&nbsp; Télécharger le tableau des commandes</a></li>
+    <li><a href="/distribution/{{ delivery.id }}/envoi-email-referentes"><i class="icon-envelope"></i>&nbsp; Envoyer les infos de commande aux référent⋅e⋅s</a></li>
+</ul>
+
+Pour préparer la distribution :
+
+<ul>
+    <li><a href="/distribution/{{ delivery.id }}/émargement"><i class="icon-document"></i>&nbsp; Fiches de commandes par groupe</a></li>
+    <li><a href="/distribution/{{ delivery.id }}/solde"><i class="icon-gears"></i>&nbsp; Faire la répartition des paiements</a></li>
+</ul>
 
 {% endblock %}
