@@ -3,11 +3,22 @@
 {% block toplink %}<a href="/distribution/{{ delivery.id }}/{{ producer.id }}/éditer">↶ Retourner aux produits de {{ producer.name }}</a>{% endblock %}
 
 {% block body %}
-{% if product.ref %}
-    <h1>Modifier le produit « {{ product.name }} »</h1>
-{% else %}
-    <h1>{{ producer.name }} : Nouveau produit</h1>
-{% endif %}
+
+<div class="header">
+    {% if product.ref %}
+        <h1>Modifier le produit « {{ product.name }} »</h1>
+    {% else %}
+        <h1>{{ producer.name }} : Nouveau produit</h1>
+    {% endif %}
+    <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="/distribution/{{ delivery.id}}/{{ producer.id }}/{{ product.ref }}/supprimer">Supprimer ce produit</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
 <form method="post">
     <label>
         <p>Nom</p>
