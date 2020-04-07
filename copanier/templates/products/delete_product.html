@@ -51,13 +51,13 @@
     </thead>
 {% for product in products %}
 <tr>
-    <td><a href="/distribution/{{ delivery.id }}/produit/{{ product.ref }}/éditer">{{ product.name }}</a></td>
+    <td><a href="/produits/{{ delivery.id }}/producteurs/{{ producer.id }}/produits/{{ product.ref }}">{{ product.name }}</a></td>
     <td>{{ product.price }}€</td>
     <td>{{ product.unit }}</td>
     <td>{{ product.description }}</td>
     <td>{% if product.packing %}{{ product.packing }}{% endif %}</td>
     <td>{% if product.rupture %}RUPTURE !!{% endif %}</td>
-    <td><a href="/distribution/{{ delivery.id }}/produit/{{ product.ref }}/éditer">éditer</a></td>
+    <td><a href="/produits/{{ delivery.id }}/producteurs/{{ producer.id }}/produits/{{ product.ref }}">éditer</a></td>
 </tr>
 {% endfor %}
 </table>

@@ -18,7 +18,7 @@ async def auth_required(request, response):
             decoded = utils.read_token(token)
             email = decoded.get("sub")
         if not email:
-            response.redirect = f"/sésame?next={request.path}"
+            response.redirect = f"/connexion?next={request.path}"
             return response
 
         groups = Groups.load()
@@ -33,12 +33,12 @@ async def auth_required(request, response):
         session.user.set(user)
 
 
-@app.route("/sésame", methods=["GET"], unprotected=True)
+@app.route("/connexion", methods=["GET"], unprotected=True)
 async def sesame(request, response):
-    response.html("sesame.html")
+    response.html("login.html")
 
 
-@app.route("/sésame", methods=["POST"], unprotected=True)
+@app.route("/connexion", methods=["POST"], unprotected=True)
 async def send_sesame(request, response):
     email = request.form.get("email").lower()
     token = utils.create_token(email)
@@ -61,7 +61,7 @@ async def send_sesame(request, response):
     response.redirect = "/"
 
 
-@app.route("/sésame/{token}", methods=["GET"], unprotected=True)
+@app.route("/connexion/{token}", methods=["GET"], unprotected=True)
 async def set_sesame(request, response, token):
     decoded = utils.read_token(token)
     if not decoded:

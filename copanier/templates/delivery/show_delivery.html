@@ -21,7 +21,7 @@
             <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
                 <a href="#" class="pure-menu-link"><i class="icon-printer"></i>&nbsp;Imprimer…</a>
                 <ul class="pure-menu-children">
-                    <li class="pure-menu-item"><a href="/distribution/{{ delivery.id }}/produits.pdf" class="pure-menu-link"><i class="icon-ribbon"></i>&nbsp;Commande producteurs⋅rices</a></li>
+                    <li class="pure-menu-item"><a href="/produits/{{ delivery.id }}/produits.pdf" class="pure-menu-link"><i class="icon-ribbon"></i>&nbsp;Commande producteurs⋅rices</a></li>
                     <li class="pure-menu-item"><a href="/distribution/{{ delivery.id }}/émargement" class="pure-menu-link"><i class="icon-grid"></i>&nbsp;Résumé de commande par groupe</a></li>
                     <li class="pure-menu-item"><a href="/distribution/{{ delivery.id }}/solde" class="pure-menu-link"><i class="icon-wallet"></i>&nbsp;Répartition des paiements</a></li>
                 </ul>
@@ -38,7 +38,7 @@
                 <a class="pure-menu-link" href="/distribution/{{ delivery.id }}/edit"><i class="icon-adjustments"></i>&nbsp;Modifier la distrib</a>
             </li>
             <li class="pure-menu-item">
-                <a class="pure-menu-link" href="/distribution/{{ delivery.id }}/produits"><i class="icon-pricetags"></i>&nbsp;Produits</a>
+                <a class="pure-menu-link" href="/produits/{{ delivery.id }}"><i class="icon-pricetags"></i>&nbsp;Produits</a>
             </li>
         {% endif %}
             </ul
@@ -54,7 +54,7 @@
 {% if delivery.has_products %}
     {% for (id, producer) in delivery.get_producers_for_referent(request.user.email).items() %}
     {% if producer.needs_price_update(delivery) %}
-    <p class="notification info">Merci de <a href="/distribution/{{ delivery.id}}/{{ producer.id}}/éditer">mettre à jour les prix pour « {{ producer.name }} ».</a></p>
+    <p class="notification info">Merci de <a href="/produits/{{ delivery.id }}/producteurs/{{ producer.id}}">mettre à jour les prix pour « {{ producer.name }} ».</a></p>
     {% endif %}
     {% endfor %}
     {% include "includes/delivery_table.html" %}
@@ -64,8 +64,8 @@
     {% if request.user and request.user.is_staff %}
         Occupons-nous donc de ça ! Deux options :
         <ol>
-            <li><a href="/producteurices/créer/{{ delivery.id }}">Ajouter les product⋅eurs⋅rices</a> à la main ;</li>
-            <li>Ou bien <a href="/distribution/{{ delivery.id }}/copier">copier les produits d'une autre distribution</a>.</li>
+            <li><a href="/produits/{{ delivery.id }}/producteurs/créer">Ajouter les product⋅eurs⋅rices</a> à la main ;</li>
+            <li>Ou bien <a href="/produits/{{ delivery.id }}/copier">copier les produits d'une autre distribution</a>.</li>
         </ol>
     </div>
     {% endif %}

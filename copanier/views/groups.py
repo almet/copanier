@@ -10,7 +10,7 @@ async def on_startup():
 
 @app.route("/groupes", methods=["GET"])
 async def handle_groups(request, response):
-    response.html("groups/list.html", {"groups": request["groups"]})
+    response.html("groups/list_groups.html", {"groups": request["groups"]})
 
 
 @app.route("/groupes/{id}/rejoindre", method=["GET"])
@@ -43,7 +43,7 @@ async def create_group(request, response):
         request["groups"].persist()
         response.message(f"Le groupe {group.name} à bien été créé")
         response.redirect = "/"
-    response.html("groups/edit.html", group=group)
+    response.html("groups/edit_group.html", group=group)
 
 
 @app.route("/groupes/{id}/éditer", methods=["GET", "POST"])
@@ -60,7 +60,7 @@ async def edit_group(request, response, id):
         request["groups"].groups[id] = group
         request["groups"].persist()
         response.redirect = "/groupes"
-    response.html("groups/edit.html", group=group)
+    response.html("groups/edit_group.html", group=group)
 
 
 @app.route("/groupes/{id}/supprimer", methods=["GET"])
