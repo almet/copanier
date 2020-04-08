@@ -52,13 +52,13 @@
         <tr>
             <th>Préparation de la distribution</th>
             <td>La veille du {{ delivery.dates.delivery_date | date }}</td>
-            <td><a href="/distribution/{{ delivery.id }}/émargement">Imprimer les bons de commandes par colocation</a></td>
+            <td><a href="/distribution/{{ delivery.id }}/résumé-de-commandes">Imprimer les bons de commandes par colocation</a></td>
             <td>—</td>
         </tr>
         <tr>
             <th>Distribution</th>
             <td>{{ delivery.dates.delivery_date | date }}</td>
-            <td>Coordoner la distribution, <a href="/distribution/{{ delivery.id }}/solde">faire la répartition des chèques</a></td>
+            <td>Coordoner la distribution, <a href="/distribution/{{ delivery.id }}/paiements">faire la répartition des chèques</a></td>
             <td>Arriver 30mn avant le début de la distribution, répartir les produits par coloc</td>
         </tr>
     </tbody>
@@ -87,8 +87,8 @@ Une fois les commandes passées :
 Pour préparer la distribution :
 
 <ul>
-    <li><a href="/distribution/{{ delivery.id }}/émargement"><i class="icon-document"></i>&nbsp; Fiches de commandes par groupe</a></li>
-    <li><a href="/distribution/{{ delivery.id }}/solde"><i class="icon-gears"></i>&nbsp; Faire la répartition des paiements</a></li>
+    <li><a href="/distribution/{{ delivery.id }}/résumé-de-commandes"><i class="icon-document"></i>&nbsp; Fiches de commandes par groupe</a></li>
+    <li><a href="/distribution/{{ delivery.id }}/paiements"><i class="icon-gears"></i>&nbsp; Faire la répartition des paiements</a></li>
 </ul>
 
 {% endblock %}

@@ -22,8 +22,8 @@
                 <a href="#" class="pure-menu-link"><i class="icon-printer"></i>&nbsp;Imprimer…</a>
                 <ul class="pure-menu-children">
                     <li class="pure-menu-item"><a href="/produits/{{ delivery.id }}/produits.pdf" class="pure-menu-link"><i class="icon-ribbon"></i>&nbsp;Commande producteurs⋅rices</a></li>
-                    <li class="pure-menu-item"><a href="/distribution/{{ delivery.id }}/émargement" class="pure-menu-link"><i class="icon-grid"></i>&nbsp;Résumé de commande par groupe</a></li>
-                    <li class="pure-menu-item"><a href="/distribution/{{ delivery.id }}/solde" class="pure-menu-link"><i class="icon-wallet"></i>&nbsp;Répartition des paiements</a></li>
+                    <li class="pure-menu-item"><a href="/distribution/{{ delivery.id }}/résumé-de-commandes" class="pure-menu-link"><i class="icon-grid"></i>&nbsp;Résumé de commande par groupe</a></li>
+                    <li class="pure-menu-item"><a href="/distribution/{{ delivery.id }}/paiements" class="pure-menu-link"><i class="icon-wallet"></i>&nbsp;Répartition des paiements</a></li>
                 </ul>
             </li>
         {% if request['user'].email == delivery.contact and delivery.status > delivery.EMPTY %}

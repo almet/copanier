@@ -90,6 +90,11 @@ def groups():
 
 
 @pytest.fixture
+def anothergroup():
+    return Group(id="another-group", name="Another Group", members=["another@bar.org"])
+
+
+@pytest.fixture
 def yaourt():
     return Product(
         ref="yaourt",

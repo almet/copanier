@@ -78,6 +78,11 @@ class Roll(BaseRoll):
     def register_context(self, func):
         self._context_func.append(func)
 
+    def url_for(self, view_name):
+        from pdb import set_trace
+
+        set_trace()
+
 
 def staff_only(view):
     async def decorator(request, response, *args, **kwargs):
