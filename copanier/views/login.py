@@ -34,7 +34,7 @@ async def auth_required(request, response):
 
 
 @app.route("/connexion", methods=["GET"], unprotected=True)
-async def sesame(request, response):
+async def connexion(request, response):
     response.html("login.html")
 
 

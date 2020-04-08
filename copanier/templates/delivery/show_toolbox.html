@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block toplink %}<a href="/distribution/{{ delivery.id }}">↶ Retourner à la distribution</a>{% endblock %}
+{% block toplink %}<a href="{{ url_for('show_delivery', id=delivery.id) }}">↶ Retourner à la distribution</a>{% endblock %}
 
 {% block body %}
 
@@ -46,19 +46,19 @@
         <tr>
             <th>Approvisionnements</th>
             <td>Du {{ delivery.dates.adjustment_deadline | date }} au {{ delivery.dates.delivery_date | date }}</td>
-            <td><a href="/distribution/{{ delivery.id }}/envoi-email-referentes">Envoyer les infos de commande aux référent⋅e⋅s</a></td>
+            <td><a href="{{ url_for('send_referent_emails', id=delivery.id) }}">Envoyer les infos de commande aux référent⋅e⋅s</a></td>
             <td>Faire les commandes aux producteurs⋅rices, <strong>récupérer les produits</strong></td>
         </tr>
         <tr>
             <th>Préparation de la distribution</th>
             <td>La veille du {{ delivery.dates.delivery_date | date }}</td>
-            <td><a href="/distribution/{{ delivery.id }}/résumé-de-commandes">Imprimer les bons de commandes par colocation</a></td>
+            <td><a href="{{ url_for('show_orders_summary', id=delivery.id) }}">Imprimer les bons de commandes par colocation</a></td>
             <td>—</td>
         </tr>
         <tr>
             <th>Distribution</th>
             <td>{{ delivery.dates.delivery_date | date }}</td>
-            <td>Coordoner la distribution, <a href="/distribution/{{ delivery.id }}/paiements">faire la répartition des chèques</a></td>
+            <td>Coordoner la distribution, <a href="{{ url_for('compute_payments', id=delivery.id) }}">faire la répartition des chèques</a></td>
             <td>Arriver 30mn avant le début de la distribution, répartir les produits par coloc</td>
         </tr>
     </tbody>

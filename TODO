@@ -22,5 +22,4 @@ x Repasser sur les tests
 x Changer les liens d'emergement, de paiements et ???, trouver de meilleurs dénominations
 
 Faire un refactoring des modèles
-
 Create an "url_for" utility to simplify URL management.
