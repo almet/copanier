@@ -4,5 +4,5 @@ pytest-asyncio
 usine
 pyquery
 pytest-watch
-python-emails
+#python-emails
 Weasyprint
