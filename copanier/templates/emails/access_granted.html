@@ -2,6 +2,6 @@
 
 <p>Voici le sésame, clique dessus pour t'authentifier, ou copie-colle-le dans ton navigateur:</p>
 
-<a href="https://{{ hostname }}/connexion/{{ token }}">https://{{ hostname }}/connexion/{{ token }}</a>
+<a href="https://{{ hostname }}{{ url_for('set_sesame', token=token) }}">https://{{ hostname }}{{ url_for('set_sesame', token=token) }}</a>
 
 <p>{{ config.EMAIL_SIGNATURE }}</p>

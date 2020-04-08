@@ -2,7 +2,7 @@
 <ul class="delivery">
 {% for delivery in deliveries %}
 <li>
-    <a href="/distribution/{{ delivery.id }}"><i class="icon-hotairballoon"></i> {{ delivery.name }}</a> du {{ delivery.from_date|date|capitalize }}
+    <a href="{{ url_for('show_delivery', id=delivery.id) }}"><i class="icon-hotairballoon"></i> {{ delivery.name }}</a> du {{ delivery.from_date|date|capitalize }}
 </li>
 {% endfor %}
 </ul>

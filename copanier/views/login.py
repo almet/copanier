@@ -50,6 +50,7 @@ async def send_sesame(request, response):
             f"Sésame {config.SITE_NAME}",
             hostname=request.host,
             token=token.decode(),
+            url_for=app.url_for,
         )
     except RuntimeError:
         response.message("Oops, impossible d'envoyer le courriel…", status="error")

@@ -6,7 +6,7 @@
     <div class="pure-menu pure-menu-horizontal">
         <ul class="pure-menu-list">
             <li class="pure-menu-item">
-                <a class="pure-menu-link" href="/groupes/créer"><i class="icon-globe"></i>&nbsp;Créer un nouveau groupe</a>
+                <a class="pure-menu-link" href="{{ url_for('create_group') }}"><i class="icon-globe"></i>&nbsp;Créer un nouveau groupe</a>
             </li>
         </ul>
     </div>
@@ -36,12 +36,12 @@
                     {% endfor %}
                 </ul>
             </td>
-            <td>{% if group.id != request['user'].group_id %}<a class="pure-button" href="/groupes/{{ group.id}}/rejoindre">rejoindre</a>{% endif %} <a class="pure-button" href="/groupes/{{ group.id }}/éditer">éditer</a></td>
+            <td>{% if group.id != request['user'].group_id %}<a class="pure-button" href="{{ url_for('join_group', id=group.id) }}">rejoindre</a>{% endif %} <a class="pure-button" href="{{ url_for('edit_group', id=group.id) }}">éditer</a></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<p>Tu ne fais partie d'aucun des groupes listés ici ? Tu peux <a class="button" href="/groupes/créer"><i class="icon-globe"></i>&nbsp;en créer un nouveau</a></p>
+<p>Tu ne fais partie d'aucun des groupes listés ici ? Tu peux <a class="button" href="{{ url_for('create_group') }}"><i class="icon-globe"></i>&nbsp;en créer un nouveau</a></p>
 
 {% endblock %}

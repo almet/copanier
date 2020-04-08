@@ -27,7 +27,7 @@
 {% if group.id %}
 <ul class="toolbox">
     <li>
-        <a href="/groupes/{{ group.id }}/supprimer" class="button danger"><i class="icon-hazardous"></i>&nbsp;Supprimer ce groupe</a>
+        <a href="{{ url_for('delete_group', id=group.id) }}" class="button danger"><i class="icon-hazardous"></i>&nbsp;Supprimer ce groupe</a>
     </li>
 </ul>
 {% endif %}

@@ -284,7 +284,7 @@ async def show_orders_summary(request, response, id):
 
 
 @app.route("/distribution/{id}/rapport-complet.xlsx", methods=["GET"])
-async def xls_full_report(request, response, id):
+async def generate_report(request, response, id):
     delivery = Delivery.load(id)
     date = delivery.to_date.strftime("%Y-%m-%d")
     response.xlsx(

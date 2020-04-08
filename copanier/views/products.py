@@ -147,7 +147,7 @@ async def edit_product(request, response, delivery_id, producer_id, product_ref)
 @app.route(
     "/produits/{delivery_id}/producteurs/{producer_id}/valider-prix", methods=["GET"]
 )
-async def mark_producer_prices_as_ok(request, response, delivery_id, producer_id):
+async def validate_producer_prices(request, response, delivery_id, producer_id):
     delivery = Delivery.load(delivery_id)
     producer = delivery.producers.get(producer_id)
 
@@ -217,7 +217,7 @@ async def create_product(request, response, delivery_id, producer_id):
     "/produits/{delivery_id}/producteurs/{producer_id}/frais-de-livraison",
     methods=["GET", "POST"],
 )
-async def set_shipping_price(request, response, delivery_id, producer_id):
+async def edit_shipping_price(request, response, delivery_id, producer_id):
     delivery = Delivery.load(delivery_id)
     producer = delivery.producers.get(producer_id)
 

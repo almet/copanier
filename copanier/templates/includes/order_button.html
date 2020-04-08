@@ -1,5 +1,5 @@
 {% if (delivery.status == delivery.OPEN or delivery.status == delivery.ADJUSTMENT) and delivery.has_products %}
-    <a class="button" href="/distribution/{{ delivery.id }}/commander">
+    <a class="button" href="{{ url_for('place_order', id=delivery.id) }}">
     {% if delivery.status == delivery.ADJUSTMENT %}
         Ajuster ma commande
     {% elif delivery.status == delivery.OPEN %}
@@ -8,5 +8,5 @@
     </a>
 {% endif %}
 {% if request.user.email in delivery.orders %}
-    <span class="flag" title="Mon paiements"><i class="icon-wallet"></i>&nbsp;{{ delivery.total_for(request.user) }} €</span>
+    <span class="flag" title="Mes paiements"><i class="icon-wallet"></i>&nbsp;{{ delivery.total_for(request.user) }} €</span>
 {% endif %}
