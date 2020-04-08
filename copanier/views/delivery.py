@@ -272,14 +272,14 @@ async def place_order(request, response, id):
         )
 
 
-@app.route("/distribution/{id}/émargement", methods=["GET"])
-async def signing_sheet(request, response, id):
+@app.route("/distribution/{id}/résumé-de-commandes", methods=["GET"])
+async def orders_summary(request, response, id):
     delivery = Delivery.load(id)
     response.pdf(
-        "delivery/show_signing_sheet.html",
+        "delivery/show_orders_summary.html",
         {"delivery": delivery},
-        css="signing-sheet.css",
-        filename=utils.prefix("commandes-par-groupe.pdf", delivery),
+        css="orders-summary.css",
+        filename=utils.prefix("résumé-de-commandes.pdf", delivery),
     )
 
 
@@ -321,8 +321,8 @@ async def adjust_product(request, response, id, ref):
         )
 
 
-@app.route("/distribution/{id}/solde", methods=["GET"])
-@app.route("/distribution/{id}/solde.pdf", methods=["GET"])
+@app.route("/distribution/{id}/paiements", methods=["GET"])
+@app.route("/distribution/{id}/paiements.pdf", methods=["GET"])
 @staff_only
 async def delivery_balance(request, response, id):
     delivery = Delivery.load(id)

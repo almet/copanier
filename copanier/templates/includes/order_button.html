@@ -8,5 +8,5 @@
     </a>
 {% endif %}
 {% if request.user.email in delivery.orders %}
-    <span class="flag" title="Mon solde"><i class="icon-wallet"></i>&nbsp;{{ delivery.total_for(request.user) }} €</span>
+    <span class="flag" title="Mon paiements"><i class="icon-wallet"></i>&nbsp;{{ delivery.total_for(request.user) }} €</span>
 {% endif %}
