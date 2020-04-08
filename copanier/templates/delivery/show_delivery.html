@@ -22,7 +22,7 @@
                 <a href="#" class="pure-menu-link"><i class="icon-printer"></i>&nbsp;Imprimer…</a>
                 <ul class="pure-menu-children">
                     <li class="pure-menu-item"><a href="{{ url_for('list_products', id=delivery.id) }}/produits.pdf" class="pure-menu-link"><i class="icon-ribbon"></i>&nbsp;Commande producteurs⋅rices</a></li>
-                    <li class="pure-menu-item"><a href="{{ url_for('orders_summary', id=delivery.id) }}" class="pure-menu-link"><i class="icon-grid"></i>&nbsp;Résumé de commande par groupe</a></li>
+                    <li class="pure-menu-item"><a href="{{ url_for('show_orders_summary', id=delivery.id) }}" class="pure-menu-link"><i class="icon-grid"></i>&nbsp;Résumé de commande par groupe</a></li>
                     <li class="pure-menu-item"><a href="{{ url_for('compute_payments', id=delivery.id) }}" class="pure-menu-link"><i class="icon-wallet"></i>&nbsp;Répartition des paiements</a></li>
                 </ul>
             </li>
@@ -64,7 +64,7 @@
     {% if request.user and request.user.is_staff %}
         Occupons-nous donc de ça ! Deux options :
         <ol>
-            <li><a href="{{ url_for('create_producer', id=delivery.id) }}">Ajouter les product⋅eurs⋅rices</a> à la main ;</li>
+            <li><a href="{{ url_for('create_producer', delivery_id=delivery.id) }}">Ajouter les product⋅eurs⋅rices</a> à la main ;</li>
             <li>Ou bien <a href="{{ url_for('copy_products', id=delivery.id) }}">copier les produits d'une autre distribution</a>.</li>
         </ol>
     </div>

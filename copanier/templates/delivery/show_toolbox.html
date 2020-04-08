@@ -72,23 +72,23 @@
 
 Avant et pendant la distribution :
 <ul>
-    <li><a href="/groupes"><i class="icon-globe"></i>&nbsp; Gérer les groupes / colocs</a></li>
-    <li><a href="/distribution/{{ delivery.id }}/edit"><i class="icon-pencil"></i>&nbsp; Modifier la commande (dates, lieu, référent⋅e, etc)</a></li>
-    <li><a href="/produits/{{ delivery.id }}"><i class="icon-pencil"></i>&nbsp; Gérer les produits</a></li>
+    <li><a href="{{ url_for('groups', id=delivery.id) }}"><i class="icon-globe"></i>&nbsp; Gérer les groupes / colocs</a></li>
+    <li><a href="{{ url_for('edit_delivery', id=delivery.id) }}"><i class="icon-pencil"></i>&nbsp; Modifier la commande (dates, lieu, référent⋅e, etc)</a></li>
+    <li><a href="{{ url_for('list_products', id=delivery.id) }}"><i class="icon-pencil"></i>&nbsp; Gérer les produits</a></li>
 </ul>
 
 Une fois les commandes passées :
 <ul>
-    <li><a href="/produits/{{ delivery.id }}/produits.pdf"><i class="icon-download"></i>&nbsp; Télécharger la liste des produits commandés</a></li>
-    <li><a href="/distribution/{{ delivery.id }}/rapport-complet.xlsx"><i class="icon-download"></i>&nbsp; Télécharger le tableau des commandes</a></li>
-    <li><a href="/distribution/{{ delivery.id }}/envoi-email-referentes"><i class="icon-envelope"></i>&nbsp; Envoyer les infos de commande aux référent⋅e⋅s</a></li>
+    <li><a href="{{ url_for('list_products', id=delivery.id) }}/produits.pdf"><i class="icon-download"></i>&nbsp; Télécharger la liste des produits commandés</a></li>
+    <li><a href="{{ url_for('generate_report', id=delivery.id) }}"><i class="icon-download"></i>&nbsp; Télécharger le tableau des commandes</a></li>
+    <li><a href="{{ url_for('send_referent_emails', id=delivery.id) }}"><i class="icon-envelope"></i>&nbsp; Envoyer les infos de commande aux référent⋅e⋅s</a></li>
 </ul>
 
 Pour préparer la distribution :
 
 <ul>
-    <li><a href="/distribution/{{ delivery.id }}/résumé-de-commandes"><i class="icon-document"></i>&nbsp; Fiches de commandes par groupe</a></li>
-    <li><a href="/distribution/{{ delivery.id }}/paiements"><i class="icon-gears"></i>&nbsp; Faire la répartition des paiements</a></li>
+    <li><a href="{{ url_for('show_orders_summary', id=delivery.id) }}"><i class="icon-document"></i>&nbsp; Fiches de commandes par groupe</a></li>
+    <li><a href="{{ url_for('compute_payments', id=delivery.id) }}"><i class="icon-gears"></i>&nbsp; Faire la répartition des paiements</a></li>
 </ul>
 
 {% endblock %}

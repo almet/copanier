@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block toplink %}<a href="/produits/{{ delivery.id }}/producteurs/{{ producer.id }}">↶ Retourner aux produits de {{ producer.name }}</a>{% endblock %}
+{% block toplink %}<a href="{{ url_for('edit_producer', delivery_id=delivery.id, producer_id=producer.id) }}">↶ Retourner aux produits de {{ producer.name }}</a>{% endblock %}
 
 {% block body %}
 
@@ -10,7 +10,7 @@
         <div class="pure-menu pure-menu-horizontal">
             <ul class="pure-menu-list">
                 <li class="pure-menu-item">
-                    <a class="pure-menu-link" href="/produits/{{ delivery.id}}/producteurs/{{ producer.id }}/produits/{{ product.ref }}/supprimer">Supprimer ce produit</a>
+                    <a class="pure-menu-link" href="{{ url_for('delete_product', delivery_id=delivery.id, producer_id=producer.id, product_ref=product.ref) }}">Supprimer ce produit</a>
                 </li>
             </ul>
         </div>
