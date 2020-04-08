@@ -9,7 +9,7 @@ async def on_startup():
 
 
 @app.route("/groupes", methods=["GET"])
-async def handle_groups(request, response):
+async def groups(request, response):
     response.html("groups/list_groups.html", {"groups": request["groups"]})
 
 

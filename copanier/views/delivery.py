@@ -28,7 +28,7 @@ async def home(request, response):
 
 
 @app.route("/archives", methods=["GET"])
-async def view_archives(request, response):
+async def list_archives(request, response):
     response.html(
         "delivery/list_archives.html", {"deliveries": Delivery.all(is_archived=True)}
     )
@@ -90,7 +90,7 @@ async def pdf_for_producer(request, response, id, producer):
 
 
 @app.route("/distribution/{id}/gérer", methods=["GET"])
-async def delivery_toolbox(request, response, id):
+async def show_delivery_toolbox(request, response, id):
     delivery = Delivery.load(id)
     response.html(
         "delivery/show_toolbox.html",
@@ -174,7 +174,7 @@ async def post_delivery(request, response, id):
 
 
 @app.route("/distribution/{id}", methods=["GET"])
-async def view_delivery(request, response, id):
+async def show_delivery(request, response, id):
     delivery = Delivery.load(id)
     response.html("delivery/show_delivery.html", {"delivery": delivery})
 
@@ -273,7 +273,7 @@ async def place_order(request, response, id):
 
 
 @app.route("/distribution/{id}/résumé-de-commandes", methods=["GET"])
-async def orders_summary(request, response, id):
+async def show_orders_summary(request, response, id):
     delivery = Delivery.load(id)
     response.pdf(
         "delivery/show_orders_summary.html",
@@ -324,7 +324,7 @@ async def adjust_product(request, response, id, ref):
 @app.route("/distribution/{id}/paiements", methods=["GET"])
 @app.route("/distribution/{id}/paiements.pdf", methods=["GET"])
 @staff_only
-async def delivery_balance(request, response, id):
+async def compute_payments(request, response, id):
     delivery = Delivery.load(id)
     groups = request["groups"]
 

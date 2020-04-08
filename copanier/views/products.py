@@ -242,7 +242,7 @@ async def set_shipping_price(request, response, delivery_id, producer_id):
 
 
 @app.route("/produits/{id}/copier", methods=["GET"])
-async def copy_products_get(request, response, id):
+async def copy_products(request, response, id):
     deliveries = Delivery.all()
     response.html("products/copy_products.html", {"deliveries": deliveries})
 

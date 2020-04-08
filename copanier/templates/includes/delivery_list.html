@@ -2,7 +2,7 @@
 <ul class="delivery">
 {% for delivery in deliveries %}
 <li>
-    <h3><a href="/distribution/{{ delivery.id }}"><i class="icon-hotairballoon"></i> {{ delivery.name }}</a> {% include "includes/order_button.html" %} <a class="button" href="/distribution/{{ delivery.id }}">Voir les commandes</a></h3>
+    <h3><a href="{{ url_for('show_delivery', id=delivery.id) }}"><i class="icon-hotairballoon"></i> {{ delivery.name }}</a> {% include "includes/order_button.html" %} <a class="button" href="{{ url_for('show_delivery', id=delivery.id) }}">Voir les commandes</a></h3>
     {% include "includes/delivery_head.html" %}
 </li>
 <hr>

@@ -27,18 +27,18 @@
                 <h1 id="sitename">{{ config.SITE_NAME }}</h1>
                 <ul class="pure-menu-list">
                     <li class="pure-menu-item">
-                        <a href="/"><i class="icon-happy"></i>&nbsp;Voir les distrib</a>
+                        <a href="{{ url_for('home') }}"><i class="icon-happy"></i>&nbsp;Voir les distrib</a>
                     </li>
                     {% if request.user and request.user.is_staff %}
                     <li class="pure-menu-item">
-                        <a href="/distribution"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle distribution</a>
+                        <a href="{{ url_for('new_delivery') }}"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle distribution</a>
                     </li>
                     {% endif %}
                     <li class="pure-menu-item">
-                        <a class="pure-menu-link" href="/groupes"><i class="icon-globe"></i>&nbsp;Gérer les groupes</a>
+                        <a class="pure-menu-link" href="{{ url_for('groups') }}"><i class="icon-globe"></i>&nbsp;Gérer les groupes</a>
                     </li>
                     <li class="pure-menu-item">
-                        <a href="/déconnexion" class="pure-menu-link"><i class="icon-lock"></i>&nbsp;Se déconnecter</a>
+                        <a href="{{ url_for('logout') }}"><i class="icon-lock"></i>&nbsp;Se déconnecter</a>
                     </li>
                 </ul>
             </div>

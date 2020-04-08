@@ -18,6 +18,7 @@ class Response(RollResponse):
         context["request"] = self.request
         context["config"] = config
         context["request"] = self.request
+        context["url_for"] = app.url_for
         if self.request.cookies.get("message"):
             context["message"] = json.loads(self.request.cookies["message"])
             self.cookies.set("message", "")
@@ -64,6 +65,17 @@ class Response(RollResponse):
         self.cookies.set("message", json.dumps((text, status)))
 
 
+def get_function_name(node):
+    if not node.payload:
+        return False
+
+    func = node.payload["GET"]
+    if hasattr(func, "decorates"):
+        return func.decorates.__name__
+    else:
+        return func.__name__
+
+
 class Roll(BaseRoll):
     Response = Response
 
@@ -78,10 +90,29 @@ class Roll(BaseRoll):
     def register_context(self, func):
         self._context_func.append(func)
 
-    def url_for(self, view_name):
-        from pdb import set_trace
+    def _find_route_by_name(self, name, node=None):
+        node = node or self.routes.root
+        if get_function_name(node) == name:
+            return node
 
-        set_trace()
+        if node.edges:
+            for edge in node.edges:
+                if edge.child:
+                    route = self._find_route_by_name(name, edge.child)
+                    if route:
+                        return route
+
+    def url_for(self, name, *args, **kwargs):
+        route = self._find_route_by_name(name)
+        if not route:
+            from pdb import set_trace
+
+            set_trace()
+            raise Exception(f"Route for '{name}' wasn't found")
+        try:
+            return route.path.format(*args, **kwargs)
+        except KeyError as e:
+            raise Exception(f"Unable to build URL for {name} : '{e}' is missing")
 
 
 def staff_only(view):
@@ -93,6 +124,7 @@ def staff_only(view):
             return
         return await view(request, response, *args, **kwargs)
 
+    decorator.decorates = view
     return decorator
 
 

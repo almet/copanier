@@ -57,7 +57,7 @@
     <input type="submit" value="Enregistrer la commande" class="primary">
     {% endif %}
     {% if request.user.is_staff and delivery.status == delivery.CLOSED %}
-    <a class="button danger" href="/distribution/{{ delivery.id }}/commander?email={{ person.email }}&adjust">Ajuster</a>
+    <a class="button danger" href="{{ url_for('place_order', id=delivery.id) }}?email={{ person.email }}&adjust">Ajuster</a>
     {% endif %}
 </form>
 </article>
