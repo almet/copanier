@@ -120,20 +120,23 @@ class Groups(PersistedBase):
     groups: Dict[str, Group]
 
     @classmethod
+    def get_path(cls):
+        return cls.get_root() / "groups.yml"
+
+    @classmethod
     def load(cls):
-        path = cls.get_root() / "groups.yml"
+        path = cls.get_path()
         if path.exists():
             data = yaml.safe_load(path.read_text())
             data = {k: v for k, v in data.items() if k in cls.__dataclass_fields__}
         else:
             data = {"groups": {}}
         groups = cls(**data)
-        groups.path = path
         return groups
 
     def persist(self):
         with self.__lock__:
-            self.path.write_text(self.dump())
+            self.get_path().write_text(self.dump())
 
     def add_group(self, group):
         assert group.id not in self.groups, "Un groupe avec ce nom existe déjà."

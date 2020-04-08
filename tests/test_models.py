@@ -3,7 +3,15 @@ from datetime import datetime, timedelta
 import pytest
 
 from copanier import config
-from copanier.models import Delivery, Product, Person, Order, ProductOrder, Groups, Group
+from copanier.models import (
+    Delivery,
+    Product,
+    Person,
+    Order,
+    ProductOrder,
+    Groups,
+    Group,
+)
 
 
 now = datetime.now
@@ -108,11 +116,11 @@ def test_order_has_adjustments():
 def test_order_total(delivery):
     delivery.products = [Product(name="Lait", ref="123", price=1.5)]
     order = Order()
-    assert order.total(delivery.products) == 0
+    assert order.total(delivery.products, delivery) == 0
     order.products["123"] = ProductOrder(wanted=2)
-    assert order.total(delivery.products) == 3
+    assert order.total(delivery.products, delivery) == 3
     order.products["unknown"] = ProductOrder(wanted=2)
-    assert order.total(delivery.products) == 3
+    assert order.total(delivery.products, delivery) == 3
 
 
 def test_can_persist_delivery(delivery):
@@ -176,22 +184,22 @@ def test_archive_delivery(delivery):
 
 
 def test_group_management():
-    ndp = Group(id='nid-de-poules', name='Nid de poules', members=['someone@domain.tld'])
-    assert ndp.id == 'nid-de-poules'
-    assert ndp.name == 'Nid de poules'
+    ndp = Group(
+        id="nid-de-poules", name="Nid de poules", members=["someone@domain.tld"]
+    )
+    assert ndp.id == "nid-de-poules"
+    assert ndp.name == "Nid de poules"
     assert len(ndp.members) == 1
     groups = Groups.load()
     groups.persist()
 
     groups.add_group(ndp)
-    groups.add_user('simon@tld', ndp.id)
-    assert 'simon@tld' in groups.groups[ndp.id].members
+    groups.add_user("simon@tld", ndp.id)
+    assert "simon@tld" in groups.groups[ndp.id].members
 
-    ladouce = Group(id='la-douce', name='La douce', members=[])
+    ladouce = Group(id="la-douce", name="La douce", members=[])
     groups.add_group(ladouce)
-    groups.add_user('simon@tld', ladouce.id)
-    assert 'simon@tld' in groups.groups[ladouce.id].members
-    assert 'simon@tld' not in groups.groups[ndp.id].members
+    groups.add_user("simon@tld", ladouce.id)
+    assert "simon@tld" in groups.groups[ladouce.id].members
+    assert "simon@tld" not in groups.groups[ndp.id].members
 
-
-    
