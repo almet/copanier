@@ -110,6 +110,63 @@ async def delete_producer(request, response, delivery_id, producer_id):
 
 
 @app.route(
+    "/produits/{delivery_id}/producteurs/{producer_id}/valider-prix", methods=["GET"]
+)
+async def validate_producer_prices(request, response, delivery_id, producer_id):
+    delivery = Delivery.load(delivery_id)
+    producer = delivery.producers.get(producer_id)
+
+    for product in delivery.products:
+        if product.producer == producer_id:
+            product.last_update = datetime.now()
+    delivery.persist()
+
+    response.message(
+        f"Les prix ont été marqués comme OK pour « { producer.name } », merci !"
+    )
+    response.redirect = f"/produits/{delivery_id}/producteurs/{producer_id}"
+
+
+@app.route("/produits/{delivery_id}/valider-prix", methods=["GET"])
+async def mark_all_prices_as_ok(request, response, delivery_id):
+    delivery = Delivery.load(delivery_id)
+
+    for product in delivery.products:
+        product.last_update = datetime.now()
+    delivery.persist()
+
+    response.message(f"Les prix ont été marqués comme OK pour toute la distribution !")
+    response.redirect = f"/produits/{delivery_id}"
+
+
+@app.route(
+    "/produits/{delivery_id}/producteurs/{producer_id}/produits/créer",
+    methods=["GET", "POST"],
+)
+async def create_product(request, response, delivery_id, producer_id):
+    delivery = Delivery.load(delivery_id)
+    product = Product(name="", ref="", price=0)
+    producer = delivery.producers.get(producer_id)
+
+    if request.method == "POST":
+        product.producer = producer_id
+        form = request.form
+        product.update_from_form(form)
+        product.ref = slugify(f"{producer_id}-{product.name}-{product.unit}")
+
+        delivery.products.append(product)
+        delivery.persist()
+        response.message("Le produit à bien été créé")
+        response.redirect = f"/produits/{delivery_id}/producteurs/{producer_id}"
+        return
+
+    response.html(
+        "products/edit_product.html",
+        {"delivery": delivery, "producer": producer, "product": product},
+    )
+
+
+@app.route(
     "/produits/{delivery_id}/producteurs/{producer_id}/produits/{product_ref}",
     methods=["GET", "POST"],
 )
@@ -145,36 +202,6 @@ async def edit_product(request, response, delivery_id, producer_id, product_ref)
 
 
 @app.route(
-    "/produits/{delivery_id}/producteurs/{producer_id}/valider-prix", methods=["GET"]
-)
-async def validate_producer_prices(request, response, delivery_id, producer_id):
-    delivery = Delivery.load(delivery_id)
-    producer = delivery.producers.get(producer_id)
-
-    for product in delivery.products:
-        if product.producer == producer_id:
-            product.last_update = datetime.now()
-    delivery.persist()
-
-    response.message(
-        f"Les prix ont été marqués comme OK pour « { producer.name } », merci !"
-    )
-    response.redirect = f"/produits/{delivery_id}/producteurs/{producer_id}"
-
-
-@app.route("/produits/{delivery_id}/valider-prix", methods=["GET"])
-async def mark_all_prices_as_ok(request, response, delivery_id):
-    delivery = Delivery.load(delivery_id)
-
-    for product in delivery.products:
-        product.last_update = datetime.now()
-    delivery.persist()
-
-    response.message(f"Les prix ont été marqués comme OK pour toute la distribution !")
-    response.redirect = f"/produits/{delivery_id}"
-
-
-@app.route(
     "/produits/{delivery_id}/producteurs/{producer_id}/produits/{product_ref}/supprimer",
     methods=["GET"],
 )
@@ -185,32 +212,6 @@ async def delete_product(request, response, delivery_id, producer_id, product_re
     response.message(f"Le produit « { product.name } » à bien été supprimé.")
     response.redirect = f"/produits/{delivery_id}/producteurs/{producer_id}"
 
-
-@app.route(
-    "/produits/{delivery_id}/producteurs/{producer_id}/produits/créer",
-    methods=["GET", "POST"],
-)
-async def create_product(request, response, delivery_id, producer_id):
-    delivery = Delivery.load(delivery_id)
-    product = Product(name="", ref="", price=0)
-    producer = delivery.producers.get(producer_id)
-
-    if request.method == "POST":
-        product.producer = producer_id
-        form = request.form
-        product.update_from_form(form)
-        product.ref = slugify(f"{producer_id}-{product.name}-{product.unit}")
-
-        delivery.products.append(product)
-        delivery.persist()
-        response.message("Le produit à bien été créé")
-        response.redirect = f"/produits/{delivery_id}/producteurs/{producer_id}"
-        return
-
-    response.html(
-        "products/edit_product.html",
-        {"delivery": delivery, "producer": producer, "product": product},
-    )
 
 
 @app.route(
