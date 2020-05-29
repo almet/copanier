@@ -7,15 +7,16 @@ LOG_ROOT = Path("/tmp")
 SECRET = "sikretfordevonly"
 JWT_ALGORITHM = "HS256"
 SEND_EMAILS = False
-SMTP_HOST = "mail.gandi.net"
+SMTP_HOST = ""
 SMTP_PASSWORD = ""
 SMTP_LOGIN = ""
-FROM_EMAIL = "copanier@epinamap.org"
+FROM_EMAIL = ""
 STAFF = []
-LOCALE = "fr_FR.UTF-8"
+#LOCALE = "fr_FR.UTF-8"
+LOCALE = "en_US.UTF-8"
 SITE_NAME = "Copanier"
-SITE_DESCRIPTION = "Les paniers piano d'Épinamap"
-EMAIL_SIGNATURE = "Les gentils copains d'Épinamap"
+SITE_DESCRIPTION = "Shared orders"
+EMAIL_SIGNATURE = "The kind people behind copanier"
 
 
 def init():
