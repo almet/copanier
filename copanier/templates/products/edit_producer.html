@@ -88,6 +88,7 @@ Des frais de livraison de {{ delivery.shipping[producer.id] }}€ ont été enre
             <th>Packaging</th>
             <th>Rupture ?</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
 {% for product in products %}
@@ -98,6 +99,7 @@ Des frais de livraison de {{ delivery.shipping[producer.id] }}€ ont été enre
     <td>{{ product.description }}</td>
     <td>{% if product.packing %}{{ product.packing }}{% endif %}</td>
     <td>{% if product.rupture %}RUPTURE !!{% endif %}</td>
+    <td><a href="{{ url_for('edit_product', delivery_id=delivery.id, producer_id=producer.id, product_ref=product.ref) }}">modifier</a></td>
     <td><a href="{{ url_for('delete_product', delivery_id=delivery.id, producer_id=producer.id, product_ref=product.ref) }}">supprimer</a></td>
 </tr>
 {% endfor %}
