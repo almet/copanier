@@ -70,7 +70,11 @@ async def set_sesame(request, response, token):
     else:
         response.message("Yay ! Le sésame a fonctionné. Bienvenue à bord ! :-)")
         response.cookies.set(
-            name="token", value=token, httponly=True, max_age=60 * 60 * 24 * 7
+            name="token",
+            value=token,
+            httponly=True,
+            max_age=60 * 60 * 24 * 7,
+            samesite="Strict",
         )
     response.redirect = "/"
 
