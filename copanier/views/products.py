@@ -213,7 +213,6 @@ async def delete_product(request, response, delivery_id, producer_id, product_re
     response.redirect = f"/produits/{delivery_id}/producteurs/{producer_id}"
 
 
-
 @app.route(
     "/produits/{delivery_id}/producteurs/{producer_id}/frais-de-livraison",
     methods=["GET", "POST"],

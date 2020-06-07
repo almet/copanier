@@ -56,7 +56,7 @@
     {%- endif %}
     {% endfor %}
     <p>On y est presque ! Est-ce que tu peux entrer un numéro de téléphone au cas où on ait besoin de vous joindre ?</p>
-    <input type="text" name="phone_number" value="{{ order.phone_number }}" placeholder="Ton numéro de téléphone" required>
+    <input id="phone" type="text" onInput="prettifyPhoneNumber('phone')" name="phone_number" value="{{ order.phone_number }}" placeholder="Ton numéro de téléphone" required>
     <input type="hidden" name="email" value="{{ person.email }}">
     {% if delivery.status != delivery.CLOSED or request.user.is_staff %}
     <input type="submit" value="Enregistrer la commande" class="primary">
