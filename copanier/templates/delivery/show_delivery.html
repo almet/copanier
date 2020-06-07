@@ -5,12 +5,8 @@
 <div class="header">
     <h1>{{ delivery.name }}</h1>
     <h4>{% if delivery.products %}
-        {% if delivery.status == delivery.OPEN %}Commandes ouvertes jusqu'au {{ delivery.order_before|date }}
-        {% elif delivery.status == delivery.ADJUSTMENT %}Ajustements en cours
-        {% elif delivery.status == delivery.CLOSED %}Fermée
-        {% elif delivery.status == delivery.ARCHIVED %}Archivée
-        {% elif delivery.status == delivery.NEED_PRICE_UPDATE %}Mise à jour des prix*
-        {% endif %}{% endif %}
+        {% include "includes/delivery_status.html" %}
+        {% endif %}
         {% include "includes/order_button.html" %}
     </h4>
     <h4>
