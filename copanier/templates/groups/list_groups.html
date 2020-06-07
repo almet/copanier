@@ -13,9 +13,12 @@
 </div>
 
 {% if not request['user'].group_id %}
-<p>Bienvenue ! Avant de pouvoir commander, peux-tu nous indiquer de quelle coloc / famille fais-tu partie ? </p>
+<p>Bienvenue ! Avant de pouvoir commander, peux-tu nous indiquer pour quelle coloc / famille tu vas passer commande ? </p>
 {% endif %}
+{% if not groups.groups %}
+<p>On dirait que tu arrive parmis les premier⋅es ! <a class="button" href="{{ url_for('create_group') }}"><i class="icon-globe"></i>&nbsp;Créé un nouveau groupe.</a></p>
 
+{% else %}
 
 <table id="groups" class="pure-table">
     <thead>
@@ -43,5 +46,6 @@
 </table>
 
 <p>Tu ne fais partie d'aucun des groupes listés ici ? Tu peux <a class="button" href="{{ url_for('create_group') }}"><i class="icon-globe"></i>&nbsp;en créer un nouveau</a></p>
+{% endif %}
 
 {% endblock %}
