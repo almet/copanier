@@ -5,92 +5,100 @@
 {% endif %}
 {% for producer in producers %}
     {% set producer_obj = delivery.producers[producer] %}
-    <h2>{{ producer_obj.name }}
-        {% if producer_obj.needs_price_update(delivery) %}*{% endif %}
-        {% if edit_mode or request.user.is_staff or producer_obj.referent == request.user.email %}
-            <span class="edit">
-            <a class="button" href="{{ url_for('edit_producer', delivery_id=delivery.id, producer_id=producer_obj.id) }}"><i class="icon-ribbon"></i>&nbsp; Gérer ce⋅tte producteur⋅rice</a>
-        </span>
-        {% endif %}
-    </h2>
-    <h5>{% if producer_obj.description %}{{ producer_obj.description }}{% endif %}. Référent⋅e : <a href="mailto:{{ producer_obj.referent }}">{{ producer_obj.referent_name }}</a> / {{ producer_obj.referent_tel }}</h5>
-{% if not delivery.get_products_by(producer) %}
-😔 Ce⋅tte producteur⋅rice n'a pas encore de produits. Voulez vous <a href="{{ url_for('create_product', delivery_id=delivery.id, producer_id=producer_obj.id) }}">en rajouter un ?</a>
-{% else %}
-<table class="delivery pure-table">
-    <thead>
-        <tr>
-            <th class="product">Produit</th>
-            <th class="price">Prix</th>
-            {% if delivery.has_packing %}
-                <th class="packing">Conditionnement</th>
+    {% if edit_mode or producer_obj.has_active_products(delivery) %}
+        <h2>{{ producer_obj.name }}
+            {% if producer_obj.needs_price_update(delivery) %}*{% endif %}
+            {% if edit_mode or request.user.is_staff or producer_obj.referent == request.user.email %}
+                <span class="edit">
+                <a class="button" href="{{ url_for('edit_producer', delivery_id=delivery.id, producer_id=producer_obj.id) }}"><i class="icon-ribbon"></i>&nbsp; Gérer ce⋅tte producteur⋅rice</a>
+            </span>
             {% endif %}
-            <th class="amount">Total</th>
-            {% if not list_only %}
-            {% for orderer, order in delivery.orders.items() %}
-                {% set orderer_name = request.groups.groups[orderer].name %}
-                <th class="person">
-                    {% if request.user and (request.user.is_staff or request.user.is_referent(delivery)) %}
-                        <a class="underline" href="{{ url_for('place_order', id=delivery.id) }}?orderer={{ orderer }}" title="{{ orderer }}">{{ orderer_name }} <i class="icon-pencil"></i></a>
-                    {% else %}
-                        <span title="{{ orderer }}">{{ orderer_name }}</span>
+        </h2>
+        <h5>{% if producer_obj.description %}{{ producer_obj.description }}{% endif %}Référent⋅e : <a href="mailto:{{ producer_obj.referent }}">{{ producer_obj.referent_name }}</a> / {{ producer_obj.referent_tel }}.
+            {% if not edit_mode and producer_obj.has_rupture_products(delivery) %}
+            <p><em>Certains produits sont en rupture de stock.</em></p>
+            {% endif %}
+        </h5>
+        {% if not delivery.get_products_by(producer) %}
+        😔 Ce⋅tte producteur⋅rice n'a pas encore de produits. Voulez vous <a href="{{ url_for('create_product', delivery_id=delivery.id, producer_id=producer_obj.id) }}">en rajouter un ?</a>
+        {% else %}
+        <table class="delivery pure-table">
+            <thead>
+                <tr>
+                    <th class="product">Produit</th>
+                    <th class="price">Prix</th>
+                    {% if delivery.has_packing %}
+                        <th class="packing">Conditionnement</th>
                     {% endif %}
-                </th>
-            {% endfor %}
-            {% endif %}
-        </tr>
-    </thead>
-    <tbody>
-        {% for product in delivery.get_products_by(producer) %}
-        <tr>
-            <th class="product {% if product.rupture %}rupture{% endif %}">{% if edit_mode %}<a href="{{ url_for('edit_product', delivery_id=delivery.id, producer_id=producer_obj.id, product_ref=product.ref) }}">{% endif %}{% if edit_mode %}<i class="icon-pencil"></i>&nbsp;{% endif %}{% if product.rupture %} (rupture){% endif %} {{ product }}{% if edit_mode %}</a>{% endif %}
-            <td>{{ product.price | round(2) }} €</td>
-            {% if delivery.has_packing %}
-                <td class="packing">{% if product.packing %}{{ product.packing }} x {% endif %} {{ product.unit }}</td>
-            {% endif %}
-            <th{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>
-                {{ delivery.product_wanted(product) }}
-                {% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (−{{ delivery.product_missing(product) }})
-                {% if request.user.is_staff %}<a href="{{ url_for('adjust_product', id=delivery.id, ref=product.ref) }}" class="button" title="ajuster le produit">ajuster</a>{% endif %}
+                    <th class="amount">Total</th>
+                    {% if not list_only %}
+                    {% for orderer, order in delivery.orders.items() %}
+                        {% set orderer_name = request.groups.groups[orderer].name %}
+                        <th class="person">
+                            {% if request.user and (request.user.is_staff or request.user.is_referent(delivery)) %}
+                                <a class="underline" href="{{ url_for('place_order', id=delivery.id) }}?orderer={{ orderer }}" title="{{ orderer }}">{{ orderer_name }} <i class="icon-pencil"></i></a>
+                            {% else %}
+                                <span title="{{ orderer }}">{{ orderer_name }}</span>
+                            {% endif %}
+                        </th>
+                    {% endfor %}
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in delivery.get_products_by(producer) %}
+                {% if edit_mode or not product.rupture %}
+                    <tr>
+                        <th class="product {% if product.rupture %}rupture{% endif %}">{% if edit_mode %}<a href="{{ url_for('edit_product', delivery_id=delivery.id, producer_id=producer_obj.id, product_ref=product.ref) }}">{% endif %}{% if edit_mode %}<i class="icon-pencil"></i>&nbsp;{% endif %}{% if product.rupture %} (rupture){% endif %} {{ product }}{% if edit_mode %}</a>{% endif %}
+                        <td>{{ product.price | round(2) }} €</td>
+                        {% if delivery.has_packing %}
+                            <td class="packing">{% if product.packing %}{{ product.packing }} x {% endif %} {{ product.unit }}</td>
+                        {% endif %}
+                        <th{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>
+                            {{ delivery.product_wanted(product) }}
+                            {% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (−{{ delivery.product_missing(product) }})
+                            {% if request.user.is_staff %}<a href="{{ url_for('adjust_product', id=delivery.id, ref=product.ref) }}" class="button" title="ajuster le produit">ajuster</a>{% endif %}
+                            {% endif %}
+                        </th>
+                        {% if not list_only %}
+                        {% for email, order in delivery.orders.items() %}
+                            <td title="Commandé: {{ order[product.ref].wanted }} — Ajusté: {{ "%+d"|format(order[product.ref].adjustment) }}">{{ order[product.ref].quantity or "—" }}</td>
+                        {% endfor %}
+                        {% endif %}
+                    </tr>
                 {% endif %}
-            </th>
-            {% if not list_only %}
-            {% for email, order in delivery.orders.items() %}
-                <td title="Commandé: {{ order[product.ref].wanted }} — Ajusté: {{ "%+d"|format(order[product.ref].adjustment) }}">{{ order[product.ref].quantity or "—" }}</td>
-            {% endfor %}
-            {% endif %}
-        </tr>
-        {% endfor %}
-        {% if delivery.shipping.get(producer) %}
-        <tr>
-            <th class="shipping"><i class="icon-map"></i>Frais de livraison</th>
-            <td>—</td>
-            {% if delivery.has_packing %}
-                <td>—</td>
-            {% endif %}
-            <th class="shipping">{{ delivery.shipping[producer] }} €</th>
-            {% if not list_only %}
-                {% for email, order in delivery.orders.items() %}
-                <td>{{ delivery.shipping_for(email, producer)|round(2) }} €</td>
                 {% endfor %}
-            {% endif %}
-        </tr>
+                {% if delivery.shipping.get(producer) %}
+                <tr>
+                    <th class="shipping"><i class="icon-map"></i>Frais de livraison</th>
+                    <td>—</td>
+                    {% if delivery.has_packing %}
+                        <td>—</td>
+                    {% endif %}
+                    <th class="shipping">{{ delivery.shipping[producer] }} €</th>
+                    {% if not list_only %}
+                        {% for email, order in delivery.orders.items() %}
+                        <td>{{ delivery.shipping_for(email, producer)|round(2) }} €</td>
+                        {% endfor %}
+                    {% endif %}
+                </tr>
+                {% endif %}
+                <tr>
+                    <th class="total"><i class="icon-pricetags"></i> Total</th><td>—</td>
+                    {% if delivery.has_packing %}
+                        <td>—</td>
+                    {% endif %}
+                
+                    <th class="total">{{ delivery.total_for_producer(producer) }} €</th>
+                    {% if not list_only %}
+                        {% for email, order in delivery.orders.items() %}
+                        <td>{{ order.total(delivery.get_products_by(producer), delivery, email) }} €</td>
+                        {% endfor %}
+                    {% endif %}
+                </tr>
+            </tbody>
+        </table>
         {% endif %}
-        <tr>
-            <th class="total"><i class="icon-pricetags"></i> Total</th><td>—</td>
-            {% if delivery.has_packing %}
-                <td>—</td>
-            {% endif %}
-          
-            <th class="total">{{ delivery.total_for_producer(producer) }} €</th>
-            {% if not list_only %}
-                {% for email, order in delivery.orders.items() %}
-                <td>{{ order.total(delivery.get_products_by(producer), delivery, email) }} €</td>
-                {% endfor %}
-            {% endif %}
-        </tr>
-    </tbody>
-</table>
-{% endif %}
-<br />
+        <br />
+    {%- endif %}
 {% endfor %}
