@@ -1,0 +1,6 @@
+{% if delivery.status == delivery.OPEN %}Commandes ouvertes jusqu'au {{ delivery.order_before|date }}
+{% elif delivery.status == delivery.ADJUSTMENT %}Ajustements en cours
+{% elif delivery.status == delivery.CLOSED %}Fermée
+{% elif delivery.status == delivery.ARCHIVED %}Archivée
+{% elif delivery.status == delivery.NEED_PRICE_UPDATE %}Mise à jour des prix*
+{% endif %}
