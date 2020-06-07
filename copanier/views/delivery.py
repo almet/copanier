@@ -278,7 +278,7 @@ async def show_orders_summary(request, response, id):
     response.pdf(
         "delivery/show_orders_summary.html",
         {"delivery": delivery},
-        css="orders-summary.css",
+        css="order-summary.css",
         filename=utils.prefix("résumé-de-commandes.pdf", delivery),
     )
 
