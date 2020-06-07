@@ -36,16 +36,19 @@
         <h5>Description du produit</h5>
         <input type="text" name="description" placeholder="Bière type American Pale Ale" value="{{ product.description or '' }}">
     </label>
-    <label>
-        <h5>Conditionnement</h5>
-        <h5><strong>A indiquer uniquement si ces produits ne peuvent pas être achetés à l'unité</strong>. Par exemple, si il est uniquement possible d'acheter des cartons de 12 bouteilles, alors indiquez « 12 » ici. Dans le doute, laissez vide.</h5>
-        <input type="number" name="packing" placeholder="6" value="{{ product.packing or '' }}">
-    </label>
     <br />
     <label>
         Produit actuellement en rupture ?
         <input type="checkbox" name="rupture" value="RUPTURE" {% if product.rupture %}checked="true"{% endif %}>
     </label>
+    <br />
+    {% set body %}
+    <h3>Conditionnement</h3>
+        <h5><strong>A indiquer uniquement si ces produits ne peuvent pas être achetés à l'unité</strong>. Par exemple, si il est uniquement possible d'acheter des cartons de 12 bouteilles, alors indiquez « 12 » ici. Dans le doute, laissez vide.</h5>
+        <input type="number" name="packing" value="{{ product.packing or '' }}">
+    {%- endset %}
+    {{ macros.modal(id="advanced", label="Voir les options avancées", body=body) }}
+        
     <div>
         <input type="submit" name="submit" value="Valider" class="primary">
     </div>
