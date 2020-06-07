@@ -31,6 +31,11 @@
         <input type="email" name="contact" value="{{ delivery.contact or request.user.email }}" required>
     </label>
     <label>
+        <p>Téléphone référent⋅e</p>
+        <input id="contact_phone" onInput="prettifyPhoneNumber('contact_phone')" type="phone" name="contact_phone" value="{{ delivery.contact_phone }}" required>
+    </label>
+    
+    <label>
         <p>Lieu</p>
         <input type="text" name="where" value="{{ delivery.where or '' }}" required>
     </label>

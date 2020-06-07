@@ -54,7 +54,7 @@
     </div>
     <div class="pure-control-group">
         <label>Téléphone référent⋅e</label>
-        <input type="tel" name="referent_tel" value="{{ producer.referent_tel or '' }}" required>
+        <input onInput="prettifyPhoneNumber('referent_tel')" id="referent_tel" type="tel" name="referent_tel" value="{{ producer.referent_tel or '' }}" required>
     </div>
     <div class="pure-control-group">
         <label>Contact producteur⋅rice</label>

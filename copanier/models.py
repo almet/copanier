@@ -288,6 +288,7 @@ class Delivery(PersistedBase):
     to_date: datetime_field
     order_before: datetime_field
     contact: str
+    contact_phone: str = ""
     instructions: str = ""
     where: str = "Marché de la Briche"
     products: List[Product] = field(default_factory=list)
