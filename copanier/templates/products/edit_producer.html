@@ -77,8 +77,7 @@ Des frais de livraison de {{ delivery.shipping[producer.id] }}€ ont été enre
         <a class="button" href="{{ url_for('validate_producer_prices', delivery_id=delivery.id, producer_id=producer.id) }}">Marquer les prix comme OK</a>
     {% endif %}
 </h3>
-<p>Vous pouvez éditer les produits en cliquant sur leur nom.</p>
-<table class="pure-table">
+<table id="products" class="pure-table">
     <thead>
         <tr>
             <th>Produit</th>
