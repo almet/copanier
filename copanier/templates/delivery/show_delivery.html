@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block body %}
 
 <div class="header">
@@ -27,7 +28,10 @@
                 </ul>
             </li>
             {% if request['user'].email == delivery.contact and delivery.status > delivery.EMPTY %}
-            <li class="pure-menu-item"><a class="pure-menu-link" href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}"><i class="icon-tools"></i>&nbsp;Boîte à outils</a></li>        {% endif %}
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}"><i class="icon-tools"></i>&nbsp;Boîte à outils</a>
+            </li>
+            {% endif %}
             {% if request.user and request.user.is_staff %}
             {% if delivery.is_archived %}
             <li class="pure-menu-item">
@@ -41,12 +45,8 @@
                 <a class="pure-menu-link" href="{{ url_for('list_products', id=delivery.id) }}"><i class="icon-pricetags"></i>&nbsp;Produits</a>
             </li>
             {% endif %}
-            </ul
-            </li>
         </ul>
     </div>
-
-        
     </ul>
 </div>
 
@@ -54,7 +54,15 @@
 {% if delivery.has_products %}
     {% for (id, producer) in delivery.get_producers_for_referent(request.user.email).items() %}
     {% if producer.needs_price_update(delivery) %}
-    <p class="notification info">Merci de <a href="{{ url_for('edit_producer', delivery_id=delivery.id, producer_id=producer.id) }}">mettre à jour les prix pour « {{ producer.name }} ».</a></p>
+    {% set modal_body %}
+    <h3>Mise à jour des prix</h3>
+
+    Certains produits dont tu est référent⋅e ont besoin d'être mis à jour.<br /><br />
+    Est-ce que tu veux t'en occuper maintenant ?<br />
+
+    <a class="button" href="{{ url_for('edit_producer', delivery_id=delivery.id, producer_id=producer.id) }}#products">Oui, mettre à jour les prix pour {{ producer.name }}</a>
+    {%- endset %}
+    {{ macros.modal(id="update-price", body=modal_body, checked=True) }}
     {% endif %}
     {% endfor %}
     {% include "includes/delivery_table.html" %}
