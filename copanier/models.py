@@ -177,6 +177,10 @@ class Producer(Base):
         products = delivery.get_products_by(self.id)
         return any([not p.rupture for p in products])
 
+    def has_rupture_products(self, delivery):
+        products = delivery.get_products_by(self.id)
+        return any([p.rupture for p in products])
+
     def needs_price_update(self, delivery):
         products = delivery.get_products_by(self.id)
         return delivery.products_need_price_update(products)
@@ -312,7 +316,9 @@ class Delivery(PersistedBase):
     def products_need_price_update(self, products=None):
         products = products or self.products
         max_age = self.from_date.date() - timedelta(days=60)
-        return any([product.last_update.date() < max_age for product in products])
+        return any([product.last_update.date() < max_age
+                   for product in products
+                   if product.producer in self.producers])
 
     @property
     def dates(self):
