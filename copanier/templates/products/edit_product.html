@@ -19,39 +19,44 @@
     {% endif %}
 </div>
 
-<form method="post">
-    <label>
-        <p>Nom</p>
+<form method="post" class="pure-form pure-form-aligned">
+    <fieldset>
+    
+    <div class="pure-control-group">
+        <label>Nom</label>
         <input type="text" name="name" value="{{ product.name or '' }}" required>
-    </label>
-    <label>
-        <p>Prix (en €), pour une unité</p>
-        <input type="number" step="0.001" name="price" value="{{ product.price or '' }}" required>
-    </label>
-    <label>
-        <p>Unité de commande</p>
+    </div>
+    <div class="pure-control-group">
+        <label>Unité de commande</label>
         <input type="text" name="unit" placeholder="sachet de 200g" value="{{ product.unit or '' }}" required>
-    </label>
-    <label>
-        <h5>Description du produit</h5>
+    </div>
+    <div class="pure-control-group">
+        <label>Prix</label>
+        <input type="number" step="0.001" name="price" value="{{ product.price or '' }}" required>
+        <span class="pure-form-message-inline">En euros (TTC), pour une unité</span>
+    </div>
+    <div class="pure-control-group">
+        <label>Description</label>
         <input type="text" name="description" placeholder="Bière type American Pale Ale" value="{{ product.description or '' }}">
-    </label>
+    </div>
     <br />
-    <label>
-        Produit actuellement en rupture ?
+    <div class="pure-control-group">
+        <label>Rupture de stock ?</label>
         <input type="checkbox" name="rupture" value="RUPTURE" {% if product.rupture %}checked="true"{% endif %}>
-    </label>
+    </div>
     <br />
-    {% set body %}
+    
+        
+    <div class="pure-controls">
+        <input type="submit" name="submit" value="Valider" class="primary">
+        {% set body %}
     <h3>Conditionnement</h3>
         <h5><strong>A indiquer uniquement si ces produits ne peuvent pas être achetés à l'unité</strong>. Par exemple, si il est uniquement possible d'acheter des cartons de 12 bouteilles, alors indiquez « 12 » ici. Dans le doute, laissez vide.</h5>
         <input type="number" name="packing" value="{{ product.packing or '' }}">
     {%- endset %}
     {{ macros.modal(id="advanced", label="Voir les options avancées", body=body) }}
-        
-    <div>
-        <input type="submit" name="submit" value="Valider" class="primary">
     </div>
+    </fieldset>
 </form>
 
 <hr>
