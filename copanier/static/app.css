@@ -379,6 +379,8 @@ article.order {
 table.order th.product {
   min-width: 10rem;
   width: inherit;
+  max-width: 25em;
+  overflow: hidden;
 }
 td.with-input {
   padding: 0;
@@ -694,4 +696,8 @@ ul.actions > li {
 
 .fixed-table td, .fixed-table th{
   white-space:pre-wrap; 
+}
+
+small {
+  font-size: 70% !important;
 }
