@@ -282,6 +282,14 @@ async def show_orders_summary(request, response, id):
         filename=utils.prefix("résumé-de-commandes.pdf", delivery),
     )
 
+@app.route("/distribution/{id}/résumé-de-commandes.html", methods=["GET"])
+async def show_orders_summary(request, response, id):
+    delivery = Delivery.load(id)
+    response.html(
+        "delivery/show_orders_summary.html",
+        delivery=delivery,
+        display_prices=True
+    )
 
 @app.route("/distribution/{id}/rapport-complet.xlsx", methods=["GET"])
 async def generate_report(request, response, id):
