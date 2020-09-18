@@ -149,7 +149,7 @@ async def attach_request(request, response):
     response.request = request
 
 
-@app.listen("request")
+@app.listen("response")
 async def log_request(request, response):
     if request.method == "POST":
         message = {
