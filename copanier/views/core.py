@@ -149,19 +149,6 @@ async def attach_request(request, response):
     response.request = request
 
 
-@app.listen("response")
-async def log_request(request, response):
-    if request.method == "POST":
-        message = {
-            "date": utils.utcnow().isoformat(),
-            "data": request.form,
-            "user": request.get("user"),
-        }
-        loggers.request_logger.info(
-            json.dumps(message, sort_keys=True, ensure_ascii=False)
-        )
-
-
 @app.listen("startup")
 async def on_startup():
     configure()
