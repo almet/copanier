@@ -26,8 +26,8 @@ to ease the life of everyone involved :-)
 ## Fork
 
 This project is a continuation of the work done by
-[Alexis](https://framagit.org/almet/copanier), itself took from the work Yohan
-did in the first place.
+[Alexis](https://framagit.org/almet/copanier), itself took from the work
+[Yohan](https://framagit.org/ybon/copanier) did in the first place.
 
 ## Philosophy
 
