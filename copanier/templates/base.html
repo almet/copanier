@@ -1,3 +1,4 @@
+
 {% import "includes/macros.html" as macros %}
 
 <!DOCTYPE html>
@@ -51,7 +52,7 @@
         {% block toplink %}{% endblock %}
         </div>
         <div id="main">
-            <div class="content">
+            <div class="content {% block is_wide %}narrow{% endblock %}">
                 {% block body %}
                 {% endblock body %}
             </div>

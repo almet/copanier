@@ -3,5 +3,5 @@ body {
 }
 
 @page {
-    size: portrait !important;
+    size: landscape !important;
 }

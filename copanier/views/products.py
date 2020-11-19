@@ -23,6 +23,7 @@ async def list_products(request, response, id):
         response.pdf(
             template_name,
             template_params,
+            css="landscape.css",
             filename=utils.prefix("producteurices.pdf", delivery),
         )
     else:

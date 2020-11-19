@@ -1,14 +1,9 @@
 {% extends "base.html" %}
+{% block is_wide %}{% endblock %}
 {% block body %}
 <div class="header">
-    <h1><i class="icon-wallet"></i>&nbsp; {{ delivery.name }} : Répartition des paiements</h1>
-    <div class="pure-menu pure-menu-horizontal">
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item">
-                <a class="pure-menu-link" href="{{ url_for('compute_payments', id=delivery.id) }}.pdf">Télécharger</a>
-            </li>
-        </ul>
-    </div>
+    <h1>{{ delivery.name }}</h1>
+    <h2><i class="icon-wallet"></i>&nbsp; Répartition des paiements</h2>
 </div>
 
 <table class="paiements">
