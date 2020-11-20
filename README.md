@@ -116,6 +116,5 @@ $ py.test tests
 
 ## Fork
 
-This project is a continuation of the work done by
-[Alexis](https://framagit.org/almet/copanier), itself took from the work
-[Yohan](https://framagit.org/ybon/copanier) did in the first place.
+This project is a continuation of the work done by [Yohan](https://framagit.org/ybon/copanier),
+on top of which we added the nition of groups, multiple producers, payment repartition etc.
