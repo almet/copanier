@@ -14,11 +14,14 @@ to ease the life of everyone involved :-)
 3. (Optional : prices are checked with the producers to be sure they are still okay) ;
 4. Individuals place their orders for their groups ;
 5. Referents ask their producers for the products and pay them ;
-6. There is a delivery, after which a dispatching of who has to pay whom is automatically done.
+6. There is a delivery - the tool provides summary of who ordered what ;
+7. A dispatch of who has to pay whom is done ;
+8. XXX
+9. ... Profit !
 
 ## Features
 
-- Handles groups of people (useful for people sharing a house, for instance) ;
+- Handles groups of people (useful for people sharing a house) ;
 - Handles multiple producers in one delivery ;
 - Intelligent dispatching of payments, without any central bank account ;
 - Support for shipping fees ;
@@ -31,18 +34,22 @@ to ease the life of everyone involved :-)
 ![Login screen](/screenshots/login.png?raw=true)
 ![Login screen](/screenshots/groups.png?raw=true)
 
-
-## Fork
-
-This project is a continuation of the work done by
-[Alexis](https://framagit.org/almet/copanier), itself took from the work
-[Yohan](https://framagit.org/ybon/copanier) did in the first place.
-
 ## Philosophy
 
 - Keep things simple
 - Do not rely on JavaScript (or the less possible)
 - Lower the cost of maintainance of the project
+
+## FAQ
+
+### How is it different from cagette?
+
+[Cagette](https://www.cagette.net) is a free software which aims at solving the same problem we're solving. We're doing it in different ways. Cagette has a general approach, providing a tool for group of producers, for AMAPs, for people handling a store and for people who are getting paid with a fee.
+
+In copanier, we want to keep things as straightforward and effective as possible, and we believe solving a larger problem complexifies the software.
+Copanier is issued of a collective where we think it's better when roles are moving over the years. That's why you don't really need an account, and it's really easy to change the referent person for each producer, for instance.
+
+In short : we believe copanier is better suited for people who want to organise the way we do. If copanier doesn't fit your needs, cagette might :-)
 
 ## Install copanier locally
 
@@ -109,3 +116,9 @@ $ pip install -r requirements-dev.txt
 $ # run the tests
 $ py.test tests
 ```
+
+## Fork
+
+This project is a continuation of the work done by
+[Alexis](https://framagit.org/almet/copanier), itself took from the work
+[Yohan](https://framagit.org/ybon/copanier) did in the first place.
