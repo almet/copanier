@@ -28,11 +28,11 @@ to ease the life of everyone involved :-)
 
 ## Screenshots
 
-![Login screen](/screenshots/place-order.png?raw=true)
-![Login screen](/screenshots/payments.png?raw=true)
-![Login screen](/screenshots/order-confirmation.png?raw=true)
 ![Login screen](/screenshots/login.png?raw=true)
 ![Login screen](/screenshots/groups.png?raw=true)
+![Login screen](/screenshots/place-order.png?raw=true)
+![Login screen](/screenshots/order-confirmation.png?raw=true)
+![Login screen](/screenshots/payments.png?raw=true)
 
 ## Philosophy
 
