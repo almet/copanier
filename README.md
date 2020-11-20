@@ -44,12 +44,9 @@ to ease the life of everyone involved :-)
 
 ### How is it different from cagette?
 
-[Cagette](https://www.cagette.net) is a free software which aims at solving the same problem we're solving. We're doing it in different ways. Cagette has a general approach, providing a tool for group of producers, for AMAPs, for people handling a store and for people who are getting paid with a fee.
+[Cagette](https://www.cagette.net) is a free software which aims at solving a larger problem that what we're solving. Cagette has a more general approach, providing a tool that can be used by groups of producers, AMAPs, people having a physical store, and group of consumers.
 
-In copanier, we want to keep things as straightforward and effective as possible, and we believe solving a larger problem complexifies the software.
-Copanier is issued of a collective where we think it's better when roles are moving over the years. That's why you don't really need an account, and it's really easy to change the referent person for each producer, for instance.
-
-In short : we believe copanier is better suited for people who want to organise the way we do. If copanier doesn't fit your needs, cagette might :-)
+In copanier, we only focus on groups of consumers. We want to keep things as straightforward and effective as possible, by keeping the problem small. We do one thing and we try to do it the best way we can! We believe copanier is better suited for people who want to organise the way we do, but if copanier doesn't fit your needs, cagette might :-)
 
 ## Install copanier locally
 
