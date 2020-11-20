@@ -117,4 +117,4 @@ $ py.test tests
 ## Fork
 
 This project is a continuation of the work done by [Yohan](https://framagit.org/ybon/copanier),
-on top of which we added the nition of groups, multiple producers, payment repartition etc.
+on top of which we added the notion of groups, multiple producers, payment repartition etc.
