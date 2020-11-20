@@ -23,6 +23,15 @@ to ease the life of everyone involved :-)
 - Intelligent dispatching of payments, without any central bank account ;
 - Support for shipping fees ;
 
+## Screenshots
+
+![Login screen](/screenshots/place-order.png?raw=true)
+![Login screen](/screenshots/payments.png?raw=true)
+![Login screen](/screenshots/order-confirmation.png?raw=true)
+![Login screen](/screenshots/login.png?raw=true)
+![Login screen](/screenshots/groups.png?raw=true)
+
+
 ## Fork
 
 This project is a continuation of the work done by
