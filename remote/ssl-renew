@@ -1,5 +1,0 @@
-#!/bin/bash
-
-certbot -c /srv/eurordis/certbot.ini renew
-
-systemctl reload nginx

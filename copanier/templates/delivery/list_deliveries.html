@@ -16,15 +16,4 @@
         {% include "includes/delivery_small_list.html" %}
     {% endwith %}
     {% endif %}
-    {% if archives %}
-    <a href="/archives">Voir les distributions archivées</a>
-    <hr>
-    {% endif %}
-    <div class="pure-menu pure-menu-horizontal">
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item">
-                <a class="pure-menu-link" href="{{ url_for('list_archives') }}"><i class="icon-telescope"></i>&nbsp;Aller aux distributions archivées</a>&nbsp;
-            </li>
-        </ul>
-    </div>
 {% endblock body %}

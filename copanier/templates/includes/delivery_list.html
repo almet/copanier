@@ -9,5 +9,5 @@
 {% endfor %}
 </ul>
 {% else %}
-<p>Il n'y a aucune distribution à venir.</p>
+<p>Il n'y a aucune distribution à venir. Vous pouvez <a href="{{ url_for('new_delivery') }}">en lancer une nouvelle</a> !
 {% endif %}

@@ -6,11 +6,6 @@
     <h1>Modifier la distribution</h1>
     <div class="pure-menu pure-menu-horizontal">
         <ul class="pure-menu-list">
-            {% if delivery.status == delivery.CLOSED %}
-            <li class="pure-menu-item">
-                <a class="pure-menu-link danger" href="{{ url_for('archive_delivery', id=delivery.id) }}"><i class="icon-layers"></i>&nbsp;Archiver</a>
-            </li>
-            {% endif %}
             <li class="pure-menu-item">
                 <a class="pure-menu-link" href="{{ url_for('list_products', id=delivery.id) }}"><i class="icon-pencil"></i> Gérer les produits / product⋅eur⋅rice⋅s</a>
             </li>

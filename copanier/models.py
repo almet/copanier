@@ -295,6 +295,7 @@ class Delivery(PersistedBase):
     producers: Dict[str, Producer] = field(default_factory=dict)
     orders: Dict[str, Order] = field(default_factory=dict)
     shipping: Dict[str, price_field] = field(default_factory=dict)
+    is_archived: bool = False
 
     def __post_init__(self):
         self.id = None  # Not a field because we don't want to persist it.
@@ -365,10 +366,6 @@ class Delivery(PersistedBase):
     def needs_adjustment(self):
         return self.has_packing and any(self.product_missing(p) for p in self.products)
 
-    @property
-    def is_archived(self):
-        return self.id and self.id.startswith("archive/")
-
     @classmethod
     def init_fs(cls):
         cls.get_root().mkdir(parents=True, exist_ok=True)
@@ -387,13 +384,15 @@ class Delivery(PersistedBase):
         return delivery
 
     @classmethod
-    def all(cls, is_archived=False):
+    def all(cls):
         root = cls.get_root()
-        if is_archived:
-            root = root / "archive"
         for path in root.glob("*.yml"):
             id_ = str(path.relative_to(cls.get_root())).replace(".yml", "")
             yield Delivery.load(id_)
+
+    @classmethod
+    def archived(cls):
+        return [d for d in cls.all() if not d.is_archived]
 
     @classmethod
     def incoming(cls):
@@ -419,18 +418,14 @@ class Delivery(PersistedBase):
     def archive(self):
         if self.is_archived:
             raise ValueError("La distribution est déjà archivée")
-        current = self.path
-        self.id = f"archive/{self.id}"
-        current.rename(self.path)
+        self.is_archived = True
 
     def unarchive(self):
         if not self.is_archived:
             raise ValueError(
                 "Impossible de désarchiver une distribution qui n'est pas archivée"
             )
-        current = self.path
-        self.id = self.path.stem
-        current.rename(self.path)
+        self.is_archived = False
 
     def product_wanted(self, product):
         total = 0

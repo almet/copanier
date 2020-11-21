@@ -23,21 +23,21 @@ async def home(request, response):
         "delivery/list_deliveries.html",
         incoming=Delivery.incoming(),
         former=Delivery.former(),
-        archives=list(Delivery.all(is_archived=True)),
+        archives=list(Delivery.archived()),
     )
 
 
 @app.route("/archives", methods=["GET"])
 async def list_archives(request, response):
     response.html(
-        "delivery/list_archives.html", {"deliveries": Delivery.all(is_archived=True)}
+        "delivery/list_archives.html", {"deliveries": Delivery.archived()}
     )
 
 
 @app.route("/distribution/archive/{id}", methods=["GET"])
 async def view_archive(request, response, id):
     delivery = Delivery.load(f"archive/{id}")
-    response.html("delivery/show.html", {"delivery": delivery})
+    response.html("delivery/show_delivery.html", {"delivery": delivery})
 
 
 @app.route("/distribution/{id}/archiver", methods=["GET"])

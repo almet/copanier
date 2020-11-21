@@ -163,26 +163,6 @@ def test_productorder_quantity():
     assert choice.quantity == 2
 
 
-def test_archive_delivery(delivery):
-    delivery.persist()
-    old_id = delivery.id
-    old_path = delivery.path
-    assert str(old_path).endswith(f"delivery/{delivery.id}.yml")
-    assert old_path.exists()
-    delivery.archive()
-    assert delivery.is_archived
-    assert delivery.id.startswith("archive/")
-    new_path = delivery.path
-    assert str(new_path).endswith(f"delivery/archive/{old_id}.yml")
-    assert not old_path.exists()
-    assert new_path.exists()
-    delivery.unarchive()
-    assert not delivery.id.startswith("archive/")
-    assert old_path.exists()
-    assert not new_path.exists()
-    assert not delivery.is_archived
-
-
 def test_group_management():
     ndp = Group(
         id="nid-de-poules", name="Nid de poules", members=["someone@domain.tld"]
