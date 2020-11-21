@@ -29,11 +29,6 @@
             </li>
             {% endif %}
             {% if request.user and request.user.is_staff %}
-            {% if delivery.is_archived %}
-            <li class="pure-menu-item">
-                <a class="pure-menu-link" href="{{ url_for('unarchive_delivery', id=delivery.id) }}"><i class="icon-hazardous"></i>&nbsp;Désarchiver</a>
-            </li>
-            {% endif %}
             <li class="pure-menu-item">
                 <a class="pure-menu-link" href="{{ url_for('edit_delivery', id=delivery.id) }}"><i class="icon-adjustments"></i>&nbsp;Modifier la distrib</a>
             </li>
@@ -47,6 +42,12 @@
 </div>
 
 <article class="delivery">
+{% if request['user'].email == delivery.contact %}
+<div class="placeholder center">
+Tu es la personne contact pour l'organisation de cette distribution, merci :-) Pour t'aider, tu peux accéder à  
+<a href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}"><i class="icon-tools"></i>&nbsp;la boîte à outils</a> !
+</div>
+{% endif %}
 {% if delivery.has_products %}
     {% for (id, producer) in delivery.get_producers_for_referent(request.user.email).items() %}
     {% if producer.needs_price_update(delivery) %}
@@ -62,7 +63,6 @@
     {% endif %}
     {% endfor %}
     {% include "includes/delivery_table.html" %}
-    
 {% else %}
 <div class="placeholder">
     <h2>😔 Pour le moment, cette distribution est bien vide…</h2>

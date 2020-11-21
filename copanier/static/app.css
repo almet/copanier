@@ -678,6 +678,11 @@ table.paiements tr:hover td {
   padding: 3rem !important;
 }
 
+.center {
+  margin: auto;
+  text-align: center;
+}
+
 ul.actions {
   list-style-type: none;
   padding: 0px;
