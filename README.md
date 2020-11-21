@@ -65,7 +65,7 @@ rest of the system:
 
 ```bash
 $ # Get the source code locally
-$ git clone https://framagit.org/almet/copanier.git
+$ git clone https://github.com/spiral-project/copanier.git
 $ cd copanier
 
 $ # Create the virtualenv
