@@ -23,39 +23,7 @@ async def home(request, response):
         "delivery/list_deliveries.html",
         incoming=Delivery.incoming(),
         former=Delivery.former(),
-        archives=list(Delivery.archived()),
     )
-
-
-@app.route("/archives", methods=["GET"])
-async def list_archives(request, response):
-    response.html(
-        "delivery/list_archives.html", {"deliveries": Delivery.archived()}
-    )
-
-
-@app.route("/distribution/archive/{id}", methods=["GET"])
-async def view_archive(request, response, id):
-    delivery = Delivery.load(f"archive/{id}")
-    response.html("delivery/show_delivery.html", {"delivery": delivery})
-
-
-@app.route("/distribution/{id}/archiver", methods=["GET"])
-@staff_only
-async def archive_delivery(request, response, id):
-    delivery = Delivery.load(id)
-    delivery.archive()
-    response.message("La distribution a été archivée")
-    response.redirect = f"/distribution/{delivery.id}"
-
-
-@app.route("/distribution/archive/{id}/désarchiver", methods=["GET"])
-@staff_only
-async def unarchive_delivery(request, response, id):
-    delivery = Delivery.load(f"archive/{id}")
-    delivery.unarchive()
-    response.message("La distribution a été désarchivée")
-    response.redirect = f"/distribution/{delivery.id}"
 
 
 @app.route("/distribution", methods=["GET"])
@@ -330,7 +298,6 @@ async def adjust_product(request, response, id, ref):
 
 
 @app.route("/distribution/{id}/paiements", methods=["GET"])
-@app.route("/distribution/{id}/paiements.pdf", methods=["GET"])
 @staff_only
 async def compute_payments(request, response, id):
     delivery = Delivery.load(id)
@@ -384,11 +351,4 @@ async def compute_payments(request, response, id):
         "crediters_groups": producer_groups,
     }
 
-    if request.url.endswith(b".pdf"):
-        response.pdf(
-            template_name,
-            template_args,
-            filename=utils.prefix("répartition-des-chèques.pdf", delivery),
-        )
-    else:
-        response.html(template_name, template_args)
+    response.html(template_name, template_args)

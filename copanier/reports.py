@@ -67,7 +67,7 @@ def full(delivery):
         ws.append(row)
     footer = (
         ["Total", "", ""]
-        + [round(o.total(delivery.products), 2) for o in delivery.orders.values()]
+        + [round(o.total(delivery.products, delivery), 2) for o in delivery.orders.values()]
         + [round(delivery.total, 2)]
     )
     footer.insert(1, "")

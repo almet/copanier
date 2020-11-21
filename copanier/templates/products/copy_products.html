@@ -4,7 +4,6 @@
 <div class="header">
     <h1>Copier les produits d'une autre distribution</h1>
 </div>
-
 <form method="post">
     <label>
         <p>Distribution à copier</p>
@@ -13,10 +12,12 @@
             <option value="{{ delivery.id }}">{{ delivery.name }} / {{ delivery.to_date | date }}</option>
             {% endfor %}
           </select>
-    </label>
-    <div>
-        <input type="submit" name="submit" value="Valider" class="primary">
-    </div>
+        </label>
+        
+        <div><strong>Attention !! Copier les produits d'une autre distribution remplacera l'ensemble des producteurs et des produits actuels.</strong></div>
+        <div>
+            <input type="submit" name="submit" value="Valider" class="primary">
+        </div>
 </form>
 <hr>
 {% endblock body %}
