@@ -7,7 +7,7 @@ Vous êtes la personne référente pour une distribution, et vous vous demandez 
 ### Création d'une nouvelle distribution
 
 La première chose à faire, c'est de créer une nouvelle distribution.
-Dans l'interface, en bas à gauche il y a un bouton « Nouvelle distribution ».
+Dans l'interface il y a un bouton « Nouvelle distribution ».
 
 Il vous sera demandé quelques informations, puis vous pouvez valider.
 

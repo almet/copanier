@@ -281,7 +281,6 @@ class Delivery(PersistedBase):
     NEED_PRICE_UPDATE = 1
     OPEN = 2
     ADJUSTMENT = 3
-    ARCHIVED = 4
 
     name: str
     from_date: datetime_field
@@ -295,7 +294,6 @@ class Delivery(PersistedBase):
     producers: Dict[str, Producer] = field(default_factory=dict)
     orders: Dict[str, Order] = field(default_factory=dict)
     shipping: Dict[str, price_field] = field(default_factory=dict)
-    is_archived: bool = False
 
     def __post_init__(self):
         self.id = None  # Not a field because we don't want to persist it.
@@ -305,8 +303,6 @@ class Delivery(PersistedBase):
     def status(self):
         if not self.products:
             return self.EMPTY
-        if self.is_archived:
-            return self.ARCHIVED
         if self.products_need_price_update():
             return self.NEED_PRICE_UPDATE
         if self.is_open:
@@ -369,7 +365,6 @@ class Delivery(PersistedBase):
     @classmethod
     def init_fs(cls):
         cls.get_root().mkdir(parents=True, exist_ok=True)
-        cls.get_root().joinpath("archive").mkdir(exist_ok=True)
 
     @classmethod
     def load(cls, id):
@@ -391,10 +386,6 @@ class Delivery(PersistedBase):
             yield Delivery.load(id_)
 
     @classmethod
-    def archived(cls):
-        return [d for d in cls.all() if not d.is_archived]
-
-    @classmethod
     def incoming(cls):
         return sorted(
             [d for d in cls.all() if d.is_foreseen], key=lambda d: d.order_before
@@ -414,18 +405,6 @@ class Delivery(PersistedBase):
             if not self.id:
                 self.id = uuid.uuid4().hex
             self.path.write_text(self.dump())
-
-    def archive(self):
-        if self.is_archived:
-            raise ValueError("La distribution est déjà archivée")
-        self.is_archived = True
-
-    def unarchive(self):
-        if not self.is_archived:
-            raise ValueError(
-                "Impossible de désarchiver une distribution qui n'est pas archivée"
-            )
-        self.is_archived = False
 
     def product_wanted(self, product):
         total = 0
