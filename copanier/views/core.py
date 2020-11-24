@@ -105,9 +105,6 @@ class Roll(BaseRoll):
     def url_for(self, name, *args, **kwargs):
         route = self._find_route_by_name(name)
         if not route:
-            from pdb import set_trace
-
-            set_trace()
             raise Exception(f"Route for '{name}' wasn't found")
         try:
             return route.path.format(*args, **kwargs)
