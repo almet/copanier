@@ -125,7 +125,8 @@ Copanier uses environment variables to configure its behaviour. All the configur
 One simple way to handle this behaviour, is to have a `config.env` file and source it (with `source config.env`) before starting the server. Here is how this file could look like:
 
 ```bash
-export COPANIER_SITE_NAME="You site name"
+export COPANIER_SITE_URL="https://yourdomain.com"
+export COPANIER_SITE_NAME="Your site name"
 export COPANIER_SITE_DESCRIPTION="Site long description"
 export COPANIER_XLSX_FILENAME="crac-produits"
 export COPANIER_SEND_EMAILS=True
