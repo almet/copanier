@@ -36,11 +36,15 @@ to ease the life of everyone involved :-)
 
 ## Philosophy
 
-- Keep things simple
+- Keep things simple.
 - Do not rely on JavaScript (or the less possible)
 - Lower the cost of maintainance of the project
 
 ## FAQ
+
+### How files are stored? Does this rely on a database?
+
+The current implementation of copanier doesn't need an external database, and relies on YAML files instead. It's done to keep things simple and easy to work with / backup, and we believe the needs for a database are very little, since we would very rarely have multiple writes at the same time.
 
 ### How is it different from cagette?
 
@@ -112,6 +116,35 @@ $ # install the required dependencies for dev
 $ pip install -r requirements-dev.txt
 $ # run the tests
 $ py.test tests
+```
+
+## Configuration
+
+Copanier uses environment variables to configure its behaviour. All the configuration flags are specified in [this config.py file](https://github.com/spiral-project/copanier/blob/master/copanier/config.py) and in order to use them, you will need to set them, considering their name starts with `COPANIER_`.
+
+One simple way to handle this behaviour, is to have a `config.env` file and source it (with `source config.env`) before starting the server. Here is how this file could look like:
+
+```bash
+export COPANIER_SITE_NAME="You site name"
+export COPANIER_SITE_DESCRIPTION="Site long description"
+export COPANIER_XLSX_FILENAME="crac-produits"
+export COPANIER_SEND_EMAILS=True
+export COPANIER_SMTP_HOST="mail.gandi.net"
+export COPANIER_SMTP_PASSWORD="something"
+export COPANIER_SMTP_LOGIN="yourlogin"
+export COPANIER_FROM_EMAIL="youremail@tld.com"
+export COPANIER_EMAIL_SIGNATURE="The team"
+export COPANIER_STAFF="staff@email.com another@staff.com"
+```
+
+## Deployment
+
+If you're running the application locally, then just running it with `copanier serve` might be enough, but if you want to deploy it in production, the best way to make this run is to rely on a WSGI server. One good option is [gunicorn](https://gunicorn.org).
+
+You can run it with this command:
+
+```bash
+gunicorn -k roll.worker.Worker copanier:app --bind [$IP]:$PORT
 ```
 
 ## Fork
