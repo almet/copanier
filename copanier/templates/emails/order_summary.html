@@ -3,7 +3,7 @@
 {% include "includes/order_summary.html" %}
 <p>Distribution: {{ delivery.where }}, le {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}</p>
 {% if delivery.is_open %}
-<p>Tu peux la modifier (jusqu'au {{ delivery.order_before|date }}) <a href="https://{{ request.host }}/distribution/{{ delivery.id }}/commander">en cliquant ici</a>.</p>
+<p>Tu peux la modifier (jusqu'au {{ delivery.order_before|date }}) <a href="{{ url_for('place_order', id=delivery.id) }}">en cliquant ici</a>.</p>
 {% endif %}
 <p>Bonne journée!</p>
 <p>{{ config.EMAIL_SIGNATURE }}</p>

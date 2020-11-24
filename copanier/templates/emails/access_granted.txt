@@ -2,6 +2,6 @@ Hey ho!
 
 Voici le sésame, clique dessus pour accéder à la commande :
 
-https://{{ hostname }}{{ url_for('set_sesame', token=token) }}
+{{ url_for('set_sesame', token=token) }}
 
 {{ config.EMAIL_SIGNATURE }}

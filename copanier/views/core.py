@@ -1,5 +1,6 @@
 import ujson as json
 
+from urllib.parse import urljoin
 from pathlib import Path
 from jinja2 import Environment, PackageLoader, select_autoescape
 from roll.extensions import traceback
@@ -57,7 +58,7 @@ class Response(RollResponse):
 
     def redirect(self, location):
         self.status = 302
-        self.headers["Location"] = location
+        self.headers["Location"] = url(location)
 
     redirect = property(None, redirect)
 
@@ -74,6 +75,15 @@ def get_function_name(node):
         return func.decorates.__name__
     else:
         return func.__name__
+
+
+def url(path):
+    if config.SITE_URL:
+        site_url = config.SITE_URL.rstrip('/')
+        if not path.startswith(site_url):
+            path = site_url + path
+    return path
+
 
 
 class Roll(BaseRoll):
@@ -103,11 +113,13 @@ class Roll(BaseRoll):
                         return route
 
     def url_for(self, name, *args, **kwargs):
+        if name.startswith("/"):
+            return url(name)
         route = self._find_route_by_name(name)
         if not route:
             raise Exception(f"Route for '{name}' wasn't found")
         try:
-            return route.path.format(*args, **kwargs)
+            return url(route.path.format(*args, **kwargs))
         except KeyError as e:
             raise Exception(f"Unable to build URL for {name} : '{e}' is missing")
 
@@ -133,6 +145,7 @@ env = Environment(
     loader=PackageLoader("copanier", "templates"),
     autoescape=select_autoescape(["copanier"]),
 )
+
 
 env.filters["date"] = utils.date_filter
 env.filters["time"] = utils.time_filter

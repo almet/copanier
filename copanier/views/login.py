@@ -1,4 +1,4 @@
-from .core import app, session, env
+from .core import app, session, env, url
 
 from ..models import Groups, Person
 from .. import utils, emails, config
@@ -18,7 +18,7 @@ async def auth_required(request, response):
             decoded = utils.read_token(token)
             email = decoded.get("sub")
         if not email:
-            response.redirect = f"/connexion?next={request.path}"
+            response.redirect = f"/connexion?next={url(request.path)}"
             return response
 
         groups = Groups.load()

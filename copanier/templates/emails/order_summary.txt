@@ -14,7 +14,7 @@ Distribution: {{ delivery.where }}, le {{ delivery.from_date|date }} de {{ deliv
 {% if delivery.is_open %}
 Tu peux la modifier (jusqu'au {{ delivery.order_before|date }}) en cliquant ici:
 
-https://{{ request.host }}/distribution/{{ delivery.id }}/commander
+{{ url_for('place_order', id=delivery.id) }}
 
 {% endif %}
 

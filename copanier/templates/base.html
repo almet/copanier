@@ -7,11 +7,11 @@
 	<title>{% if title %}{{ title }} - {% endif %}{{ config.SITE_NAME }}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/static/app.css">
-    <link rel="stylesheet" type="text/css" href="/static/icomoon.css">
-    <link rel="stylesheet" type="text/css" href="/static/purecss.css">
-    <link rel="stylesheet" type="text/css" href="/static/side-menu.css">
-    <link rel="stylesheet" type="text/css" href="/static/flash.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('/static/app.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('/static/icomoon.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('/static/purecss.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('/static/side-menu.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('/static/flash.min.css') }}">
 
     {% block head %}
     {% endblock head %}
@@ -60,8 +60,8 @@
     </div>
     
     
-    <script src="/static/js/flash.min.js"></script>
-    <script src="/static/js/app.js"></script>
+    <script src="{{ url_for('/static/js/flash.min.js') }}"></script>
+    <script src="{{ url_for('/static/js/app.js') }}"></script>
     {% if message %}
     <script>
     new window.FlashMessage("{{ message[0] }}", "{{ message[1] }}", {

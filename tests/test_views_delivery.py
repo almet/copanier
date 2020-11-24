@@ -5,6 +5,7 @@ import pytest
 from openpyxl import load_workbook
 from pyquery import PyQuery as pq
 
+from copanier.views.core import url
 from copanier.models import Delivery, Order, ProductOrder, Product
 
 pytestmark = pytest.mark.asyncio
@@ -14,7 +15,7 @@ async def test_home_redirects_to_group_if_needed(client):
     client.login(email="new@example.org")
     resp = await client.get("/")
     assert resp.status == 302
-    assert resp.headers["Location"] == "/groupes"
+    assert resp.headers["Location"] == url("/groupes")
 
 
 async def test_empty_home(client, delivery, groups):
@@ -35,7 +36,7 @@ async def test_home_should_redirect_to_login_if_not_logged(client):
     client.logout()
     resp = await client.get("/")
     assert resp.status == 302
-    assert resp.headers["Location"] == "/connexion?next=/"
+    assert resp.headers["Location"] == url("/connexion?next=" + url("/"))
 
 
 async def test_create_delivery(client):

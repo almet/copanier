@@ -15,6 +15,7 @@ STAFF = []
 LOCALE = "fr_FR.UTF-8"
 #LOCALE = "en_US.UTF-8"
 SITE_NAME = "Copanier"
+SITE_URL = "http://localhost:2244"
 SITE_DESCRIPTION = "Shared orders"
 EMAIL_SIGNATURE = "The kind people behind copanier"
 

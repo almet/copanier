@@ -16,7 +16,7 @@ def send(to, subject, body, html=None, copy=None, attachments=None):
 
     if not config.SEND_EMAILS:
         body = body.replace("https", "http")
-        return print("Sending email", str(body))
+        return print("Sending email", str(body.encode('utf-8')))
 
     message.send(
         to=to,
@@ -37,7 +37,7 @@ def send_from_template(env, template, to, subject, **params):
     send(to, subject, body=txt, html=html)
 
 
-def send_order(request, env, person, delivery, order, group_id):
+def send_order(request, env, person, delivery, order, group_id, **kwargs):
     send_from_template(
         env,
         "order_summary",
@@ -48,4 +48,5 @@ def send_order(request, env, person, delivery, order, group_id):
         delivery=delivery,
         request=request,
         group_id=group_id,
+        **kwargs,
     )

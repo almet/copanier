@@ -213,6 +213,7 @@ async def place_order(request, response, id):
                         delivery=delivery,
                         order=order,
                         group_id=orderer.group_id,
+                        url_for=app.url_for,
                     )
             else:
                 emails.send_order(
@@ -222,6 +223,7 @@ async def place_order(request, response, id):
                     delivery=delivery,
                     order=order,
                     group_id=orderer.email,
+                    url_for=app.url_for,
                 )
         response.message(
             f"La commande pour « {orderer.name} » a bien été prise en compte, "
