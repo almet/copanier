@@ -21,7 +21,11 @@ class Response(RollResponse):
         context["request"] = self.request
         context["url_for"] = app.url_for
         if self.request.cookies.get("message"):
-            context["message"] = json.loads(self.request.cookies["message"])
+            try:
+                message = json.loads(self.request.cookies["message"])
+                context["message"] = message
+            except ValueError:
+                print('Unable to read the content of the cookie message. Skipping it.') 
             self.cookies.set("message", "")
         return env.get_template(template_name).render(*args, **context)
 
