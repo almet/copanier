@@ -165,9 +165,9 @@ def test_productorder_quantity():
 
 def test_group_management():
     ndp = Group(
-        id="nid-de-poules", name="Nid de poules", members=["someone@domain.tld"]
+        id="passage-creuse", name="Nid de poules", members=["someone@domain.tld"]
     )
-    assert ndp.id == "nid-de-poules"
+    assert ndp.id == "passage-creuse"
     assert ndp.name == "Nid de poules"
     assert len(ndp.members) == 1
     groups = Groups.load()
@@ -177,7 +177,7 @@ def test_group_management():
     groups.add_user("simon@tld", ndp.id)
     assert "simon@tld" in groups.groups[ndp.id].members
 
-    ladouce = Group(id="la-douce", name="La douce", members=[])
+    ladouce = Group(id="la-lointaine", name="La douce", members=[])
     groups.add_group(ladouce)
     groups.add_user("simon@tld", ladouce.id)
     assert "simon@tld" in groups.groups[ladouce.id].members

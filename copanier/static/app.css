@@ -720,3 +720,12 @@ ul.actions > li {
 small {
   font-size: 70% !important;
 }
+
+.demo-mode {
+  background: var(--warning-color);
+  padding: 0em !important;
+}
+
+.header {
+  padding-bottom: 2em !important;
+}

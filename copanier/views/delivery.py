@@ -5,7 +5,7 @@ from roll import HttpError
 from debts.solver import order_balance, check_balance, reduce_balance
 
 from .core import app, staff_only, session, env
-from ..models import Delivery, Person, Order, ProductOrder
+from ..models import Delivery, Person, Order, ProductOrder, Groups, SavedConfiguration
 from .. import utils, reports, emails, config
 
 
@@ -16,8 +16,11 @@ async def on_startup():
 
 @app.route("/", methods=["GET"])
 async def home(request, response):
+    if not Delivery.is_defined() and not Groups.is_defined():
+        response.redirect = url_for("onboarding")
+        return
     if not request["user"].group_id:
-        response.redirect = "/groupes"
+        response.redirect = url_for("groups")
         return
     response.html(
         "delivery/list_deliveries.html",

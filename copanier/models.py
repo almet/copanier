@@ -77,10 +77,38 @@ class Base:
 
 @dataclass
 class PersistedBase(Base):
+
     @classmethod
     def get_root(cls):
-        return Path(config.DATA_ROOT) / cls.__root__
+        root = Path(config.DATA_ROOT)
+        if getattr(config, 'DEMO_MODE', False):
+            root = root / "demo"
+        
+        return root / cls.__root__
 
+
+@dataclass
+class SavedConfiguration(PersistedBase):
+    __lock__ = threading.Lock()
+    demo_mode_enabled: bool = False
+
+    @classmethod
+    def get_path(cls):
+        return Path(config.DATA_ROOT) / "config.yml"
+
+    def persist(self):
+        with self.__lock__:
+            self.get_path().write_text(self.dump())
+
+    @classmethod
+    def load(cls):
+        path = cls.get_path()
+        if path.exists():
+            data = yaml.safe_load(path.read_text())
+            data = {k: v for k, v in data.items() if k in cls.__dataclass_fields__}
+        else:
+            data = {}
+        return cls(**data)
 
 @dataclass
 class Person(Base):
@@ -133,6 +161,12 @@ class Groups(PersistedBase):
             data = {"groups": {}}
         groups = cls(**data)
         return groups
+    
+    @classmethod
+    def is_defined(cls):
+        groups = cls.load()
+        return len(groups.groups) > 0
+
 
     def persist(self):
         with self.__lock__:
@@ -384,6 +418,10 @@ class Delivery(PersistedBase):
         for path in root.glob("*.yml"):
             id_ = str(path.relative_to(cls.get_root())).replace(".yml", "")
             yield Delivery.load(id_)
+    
+    @classmethod
+    def is_defined(cls):
+        return len(list(cls.all())) > 0
 
     @classmethod
     def incoming(cls):

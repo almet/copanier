@@ -1,6 +1,6 @@
 from .core import app, session, env, url
 
-from ..models import Groups, Person
+from ..models import Groups, Person, SavedConfiguration
 from .. import utils, emails, config
 
 
@@ -11,6 +11,13 @@ async def auth_required(request, response):
     # route as unprotected.
     if request.path.startswith("/static/"):
         return
+
+    saved_config = SavedConfiguration.load()
+    if saved_config.demo_mode_enabled:
+        setattr(config, 'DEMO_MODE', True)
+    else:
+        setattr(config, 'DEMO_MODE', False)
+
     if request.route.payload and not request.route.payload.get("unprotected"):
         token = request.cookies.get("token")
         email = None
@@ -83,3 +90,23 @@ async def set_sesame(request, response, token):
 async def logout(request, response):
     response.cookies.set(name="token", value="", httponly=True)
     response.redirect = "/"
+
+
+@app.route("/premier-lancement", methods=["GET"])
+async def onboarding(request, response):
+    response.html("onboarding.html")
+
+@app.route("/premier-lancement/demo", methods=["GET"])
+async def activate_demo(request, response):
+    saved_config = SavedConfiguration.load()
+    saved_config.demo_mode_enabled = True
+    saved_config.persist()
+    response.redirect = "/"
+
+@app.route("/premier-lancement/demo/désactiver", methods=["GET"])
+async def desactivate_demo(request, response):
+    saved_config = SavedConfiguration.load()
+    saved_config.demo_mode_enabled = False
+    saved_config.persist()
+    response.redirect = "/"
+    
