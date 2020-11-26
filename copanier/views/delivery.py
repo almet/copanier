@@ -17,10 +17,10 @@ async def on_startup():
 @app.route("/", methods=["GET"])
 async def home(request, response):
     if not Delivery.is_defined() and not Groups.is_defined():
-        response.redirect = url_for("onboarding")
+        response.redirect = app.url_for("onboarding")
         return
     if not request["user"].group_id:
-        response.redirect = url_for("groups")
+        response.redirect = app.url_for("groups")
         return
     response.html(
         "delivery/list_deliveries.html",
