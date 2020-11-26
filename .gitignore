@@ -1,7 +1,8 @@
 __pycache__
 *.egg-info
 tmp/
-db/
+db/*
+!db/demo
 venv
 .env
 .vscode

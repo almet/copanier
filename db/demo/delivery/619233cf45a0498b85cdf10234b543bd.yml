@@ -1,0 +1,1878 @@
+contact: suehame@udus.tw
+contact_phone: (662) 583-4983
+from_date: 2020-11-26 17:00:00
+instructions: ''
+name: Distribution du 8 décembre
+order_before: 2020-11-26 00:00:00
+orders:
+  '1312':
+    phone_number: 06 25 31 54 25
+    products:
+      tisanes-de-l-hermitage-tisane-nivose-35gr:
+        adjustment: 0
+        wanted: 4
+      tisanes-de-l-hermitage-tisane-special-crac-35gr:
+        adjustment: 0
+        wanted: 3
+      you-and-bees-miel-de-printemps-doux-cremeux-pissenlit-fruitiers-colza-500g:
+        adjustment: 0
+        wanted: 4
+      you-and-bees-offre-2-miel-ete-printemps-500g-x-2:
+        adjustment: 0
+        wanted: 2
+  john:
+    phone_number: (716) 549-5737
+    products:
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 3
+      TERRA_CHOCO_PALETS_70:
+        adjustment: 0
+        wanted: 1
+      TERRA_COUSCOUS_BLANC:
+        adjustment: 0
+        wanted: 1
+      TERRA_HUILE_OLIVE_5L:
+        adjustment: 0
+        wanted: 1
+      TERRA_PUREE_TOMATES:
+        adjustment: 0
+        wanted: 6
+      TERRA_RIZ_LONG_BLANC:
+        adjustment: 0
+        wanted: 1
+      TERRA_SUCRE_CANNE_BLOND:
+        adjustment: 0
+        wanted: 1
+      TREVERO_JUS_POMMES:
+        adjustment: 0
+        wanted: 0
+      brasserie-du-vieux-singe-biere-l-eau-qui-dort-75cl-75cl:
+        adjustment: 0
+        wanted: 6
+  chez-louise:
+    phone_number: (470) 362-7387
+    products:
+      CLOTEAU_HUILE_TOUR_BIB:
+        adjustment: 0
+        wanted: 1
+      TERRA_HUILE_OLIVE_5L:
+        adjustment: 0
+        wanted: 2
+      TERRA_RIZ_LONG_BLANC:
+        adjustment: 0
+        wanted: 1
+      TERRA_RIZ_LONG_SEMI:
+        adjustment: 0
+        wanted: 1
+      TERRA_SUCRE_CANNE_BLOND:
+        adjustment: 0
+        wanted: 1
+      TREVERO_JUS_POMMES:
+        adjustment: 0
+        wanted: 0
+      cat-bain-de-bretagne-cafe-2-mundos-1-kg:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-argile-verte-150g:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-savon-verveine-100g:
+        adjustment: 0
+        wanted: 1
+      ferme-de-la-rocherais-farine-de-sarrasin-5kg:
+        adjustment: 0
+        wanted: 1
+      ferme-de-trevero-huile-colza-5l:
+        adjustment: 0
+        wanted: 1
+      jean-pierre-cloteau-farine-de-ble-t80-10kg:
+        adjustment: 0
+        wanted: 1
+      rumex-courge-spaghetti-kg:
+        adjustment: 0
+        wanted: 1
+      rumex-potimarrons-kg:
+        adjustment: 0
+        wanted: 1
+  les-filles-du-bout:
+    phone_number: (235) 539-3698
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 4
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 4
+      TERRA_CHOCO_NOIR_63:
+        adjustment: 0
+        wanted: 3
+      TERRA_PUREE_TOMATES:
+        adjustment: 0
+        wanted: 12
+      TREVERO_JUS_POMMES:
+        adjustment: 0
+        wanted: 0
+      brasserie-torr-penn-ale-ambree-75-75cl:
+        adjustment: 0
+        wanted: 2
+      brasserie-torr-penn-american-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 2
+      brasserie-torr-penn-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 2
+      cat-bain-de-bretagne-cafe-2-mundos-1-kg:
+        adjustment: 0
+        wanted: 1
+      rumex-carottes-kg:
+        adjustment: 0
+        wanted: 1
+      rumex-lessive-a-la-cendre-de-manue-5l-bidon-de-5l:
+        adjustment: 0
+        wanted: 1
+      rumex-poireaux-kg:
+        adjustment: 0
+        wanted: 1
+      rumex-potimarrons-kg:
+        adjustment: 0
+        wanted: 1
+  chaton:
+    phone_number: (553) 234-2227
+    products:
+      CLOTEAU_HUILE_TOUR_BIB:
+        adjustment: 0
+        wanted: 2
+      TERRA_COUSCOUS_BLANC:
+        adjustment: 0
+        wanted: 4
+      TERRA_RIZ_LONG_BLANC:
+        adjustment: 0
+        wanted: 1
+      TREVERO_JUS_POMMES:
+        adjustment: 0
+        wanted: 0
+      jean-paul-gabillard-pommes-de-terre-chair-ferme-sac-de-10kg:
+        adjustment: 0
+        wanted: 1
+      jean-paul-gabillard-pommes-de-terre-sac-de-10kg:
+        adjustment: 0
+        wanted: 1
+      jean-pierre-cloteau-farine-de-ble-t80-10kg:
+        adjustment: 0
+        wanted: 3
+      you-and-bees-offre-2-miel-ete-printemps-500g-x-2:
+        adjustment: 0
+        wanted: 1
+  chez-pascale:
+    phone_number: (667) 414-7610
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 2
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 3
+      brasserie-du-vieux-singe-nouveau-monde-de-la-derniere-fois-75cl:
+        adjustment: 0
+        wanted: 4
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 1
+  laxe:
+    phone_number: (568) 577-3504
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 4
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 6
+      TERRA_KROUNCHY_NAT:
+        adjustment: 0
+        wanted: 1
+      brasserie-du-vieux-singe-biere-l-eau-qui-dort-75cl-75cl:
+        adjustment: 0
+        wanted: 2
+      brasserie-torr-penn-american-pale-ale-33-33cl:
+        adjustment: 0
+        wanted: 2
+      brasserie-torr-penn-american-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 2
+      brasserie-torr-penn-pale-ale-33-33cl:
+        adjustment: 0
+        wanted: 2
+      brasserie-torr-penn-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 2
+      fabrik-a-bulles-recharge-solid-vaisselle-100g:
+        adjustment: 0
+        wanted: 1
+      ferme-de-trevero-oeuf-12:
+        adjustment: 0
+        wanted: 2
+      jean-pierre-cloteau-farine-de-seigle-t80-5kg:
+        adjustment: 0
+        wanted: 1
+      rumex-carottes-kg:
+        adjustment: 0
+        wanted: 1
+      rumex-poireaux-kg:
+        adjustment: 0
+        wanted: 2
+      rumex-potimarrons-kg:
+        adjustment: 0
+        wanted: 1
+      terra-libra-pates-spaghetti-nature-3kg:
+        adjustment: 0
+        wanted: 1
+      terra-libra-pates-tagliatelles-nature-3kg:
+        adjustment: 0
+        wanted: 1
+      tisanes-de-l-hermitage-tisane-nivose-35gr:
+        adjustment: 0
+        wanted: 1
+      tisanes-de-l-hermitage-tisane-ortisane-35gr:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-miel-de-printemps-doux-cremeux-pissenlit-fruitiers-colza-500g:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-miel-de-tilleul-gout-fleuri-500:
+        adjustment: 0
+        wanted: 1
+  mouin:
+    phone_number: (348) 367-9911
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 5
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 5
+      TERRA_PATES_TORS_DEMI:
+        adjustment: 0
+        wanted: 1
+      brasserie-du-vieux-singe-biere-l-eau-qui-dort-75cl-75cl:
+        adjustment: 0
+        wanted: 2
+      brasserie-du-vieux-singe-nouveau-monde-de-la-derniere-fois-75cl:
+        adjustment: 0
+        wanted: 6
+      cat-bain-de-bretagne-cafe-2-mundos-1-kg:
+        adjustment: 0
+        wanted: 2
+      fabrik-a-bulles-savon-a-l-olivier-100g:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-savon-au-soucis-calendula-100g:
+        adjustment: 0
+        wanted: 1
+      rumex-carottes-kg:
+        adjustment: 0
+        wanted: 3
+      rumex-courge-spaghetti-kg:
+        adjustment: 0
+        wanted: 3
+      rumex-poireaux-kg:
+        adjustment: 0
+        wanted: 3
+      rumex-potimarrons-kg:
+        adjustment: 0
+        wanted: 10
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 2
+      tisanes-de-l-hermitage-les-petits-moutons-35gr:
+        adjustment: 0
+        wanted: 1
+      tisanes-de-l-hermitage-tisane-nivose-35gr:
+        adjustment: 0
+        wanted: 1
+      tisanes-de-l-hermitage-tisane-ortisane-35gr:
+        adjustment: 0
+        wanted: 1
+      tisanes-de-l-hermitage-tisane-pause-de-midi-35gr:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-miel-de-tilleul-gout-fleuri-500:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-miel-de-ville-gout-exotique-erable-tilleul-eliante-fevier-500g:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-offre-2-miel-ete-printemps-500g-x-2:
+        adjustment: 0
+        wanted: 1
+  le-chauffage:
+    phone_number: (407) 348-7748
+    products:
+      TERRA_CORN_FLAKES_NAT:
+        adjustment: 0
+        wanted: 1
+      TERRA_COUSCOUS_BLANC:
+        adjustment: 0
+        wanted: 1
+      TERRA_HUILE_OLIVE_5L:
+        adjustment: 0
+        wanted: 2
+      TERRA_KROUNCHY_NAT:
+        adjustment: 0
+        wanted: 2
+      TERRA_PATES_PENNE_DEMI:
+        adjustment: 0
+        wanted: 1
+      TERRA_RIZ_LONG_BLANC:
+        adjustment: 0
+        wanted: 1
+      TERRA_RIZ_LONG_SEMI:
+        adjustment: 0
+        wanted: 1
+      TERRA_SUCRE_CANNE_BLOND:
+        adjustment: 0
+        wanted: 1
+      TERRA_VINAIGRE_BALSA_5L:
+        adjustment: 0
+        wanted: 1
+      brasserie-du-vieux-singe-nouveau-monde-de-la-derniere-fois-75cl:
+        adjustment: 0
+        wanted: 4
+      brasserie-torr-penn-american-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 1
+      brasserie-torr-penn-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-shampooing-solide-au-shikaikai-et-ylang-ylang-90g:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-solid-vaisselle-100g:
+        adjustment: 0
+        wanted: 1
+      ferme-de-la-rocherais-farine-de-sarrasin-5kg:
+        adjustment: 0
+        wanted: 2
+      ferme-de-la-rocherais-farine-de-seigle-5kg:
+        adjustment: 0
+        wanted: 1
+      ferme-de-trevero-huile-colza-1l:
+        adjustment: 0
+        wanted: 1
+      jean-paul-gabillard-pommes-de-terre-chair-ferme-sac-de-10kg:
+        adjustment: 0
+        wanted: 1
+      jean-pierre-cloteau-farine-d-epeautre-10kg:
+        adjustment: 0
+        wanted: 1
+      jean-pierre-cloteau-flocons-d-avoine-5kg:
+        adjustment: 0
+        wanted: 1
+      rumex-carottes-kg:
+        adjustment: 0
+        wanted: 5
+      rumex-courge-spaghetti-kg:
+        adjustment: 0
+        wanted: 4
+      rumex-lessive-a-la-cendre-de-manue-1l-l:
+        adjustment: 0
+        wanted: 1
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 6
+      terra-libra-pates-spaghetti-nature-3kg:
+        adjustment: 0
+        wanted: 2
+      terra-libra-pates-tagliatelles-nature-3kg:
+        adjustment: 0
+        wanted: 2
+      you-and-bees-miel-de-printemps-doux-cremeux-pissenlit-fruitiers-colza-500g:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-offre-2-miel-ete-printemps-500g-x-2:
+        adjustment: 0
+        wanted: 1
+  la-lointaine:
+    phone_number: (331) 834-1631
+    products:
+      CLOTEAU_HUILE_TOUR_BIB:
+        adjustment: 0
+        wanted: 1
+      TERRA_HUILE_OLIVE_5L:
+        adjustment: 0
+        wanted: 1
+      TERRA_PATES_PENNE_NAT:
+        adjustment: 0
+        wanted: 1
+      TERRA_PUREE_TOMATES:
+        adjustment: 0
+        wanted: 30
+      TERRA_RIZ_LONG_BLANC:
+        adjustment: 0
+        wanted: 1
+      TREVERO_JUS_POMMES:
+        adjustment: 2
+        wanted: 0
+      cat-bain-de-bretagne-cafe-2-mundos-1-kg:
+        adjustment: 0
+        wanted: 2
+      ferme-de-la-rocherais-farine-de-sarrasin-5kg:
+        adjustment: 0
+        wanted: 1
+      jean-paul-gabillard-pommes-de-terre-chair-ferme-sac-de-10kg:
+        adjustment: 0
+        wanted: 1
+      rumex-courge-spaghetti-kg:
+        adjustment: 0
+        wanted: 5
+      rumex-potimarrons-kg:
+        adjustment: 0
+        wanted: 5
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 1
+      terra-libra-pates-spaghetti-nature-3kg:
+        adjustment: 0
+        wanted: 1
+  la-bas-au-loin:
+    phone_number: (634) 733-3377
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 3
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 3
+      CLOTEAU_HUILE_TOUR_BIB:
+        adjustment: 0
+        wanted: 1
+      TERRA_COUSCOUS_BLANC:
+        adjustment: 0
+        wanted: 1
+      brasserie-du-vieux-singe-biere-l-eau-qui-dort-75cl-75cl:
+        adjustment: 0
+        wanted: 3
+      brasserie-du-vieux-singe-nouveau-monde-de-la-derniere-fois-75cl:
+        adjustment: 0
+        wanted: 6
+      jean-pierre-cloteau-farine-de-ble-t80-10kg:
+        adjustment: 0
+        wanted: 1
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 2
+  la-lumiere:
+    phone_number: (327) 358-5774
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 10
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 4
+      CLOTEAU_HUILE_TOUR_BIB:
+        adjustment: 0
+        wanted: 4
+      TERRA_CHOCO_PALETS_70:
+        adjustment: 0
+        wanted: 1
+      TERRA_COUSCOUS_BLANC:
+        adjustment: 0
+        wanted: 1
+      TERRA_HUILE_OLIVE_5L:
+        adjustment: 0
+        wanted: 3
+      TERRA_KROUNCHY_NAT:
+        adjustment: 0
+        wanted: 2
+      TERRA_PUREE_TOMATES:
+        adjustment: 0
+        wanted: 6
+      brasserie-du-vieux-singe-biere-l-eau-qui-dort-75cl-75cl:
+        adjustment: 0
+        wanted: 4
+      brasserie-du-vieux-singe-nouveau-monde-de-la-derniere-fois-75cl:
+        adjustment: 0
+        wanted: 12
+      brasserie-torr-penn-ale-ambree-75-75cl:
+        adjustment: 0
+        wanted: 6
+      brasserie-torr-penn-american-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 3
+      brasserie-torr-penn-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 5
+      fabrik-a-bulles-recharge-solid-vaisselle-100g:
+        adjustment: 0
+        wanted: 4
+      fabrik-a-bulles-savon-a-l-oranger-100g:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-savon-au-karite-100g:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-solid-vaisselle-100g:
+        adjustment: 0
+        wanted: 1
+      jean-pierre-cloteau-chanvre-torrefie-sachet-de-250-g:
+        adjustment: 0
+        wanted: 1
+      rumex-carottes-kg:
+        adjustment: 0
+        wanted: 5
+      rumex-courge-spaghetti-kg:
+        adjustment: 0
+        wanted: 10
+      rumex-lessive-a-la-cendre-de-manue-5l-bidon-de-5l:
+        adjustment: 0
+        wanted: 1
+      rumex-poireaux-kg:
+        adjustment: 0
+        wanted: 5
+      rumex-potimarrons-kg:
+        adjustment: 0
+        wanted: 2
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 5
+      you-and-bees-miel-de-sarrasin-gout-boise-500g:
+        adjustment: 0
+        wanted: 1
+  la-reclue:
+    phone_number: (948) 702-8025
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 6
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 3
+      CLOTEAU_HUILE_TOUR_BIB:
+        adjustment: 0
+        wanted: 2
+      TERRA_SUCRE_CANNE_BLOND:
+        adjustment: 0
+        wanted: 1
+      TREVERO_JUS_POMMES:
+        adjustment: 0
+        wanted: 0
+      brasserie-du-vieux-singe-biere-l-eau-qui-dort-75cl-75cl:
+        adjustment: 0
+        wanted: 3
+      brasserie-torr-penn-ale-ambree-75-75cl:
+        adjustment: 0
+        wanted: 1
+      brasserie-torr-penn-american-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 1
+      brasserie-torr-penn-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 1
+      cat-bain-de-bretagne-cafe-2-mundos-1-kg:
+        adjustment: 0
+        wanted: 1
+      ferme-de-trevero-huile-colza-1l:
+        adjustment: 0
+        wanted: 1
+      jean-pierre-cloteau-farine-de-ble-t80-10kg:
+        adjustment: 0
+        wanted: 1
+      jean-pierre-cloteau-farine-de-seigle-t130-10kg:
+        adjustment: 0
+        wanted: 1
+      rumex-carottes-kg:
+        adjustment: 0
+        wanted: 2
+      rumex-poireaux-kg:
+        adjustment: 0
+        wanted: 4
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 2
+  la-ville-z:
+    phone_number: (731) 489-5558
+    products:
+      TREVERO_JUS_POMMES:
+        adjustment: 0
+        wanted: 0
+      rumex-poireaux-kg:
+        adjustment: 0
+        wanted: 7
+      rumex-potimarrons-kg:
+        adjustment: 0
+        wanted: 7
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 6
+      you-and-bees-miel-de-tilleul-gout-fleuri-500:
+        adjustment: 0
+        wanted: 2
+  la-moins:
+    phone_number: (551) 270-8420
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 6
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 6
+      TREVERO_JUS_POMMES:
+        adjustment: 0
+        wanted: 0
+      jean-paul-gabillard-pommes-de-terre-chair-ferme-sac-de-10kg:
+        adjustment: 0
+        wanted: 1
+      rumex-carottes-kg:
+        adjustment: 0
+        wanted: 2
+      rumex-courge-spaghetti-kg:
+        adjustment: 0
+        wanted: 4
+      rumex-poireaux-kg:
+        adjustment: 0
+        wanted: 4
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 3
+  le-foin:
+    phone_number: (520) 569-9937
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 6
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 16
+      TERRA_CHOCO_NOIR_63:
+        adjustment: 0
+        wanted: 1
+      TERRA_COUSCOUS_BLANC:
+        adjustment: 0
+        wanted: 1
+      TERRA_HUILE_OLIVE_5L:
+        adjustment: 0
+        wanted: 7
+      TERRA_PATES_PENNE_DEMI:
+        adjustment: 0
+        wanted: 1
+      TERRA_PATES_PENNE_NAT:
+        adjustment: 0
+        wanted: 1
+      TERRA_RIZ_LONG_SEMI:
+        adjustment: 0
+        wanted: 1
+      TERRA_SUCRE_CANNE_BLOND:
+        adjustment: 0
+        wanted: 3
+      TREVERO_JUS_POMMES:
+        adjustment: 0
+        wanted: 4
+      brasserie-du-vieux-singe-nouveau-monde-de-la-derniere-fois-75cl:
+        adjustment: 0
+        wanted: 38
+      brasserie-torr-penn-ale-ambree-75-75cl:
+        adjustment: 0
+        wanted: 6
+      brasserie-torr-penn-american-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 3
+      brasserie-torr-penn-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 3
+      cat-bain-de-bretagne-cafe-2-mundos-1-kg:
+        adjustment: 0
+        wanted: 2
+      fabrik-a-bulles-savon-au-soucis-calendula-100g:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-shampooing-solide-ortie-verveine-90g:
+        adjustment: 0
+        wanted: 1
+      ferme-de-la-rocherais-farine-de-sarrasin-5kg:
+        adjustment: 0
+        wanted: 2
+      jean-pierre-cloteau-chanvre-torrefie-sachet-de-250-g:
+        adjustment: 0
+        wanted: 2
+      jean-pierre-cloteau-farine-de-ble-t80-10kg:
+        adjustment: 0
+        wanted: 3
+      rumex-lessive-a-la-cendre-de-manue-5l-bidon-de-5l:
+        adjustment: 0
+        wanted: 3
+      terra-libra-graines-de-tournesol-decortiquees-bio-5-kg:
+        adjustment: 0
+        wanted: 1
+      tisanes-de-l-hermitage-tisane-nivose-35gr:
+        adjustment: 0
+        wanted: 4
+      tisanes-de-l-hermitage-tisane-ortisane-35gr:
+        adjustment: 0
+        wanted: 3
+      tisanes-de-l-hermitage-tisane-special-crac-35gr:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-miel-de-sarrasin-gout-boise-500g:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-miel-de-tilleul-gout-fleuri-500:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-offre-2-miel-ete-printemps-500g-x-2:
+        adjustment: 0
+        wanted: 3
+  le-grand-champ:
+    phone_number: (488) 461-5305
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 6
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 12
+      TERRA_CHOCO_PALETS_70:
+        adjustment: 0
+        wanted: 2
+      TERRA_COUSCOUS_BLANC:
+        adjustment: 0
+        wanted: 1
+      TERRA_KROUNCHY_NAT:
+        adjustment: 0
+        wanted: 1
+      TERRA_PUREE_TOMATES:
+        adjustment: 0
+        wanted: 12
+      TERRA_RIZ_LONG_SEMI:
+        adjustment: 0
+        wanted: 1
+      TERRA_SUCRE_CANNE_BLOND:
+        adjustment: 0
+        wanted: 2
+      brasserie-du-vieux-singe-biere-l-eau-qui-dort-75cl-75cl:
+        adjustment: 0
+        wanted: 6
+      brasserie-du-vieux-singe-nouveau-monde-de-la-derniere-fois-75cl:
+        adjustment: 0
+        wanted: 24
+      brasserie-torr-penn-ale-ambree-75-75cl:
+        adjustment: 0
+        wanted: 6
+      brasserie-torr-penn-american-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 6
+      cat-bain-de-bretagne-cafe-2-mundos-1-kg:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-recharge-solid-vaisselle-100g:
+        adjustment: 0
+        wanted: 5
+      fabrik-a-bulles-savon-au-soucis-calendula-100g:
+        adjustment: 0
+        wanted: 1
+      rumex-carottes-kg:
+        adjustment: 0
+        wanted: 5
+      rumex-potimarrons-kg:
+        adjustment: 0
+        wanted: 10
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 2
+      terra-libra-graines-de-tournesol-decortiquees-bio-5-kg:
+        adjustment: 0
+        wanted: 2
+  ttre:
+    phone_number: (811) 321-5071
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 2
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 2
+      CLOTEAU_HUILE_TOUR_BIB:
+        adjustment: 0
+        wanted: 1
+      TERRA_COUSCOUS_BLANC:
+        adjustment: 0
+        wanted: 1
+      TERRA_PUREE_TOMATES:
+        adjustment: 0
+        wanted: 6
+      TERRA_SUCRE_CANNE_BLOND:
+        adjustment: 0
+        wanted: 1
+      TREVERO_JUS_POMMES:
+        adjustment: 0
+        wanted: 0
+      brasserie-du-vieux-singe-biere-l-eau-qui-dort-75cl-75cl:
+        adjustment: 0
+        wanted: 1
+      rumex-carottes-kg:
+        adjustment: 0
+        wanted: 10
+      rumex-courge-spaghetti-kg:
+        adjustment: 0
+        wanted: 2
+      rumex-poireaux-kg:
+        adjustment: 0
+        wanted: 3
+      rumex-potimarrons-kg:
+        adjustment: 0
+        wanted: 6
+  passage-creuse:
+    phone_number: (256) 896-8805
+    products:
+      CLOTEAU_HUILE_TOUR_BIB:
+        adjustment: 0
+        wanted: 1
+      TERRA_CHOCO_NOIR_63:
+        adjustment: 0
+        wanted: 6
+      TERRA_KROUNCHY_NAT:
+        adjustment: 0
+        wanted: 1
+      TERRA_PUREE_TOMATES:
+        adjustment: 0
+        wanted: 18
+      TERRA_RIZ_LONG_SEMI:
+        adjustment: 0
+        wanted: 1
+      TERRA_SUCRE_CANNE_BLOND:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-rhassoul-argile-150g:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-savon-verveine-100g:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-shampooing-solide-ortie-verveine-90g:
+        adjustment: 0
+        wanted: 1
+      jean-pierre-cloteau-flocons-d-avoine-5kg:
+        adjustment: 0
+        wanted: 2
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 5
+      terra-libra-graines-de-tournesol-decortiquees-bio-5-kg:
+        adjustment: 0
+        wanted: 1
+      terra-libra-pates-tagliatelles-nature-3kg:
+        adjustment: 0
+        wanted: 1
+  pataudes:
+    phone_number: (446) 397-3595
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 10
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 12
+      TERRA_COUSCOUS_BLANC:
+        adjustment: 0
+        wanted: 1
+      TERRA_HUILE_OLIVE_5L:
+        adjustment: 0
+        wanted: 1
+      TERRA_KROUNCHY_NAT:
+        adjustment: 0
+        wanted: 1
+      TERRA_PUREE_TOMATES:
+        adjustment: 0
+        wanted: 8
+      brasserie-du-vieux-singe-biere-l-eau-qui-dort-75cl-75cl:
+        adjustment: 0
+        wanted: 5
+      brasserie-du-vieux-singe-nouveau-monde-de-la-derniere-fois-75cl:
+        adjustment: 0
+        wanted: 6
+      brasserie-torr-penn-ale-ambree-75-75cl:
+        adjustment: 0
+        wanted: 5
+      brasserie-torr-penn-american-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 3
+      brasserie-torr-penn-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 5
+      cat-bain-de-bretagne-cafe-2-mundos-1-kg:
+        adjustment: 0
+        wanted: 1
+      ferme-de-trevero-oeuf-12:
+        adjustment: 0
+        wanted: 1
+      rumex-carottes-kg:
+        adjustment: 0
+        wanted: 2
+      rumex-poireaux-kg:
+        adjustment: 0
+        wanted: 2
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 1
+      tisanes-de-l-hermitage-les-petits-moutons-35gr:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-miel-de-sarrasin-gout-boise-500g:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-offre-2-miel-ete-printemps-500g-x-2:
+        adjustment: 0
+        wanted: 1
+  rs:
+    phone_number: (600) 880-6636
+    products:
+      TERRA_KROUNCHY_NAT:
+        adjustment: 0
+        wanted: 5
+      brasserie-du-vieux-singe-nouveau-monde-de-la-derniere-fois-75cl:
+        adjustment: 0
+        wanted: 2
+      brasserie-torr-penn-ale-ambree-75-75cl:
+        adjustment: 0
+        wanted: 1
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 1
+      terra-libra-pates-tagliatelles-nature-3kg:
+        adjustment: 0
+        wanted: 3
+      you-and-bees-miel-de-fleur-d-ete-chataigner-ronces-trefle-500g:
+        adjustment: 0
+        wanted: 1
+  peug:
+    phone_number: (950) 276-3443
+    products:
+      BVS_NM_75:
+        adjustment: 0
+        wanted: 30
+      BVS_ST_75:
+        adjustment: 0
+        wanted: 6
+      TERRA_CHOCO_PALETS_70:
+        adjustment: 0
+        wanted: 1
+      TERRA_PUREE_TOMATES:
+        adjustment: 0
+        wanted: 6
+      TREVERO_JUS_POMMES:
+        adjustment: 0
+        wanted: 6
+      brasserie-du-vieux-singe-nouveau-monde-de-la-derniere-fois-75cl:
+        adjustment: 0
+        wanted: 12
+      brasserie-torr-penn-ale-ambree-75-75cl:
+        adjustment: 0
+        wanted: 18
+      brasserie-torr-penn-american-pale-ale-75-75cl:
+        adjustment: 0
+        wanted: 6
+      cat-bain-de-bretagne-cafe-2-mundos-1-kg:
+        adjustment: 0
+        wanted: 3
+      fabrik-a-bulles-argile-blanche-100g:
+        adjustment: 0
+        wanted: 1
+      fabrik-a-bulles-shampooing-solide-ortie-verveine-90g:
+        adjustment: 0
+        wanted: 1
+      ferme-de-la-rocherais-farine-de-seigle-5kg:
+        adjustment: 0
+        wanted: 1
+      rumex-carottes-kg:
+        adjustment: 0
+        wanted: 6
+      rumex-poireaux-kg:
+        adjustment: 0
+        wanted: 2
+      terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg:
+        adjustment: 0
+        wanted: 2
+      terra-libra-pates-spaghetti-nature-3kg:
+        adjustment: 0
+        wanted: 1
+      terra-libra-pates-tagliatelles-nature-3kg:
+        adjustment: 0
+        wanted: 1
+      tisanes-de-l-hermitage-tisane-nivose-35gr:
+        adjustment: 0
+        wanted: 1
+      tisanes-de-l-hermitage-tisane-ortisane-35gr:
+        adjustment: 0
+        wanted: 1
+      you-and-bees-miel-de-tilleul-gout-fleuri-500:
+        adjustment: 0
+        wanted: 1
+producers:
+  brasserie-du-vieux-singe:
+    contact: ''
+    description: ''
+    id: brasserie-du-vieux-singe
+    name: Brasserie du Vieux Singe
+    referent: jisafu@huvogu.jm
+    referent_name: Tarik
+    referent_tel: (302) 959-9491
+  brasserie-torr-penn:
+    contact: Thomas
+    description: Bières
+    id: brasserie-torr-penn
+    name: Brasserie Torr Penn
+    referent: basuho@ambum.af
+    referent_name: Paule
+    referent_tel: (357) 884-2015
+  cat-bain-de-bretagne:
+    contact: ''
+    description: ''
+    id: cat-bain-de-bretagne
+    name: CAT Bain de Bretagne
+    referent: voaktid@dupurdu.er
+    referent_name: Émeline
+    referent_tel: (565) 742-4800
+  fabrik-a-bulles:
+    contact: ''
+    description: produits de bôté & ménager
+    id: fabrik-a-bulles
+    name: Fabrik à Bulles
+    referent: ohu@vukuk.vu
+    referent_name: Louisa
+    referent_tel: (230) 377-8475
+  ferme-de-la-rocherais:
+    contact: ferme@larocheraie.com
+    description: ''
+    id: ferme-de-la-rocherais
+    name: Ferme de la Rocherais
+    referent: atzahe@metuuja.lc
+    referent_name: Rèch
+    referent_tel: (253) 477-5512
+  ferme-de-trevero:
+    contact: ''
+    description: ''
+    id: ferme-de-trevero
+    name: Ferme de Trevero
+    referent: puet@helzet.ax
+    referent_name: Coline
+    referent_tel: (473) 861-3703
+  jean-paul-gabillard:
+    contact: gabillard.jean-paul@orange.fr
+    description: Agriculture Biologique
+    id: jean-paul-gabillard
+    name: Jean-Paul Gabillard
+    referent: waci@ige.rw
+    referent_name: Alexis
+    referent_tel: (849) 437-3120
+  jean-pierre-cloteau:
+    contact: jpcloteau@gmail.com 0670705026
+    description: farines et huiles
+    id: jean-pierre-cloteau
+    name: Jean Pierre Cloteau
+    referent: hutfiro@aje.gov
+    referent_name: Gabrielle
+    referent_tel: (312) 979-6450
+  rumex:
+    contact: Waner
+    description: 'Collectif de jardinage '
+    id: rumex
+    name: Rumex
+    referent: nannijnot@nasabatig.su
+    referent_name: Micka
+    referent_tel: (538) 714-5384
+  terra-libra:
+    contact: ''
+    description: ''
+    id: terra-libra
+    name: Terra Libra
+    referent: kudal@lellok.bv
+    referent_name: Cécile
+    referent_tel: (647) 725-4443
+  tisanes-de-l-hermitage:
+    contact: ''
+    description: Mayenne
+    id: tisanes-de-l-hermitage
+    name: 'Tisanes de l''Hermitage '
+    referent: wogne@cehhi.af
+    referent_name: Manon
+    referent_tel: (629) 555-3130
+  you-and-bees:
+    contact: Julien Desodt
+    description: Miel
+    id: you-and-bees
+    name: You and Bees
+    referent: ofo@rajesco.ar
+    referent_name: Lara
+    referent_tel: (289) 964-7100
+products:
+- description: Paraguay
+  last_update: 2020-10-10 13:00:21.208709
+  name: Sucre de canne blond
+  packing: null
+  price: 14.0
+  producer: terra-libra
+  ref: TERRA_SUCRE_CANNE_BLOND
+  rupture: null
+  unit: 5kg
+- description: ' (bio du Pérou) spécial dessert'
+  last_update: 2020-10-10 13:00:21.208712
+  name: Chocolat noir 63% cacao
+  packing: null
+  price: 3.59
+  producer: terra-libra
+  ref: TERRA_CHOCO_NOIR_63
+  rupture: ''
+  unit: 1 tablette de 200g
+- description: ' (bio d''Andalousie)'
+  last_update: 2020-10-10 13:00:21.208713
+  name: Huile d'olive extra vierge
+  packing: 0
+  price: 39.85
+  producer: terra-libra
+  ref: TERRA_HUILE_OLIVE_5L
+  rupture: null
+  unit: 5L
+- description: (bio d'Italie)
+  last_update: 2020-10-10 13:00:21.208713
+  name: Vinaigre balsamique
+  packing: 0
+  price: 37.45
+  producer: terra-libra
+  ref: TERRA_VINAIGRE_BALSA_5L
+  rupture: null
+  unit: 5L
+- description: '(Passata bio d''Italie) '
+  last_update: 2020-10-10 13:00:21.208713
+  name: Purée de tomate
+  packing: null
+  price: 1.69
+  producer: terra-libra
+  ref: TERRA_PUREE_TOMATES
+  rupture: null
+  unit: pot de 500g
+- description: (bio du Berry)
+  last_update: 2020-10-10 13:00:21.208714
+  name: Pâtes torsade nature
+  packing: 0
+  price: 19.4
+  producer: terra-libra
+  ref: TERRA_PATES_TORSA_NAT
+  rupture: null
+  unit: 5kg
+- description: (bio du Berry)
+  last_update: 2020-10-10 13:00:21.208714
+  name: Pâtes torsade 1/2 complètes
+  packing: 0
+  price: 19.45
+  producer: terra-libra
+  ref: TERRA_PATES_TORS_DEMI
+  rupture: null
+  unit: 5kg
+- description: (bio du Berry)
+  last_update: 2020-10-10 13:00:21.208715
+  name: Pâtes penne nature
+  packing: 0
+  price: 19.4
+  producer: terra-libra
+  ref: TERRA_PATES_PENNE_NAT
+  rupture: null
+  unit: 5kg
+- description: (bio du Berry)
+  last_update: 2020-10-10 13:00:21.208715
+  name: Pâtes penne 1/2 complètes
+  packing: 0
+  price: 19.45
+  producer: terra-libra
+  ref: TERRA_PATES_PENNE_DEMI
+  rupture: null
+  unit: 5kg
+- description: Bio de Camargue
+  last_update: 2020-10-10 13:00:21.208716
+  name: Riz long semi-complet
+  packing: 0
+  price: 25.45
+  producer: terra-libra
+  ref: TERRA_RIZ_LONG_SEMI
+  rupture: null
+  unit: 5kg
+- description: Bio de Camargue
+  last_update: 2020-10-10 13:00:21.208716
+  name: Riz long blanc
+  packing: null
+  price: 26.85
+  producer: terra-libra
+  ref: TERRA_RIZ_LONG_BLANC
+  rupture: RUPTURE
+  unit: 5kg
+- description: bio Italie
+  last_update: 2020-10-10 13:00:21.208717
+  name: Couscous blanc
+  packing: 0
+  price: 12.2
+  producer: terra-libra
+  ref: TERRA_COUSCOUS_BLANC
+  rupture: null
+  unit: 5kg
+- description: Bio 35
+  last_update: 2020-10-10 13:00:21.208717
+  name: Krounchy nature vrac
+  packing: 0
+  price: 20.25
+  producer: terra-libra
+  ref: TERRA_KROUNCHY_NAT
+  rupture: null
+  unit: 5kg
+- description: Bio 35
+  last_update: 2020-10-10 13:00:21.208717
+  name: Corn flakes nature sans sucre vrac
+  packing: 0
+  price: 15.6
+  producer: terra-libra
+  ref: TERRA_CORN_FLAKES_NAT
+  rupture: null
+  unit: 3kg
+- description: ''
+  last_update: 2020-10-10 13:00:21.208718
+  name: Palets de chocolat noir 70% cacao vrac
+  packing: 0
+  price: 29.54
+  producer: terra-libra
+  ref: TERRA_CHOCO_PALETS_70
+  rupture: null
+  unit: 2 kg
+- description: American Wheat
+  last_update: 2020-10-10 13:22:35.300246
+  name: Bière Souffle Tropical 75cl
+  packing: null
+  price: 4.0
+  producer: brasserie-du-vieux-singe
+  ref: BVS_ST_75
+  rupture: null
+  unit: 75cl
+- description: American Pale Ale
+  last_update: 2020-10-10 13:22:35.300249
+  name: Bière Nouveau Monde 75cl
+  packing: null
+  price: 4.0
+  producer: brasserie-du-vieux-singe
+  ref: BVS_NM_75
+  rupture: null
+  unit: 75cl
+- description: London Bitter
+  last_update: 2020-10-10 13:22:35.300250
+  name: Bière En Pleine Tempête 75cl
+  packing: null
+  price: 4.0
+  producer: brasserie-du-vieux-singe
+  ref: BVS_EQD_75
+  rupture: RUPTURE
+  unit: 75cl
+- description: ''
+  last_update: 2020-10-11 20:30:00.966760
+  name: Jus de pommes bio
+  packing: 12
+  price: 2.67
+  producer: ferme-de-trevero
+  ref: TREVERO_JUS_POMMES
+  rupture: null
+  unit: 1L
+- description: ' huiles tournesol'
+  last_update: 2020-10-11 17:15:18.876267
+  name: Huile de tournesol (bib)
+  packing: null
+  price: 10.3
+  producer: jean-pierre-cloteau
+  ref: CLOTEAU_HUILE_TOUR_BIB
+  rupture: null
+  unit: Bib de 3L
+- description: ''
+  last_update: 2020-10-10 11:37:53.978973
+  name: Café 2 mundos
+  packing: null
+  price: 11.45
+  producer: cat-bain-de-bretagne
+  ref: cat-bain-de-bretagne-cafe-2-mundos-1-kg
+  rupture: null
+  unit: 1 kg
+- description: C'est comme un liquide vaisselle mais solide !
+  last_update: 2020-10-10 23:54:50.112151
+  name: Solid Vaisselle
+  packing: null
+  price: 5.6
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-solid-vaisselle-100g
+  rupture: null
+  unit: 100g
+- description: ça c'est quand vous avez déjà commandé du solid vaisselle et que vous
+    avez gardé les boîtes pour mieux les remplir d'une recharge. et donc consommer
+    moins de plastique ! parce que moins de plastique c'est fantastique !
+  last_update: 2020-10-10 23:54:50.112154
+  name: recharge solid vaisselle
+  packing: null
+  price: 5.4
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-recharge-solid-vaisselle-100g
+  rupture: null
+  unit: 100g
+- description: ''
+  last_update: 2020-10-10 23:54:50.112154
+  name: éponge lavable
+  packing: null
+  price: 10.0
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-eponge-lavable-1
+  rupture: null
+  unit: '1'
+- description: ''
+  last_update: 2020-10-10 23:54:50.112155
+  name: shampooing solide au shikaïkaÏ et Ylang Ylang
+  packing: null
+  price: 7.9
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-shampooing-solide-au-shikaikai-et-ylang-ylang-90g
+  rupture: null
+  unit: 90g
+- description: ''
+  last_update: 2020-10-10 23:54:50.112155
+  name: 'shampooing solide ortie-verveine '
+  packing: null
+  price: 7.9
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-shampooing-solide-ortie-verveine-90g
+  rupture: null
+  unit: 90g
+- description: ''
+  last_update: 2020-10-10 23:54:50.112156
+  name: baume déodorant
+  packing: null
+  price: 7.0
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-baume-deodorant-40g
+  rupture: null
+  unit: 40g
+- description: ''
+  last_update: 2020-10-10 23:54:50.112156
+  name: pierre d'argile
+  packing: null
+  price: 7.5
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-pierre-d-argile-200g
+  rupture: null
+  unit: 200g
+- description: ''
+  last_update: 2020-10-10 23:54:50.112157
+  name: argile blanche
+  packing: null
+  price: 4.4
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-argile-blanche-100g
+  rupture: null
+  unit: 100g
+- description: ''
+  last_update: 2020-10-10 23:54:50.112157
+  name: argile verte
+  packing: null
+  price: 4.7
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-argile-verte-150g
+  rupture: null
+  unit: 150g
+- description: shampooing naturel teellement agréable. Idéal pour espacer les shamppoing
+    et pourquoi pas passer au no-shampoo ;)
+  last_update: 2020-10-10 23:54:50.112157
+  name: rhassoul argile
+  packing: null
+  price: 4.7
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-rhassoul-argile-150g
+  rupture: null
+  unit: 150g
+- description: ''
+  last_update: 2020-10-10 23:54:50.112158
+  name: beurre karité
+  packing: null
+  price: 10.5
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-beurre-karite-100ml
+  rupture: null
+  unit: 100ml
+- description: ''
+  last_update: 2020-10-10 23:54:50.112158
+  name: savon à l'olivier
+  packing: null
+  price: 6.4
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-savon-a-l-olivier-100g
+  rupture: null
+  unit: 100g
+- description: ''
+  last_update: 2020-10-10 23:54:50.112159
+  name: savon au soucis (calendula)
+  packing: null
+  price: 6.4
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-savon-au-soucis-calendula-100g
+  rupture: null
+  unit: 100g
+- description: ''
+  last_update: 2020-10-10 23:54:50.112159
+  name: savon à l'oranger
+  packing: null
+  price: 6.4
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-savon-a-l-oranger-100g
+  rupture: null
+  unit: 100g
+- description: ''
+  last_update: 2020-10-10 23:54:50.112159
+  name: savon au karité
+  packing: null
+  price: 6.4
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-savon-au-karite-100g
+  rupture: null
+  unit: 100g
+- description: ''
+  last_update: 2020-10-10 23:54:50.112160
+  name: savon verveine
+  packing: null
+  price: 6.4
+  producer: fabrik-a-bulles
+  ref: fabrik-a-bulles-savon-verveine-100g
+  rupture: null
+  unit: 100g
+- description: ''
+  last_update: 2020-10-11 17:15:18.876272
+  name: farine de Blé T80
+  packing: null
+  price: 13.95
+  producer: jean-pierre-cloteau
+  ref: jean-pierre-cloteau-farine-de-ble-t80-10kg
+  rupture: null
+  unit: 10kg
+- description: ''
+  last_update: 2020-10-11 17:15:18.876273
+  name: farine de seigle T130
+  packing: null
+  price: 13.95
+  producer: jean-pierre-cloteau
+  ref: jean-pierre-cloteau-farine-de-seigle-t130-10kg
+  rupture: null
+  unit: 10kg
+- description: ''
+  last_update: 2020-10-11 17:15:18.876273
+  name: farine d'épeautre
+  packing: null
+  price: 23.5
+  producer: jean-pierre-cloteau
+  ref: jean-pierre-cloteau-farine-d-epeautre-10kg
+  rupture: null
+  unit: 10kg
+- description: ''
+  last_update: 2020-10-11 17:15:18.876274
+  name: sarrasin décortiqué
+  packing: null
+  price: 51.7
+  producer: jean-pierre-cloteau
+  ref: jean-pierre-cloteau-sarrasin-decortique-10kg
+  rupture: null
+  unit: 10kg
+- description: ''
+  last_update: 2020-10-11 17:15:18.876274
+  name: farine de blé T80
+  packing: null
+  price: 9.3
+  producer: jean-pierre-cloteau
+  ref: jean-pierre-cloteau-farine-de-seigle-t80-5kg
+  rupture: null
+  unit: 5kg
+- description: ''
+  last_update: 2020-10-11 17:15:18.876274
+  name: flocons d'avoine
+  packing: null
+  price: 11.35
+  producer: jean-pierre-cloteau
+  ref: jean-pierre-cloteau-flocons-d-avoine-5kg
+  rupture: null
+  unit: 5kg
+- description: ''
+  last_update: 2020-10-11 17:15:18.876275
+  name: flocon d'épeautre
+  packing: null
+  price: 16.6
+  producer: jean-pierre-cloteau
+  ref: jean-pierre-cloteau-flocon-d-epeautre-5kg
+  rupture: null
+  unit: 5kg
+- description: Ramener ses contenants
+  last_update: 2020-10-11 20:30:00.966767
+  name: Oeuf
+  packing: null
+  price: 6.0
+  producer: ferme-de-trevero
+  ref: ferme-de-trevero-oeuf-12
+  rupture: null
+  unit: la douzaine (ou 18 déclassés)
+- description: ''
+  last_update: 2020-10-11 20:30:00.966768
+  name: Patates déclassées
+  packing: null
+  price: 1.0
+  producer: ferme-de-trevero
+  ref: ferme-de-trevero-patates-declassees-kg
+  rupture: RUPTURE
+  unit: kg
+- description: ''
+  last_update: 2020-10-11 20:30:00.966769
+  name: huile colza
+  packing: null
+  price: 8.0
+  producer: ferme-de-trevero
+  ref: ferme-de-trevero-huile-colza-1l
+  rupture: null
+  unit: 1l
+- description: ''
+  last_update: 2020-10-11 20:30:00.966770
+  name: huile colza
+  packing: null
+  price: 30.0
+  producer: ferme-de-trevero
+  ref: ferme-de-trevero-huile-colza-5l
+  rupture: RUPTURE
+  unit: 5L
+- description: ''
+  last_update: 2020-10-10 13:37:14.062038
+  name: Farine de sarrasin
+  packing: 0
+  price: 17.0
+  producer: ferme-de-la-rocherais
+  ref: ferme-de-la-rocherais-farine-de-sarrasin-5kg
+  rupture: null
+  unit: 5kg
+- description: ''
+  last_update: 2020-10-10 13:37:14.062041
+  name: Farine de sarrasin
+  packing: null
+  price: 59.0
+  producer: ferme-de-la-rocherais
+  ref: ferme-de-la-rocherais-farine-de-sarrasin-20kg
+  rupture: null
+  unit: 20kg
+- description: ''
+  last_update: 2020-10-10 13:37:14.062042
+  name: Farine de seigle
+  packing: null
+  price: 9.2
+  producer: ferme-de-la-rocherais
+  ref: ferme-de-la-rocherais-farine-de-seigle-5kg
+  rupture: null
+  unit: 5kg
+- description: ''
+  last_update: 2020-10-10 13:37:14.062042
+  name: Farine de seigle
+  packing: null
+  price: 33.0
+  producer: ferme-de-la-rocherais
+  ref: ferme-de-la-rocherais-farine-de-seigle-20kg
+  rupture: null
+  unit: 20kg
+- description: (bio du Berry)
+  last_update: 2020-10-10 13:00:21.208722
+  name: Pâtes tagliatelles nature
+  packing: 0
+  price: 14.63
+  producer: terra-libra
+  ref: terra-libra-pates-tagliatelles-nature-3kg
+  rupture: null
+  unit: 3kg
+- description: (bio du Berry)
+  last_update: 2020-10-10 13:00:21.208722
+  name: Pâtes spaghetti nature
+  packing: null
+  price: 14.63
+  producer: terra-libra
+  ref: terra-libra-pates-spaghetti-nature-3kg
+  rupture: null
+  unit: 3kg
+- description: digestion (sarriette, romarin, camomille, menthe, aneth)
+  last_update: 2020-10-10 13:26:48.810872
+  name: Tisane "Pause de midi"
+  packing: null
+  price: 5.5
+  producer: tisanes-de-l-hermitage
+  ref: tisanes-de-l-hermitage-tisane-pause-de-midi-35gr
+  rupture: null
+  unit: 35gr
+- description: Tisane collective à géométrie variable
+  last_update: 2020-10-10 13:26:48.810876
+  name: Tisane "Spécial CRAC"
+  packing: null
+  price: 5.5
+  producer: tisanes-de-l-hermitage
+  ref: tisanes-de-l-hermitage-tisane-special-crac-35gr
+  rupture: null
+  unit: 35gr
+- description: Reconstituante, reminéralisante (ortie, romarin, prêle, thym, angélique,
+    rose)
+  last_update: 2020-10-10 13:26:48.810877
+  name: Tisane "Ortisane"
+  packing: null
+  price: 5.5
+  producer: tisanes-de-l-hermitage
+  ref: tisanes-de-l-hermitage-tisane-ortisane-35gr
+  rupture: null
+  unit: 35gr
+- description: Coup de froid (Thym, hysope, origan, lavande, sureau)
+  last_update: 2020-10-10 13:26:48.810877
+  name: Tisane "Nivose"
+  packing: null
+  price: 5.5
+  producer: tisanes-de-l-hermitage
+  ref: tisanes-de-l-hermitage-tisane-nivose-35gr
+  rupture: null
+  unit: 35gr
+- description: ''
+  last_update: 2020-10-10 13:00:21.208723
+  name: Café Yachil - Coop zapatiste 100% arabica moulu
+  packing: null
+  price: 14.19
+  producer: terra-libra
+  ref: terra-libra-cafe-yachil-coop-zapatiste-100-arabica-moulu-1kg
+  rupture: null
+  unit: 1kg
+- description: ''
+  last_update: 2020-10-10 13:01:17.390882
+  name: Graines de tournesol décortiquées Bio*
+  packing: null
+  price: 31.86
+  producer: terra-libra
+  ref: terra-libra-graines-de-tournesol-decortiquees-bio-5-kg
+  rupture: null
+  unit: 5 kg
+- description: Stout Vanille
+  last_update: 2020-10-10 13:22:35.300254
+  name: Bière L'Eau Qui Dort 75cl
+  packing: null
+  price: 4.4
+  producer: brasserie-du-vieux-singe
+  ref: brasserie-du-vieux-singe-biere-l-eau-qui-dort-75cl-75cl
+  rupture: null
+  unit: 75cl
+- description: Tisane pour dormir
+  last_update: 2020-10-10 13:26:48.810878
+  name: Les Petits Moutons
+  packing: null
+  price: 5.5
+  producer: tisanes-de-l-hermitage
+  ref: tisanes-de-l-hermitage-les-petits-moutons-35gr
+  rupture: null
+  unit: 35gr
+- description: 'Cucurbita pepo Variété coureuse, vigoureuse, donnant plusieurs fruits
+    ovales, jaune clair à maturité. Récolter à maturité complète avant les gelées.
+    Leur chair est particulière : après cuisson, elle se défait en « spaghettis »,
+    très digestes'
+  last_update: 2020-10-10 13:49:11.805382
+  name: Courge Spaghetti
+  packing: null
+  price: 2.2
+  producer: rumex
+  ref: rumex-courge-spaghetti-kg
+  rupture: null
+  unit: kg
+- description: Cucurbita maxima Epiderme bien coloré, rouge orange, chair colorée
+    orange. Forme et calibre réguliers, fruit de 1,5 à 2 kg. Très bonne qualité gustative.
+    Conservation jusqu’en février.
+  last_update: 2020-10-10 13:49:53.710025
+  name: Potimarrons
+  packing: null
+  price: 2.2
+  producer: rumex
+  ref: rumex-potimarrons-kg
+  rupture: null
+  unit: kg
+- description: Allium porrum Possibilité de les mettre en jauge dans son jardin pour
+    les conserver.
+  last_update: 2020-10-10 13:50:23.615532
+  name: Poireaux
+  packing: null
+  price: 2.2
+  producer: rumex
+  ref: rumex-poireaux-kg
+  rupture: null
+  unit: kg
+- description: Daucus carota Variétés anciennes mélangées. Rouge-sang, Colmar, Jaune
+    du Doubs, Gniff, …
+  last_update: 2020-10-10 13:50:48.403161
+  name: Carottes
+  packing: null
+  price: 2.2
+  producer: rumex
+  ref: rumex-carottes-kg
+  rupture: null
+  unit: kg
+- description: ''
+  last_update: 2020-10-10 14:05:55.460924
+  name: Miel de fleur d'été (châtaigner, ronces, trèfle)
+  packing: null
+  price: 7.2
+  producer: you-and-bees
+  ref: you-and-bees-miel-de-fleur-d-ete-chataigner-ronces-trefle-500g
+  rupture: null
+  unit: 500g
+- description: ''
+  last_update: 2020-10-10 14:06:27.002465
+  name: Miel de printemps (doux crémeux) (pissenlit, fruitiers, colza)
+  packing: null
+  price: 7.2
+  producer: you-and-bees
+  ref: you-and-bees-miel-de-printemps-doux-cremeux-pissenlit-fruitiers-colza-500g
+  rupture: null
+  unit: 500g
+- description: ''
+  last_update: 2020-10-10 14:06:43.363816
+  name: Miel de sarrasin (goût boisé)
+  packing: null
+  price: 7.2
+  producer: you-and-bees
+  ref: you-and-bees-miel-de-sarrasin-gout-boise-500g
+  rupture: null
+  unit: 500g
+- description: ''
+  last_update: 2020-10-10 14:06:56.549862
+  name: Miel de tilleul (goût fleuri)
+  packing: null
+  price: 7.2
+  producer: you-and-bees
+  ref: you-and-bees-miel-de-tilleul-gout-fleuri-500
+  rupture: null
+  unit: '500'
+- description: ''
+  last_update: 2020-10-10 14:07:12.678227
+  name: Miel de ville (goût exotique) (érable, tilleul, eliante, févier)
+  packing: null
+  price: 7.2
+  producer: you-and-bees
+  ref: you-and-bees-miel-de-ville-gout-exotique-erable-tilleul-eliante-fevier-500g
+  rupture: null
+  unit: 500g
+- description: ''
+  last_update: 2020-10-10 14:08:00.566156
+  name: Offre 2 miel (été + printemps)
+  packing: null
+  price: 12.6
+  producer: you-and-bees
+  ref: you-and-bees-offre-2-miel-ete-printemps-500g-x-2
+  rupture: null
+  unit: 500g x 2
+- description: ''
+  last_update: 2020-10-10 14:15:14.876170
+  name: Pale ale 33
+  packing: null
+  price: 1.92
+  producer: brasserie-torr-penn
+  ref: brasserie-torr-penn-pale-ale-33-33cl
+  rupture: null
+  unit: 33cl
+- description: ''
+  last_update: 2020-10-10 14:15:29.217018
+  name: Pale ale 75
+  packing: null
+  price: 4.2
+  producer: brasserie-torr-penn
+  ref: brasserie-torr-penn-pale-ale-75-75cl
+  rupture: null
+  unit: 75cl
+- description: ''
+  last_update: 2020-10-10 14:15:48.902587
+  name: American pale ale 33
+  packing: null
+  price: 1.92
+  producer: brasserie-torr-penn
+  ref: brasserie-torr-penn-american-pale-ale-33-33cl
+  rupture: null
+  unit: 33cl
+- description: ''
+  last_update: 2020-10-10 14:16:06.128472
+  name: American pale ale 75
+  packing: null
+  price: 4.2
+  producer: brasserie-torr-penn
+  ref: brasserie-torr-penn-american-pale-ale-75-75cl
+  rupture: null
+  unit: 75cl
+- description: ''
+  last_update: 2020-10-10 14:16:25.134560
+  name: Ale ambrée 33
+  packing: null
+  price: 1.92
+  producer: brasserie-torr-penn
+  ref: brasserie-torr-penn-ale-ambree-33-33cl
+  rupture: null
+  unit: 33cl
+- description: ''
+  last_update: 2020-10-10 14:16:39.639048
+  name: Ale ambrée 75
+  packing: null
+  price: 4.2
+  producer: brasserie-torr-penn
+  ref: brasserie-torr-penn-ale-ambree-75-75cl
+  rupture: null
+  unit: 75cl
+- description: ''
+  last_update: 2020-10-11 17:15:18.876278
+  name: chanvre torréfié
+  packing: null
+  price: 2.7
+  producer: jean-pierre-cloteau
+  ref: jean-pierre-cloteau-chanvre-torrefie-sachet-de-250-g
+  rupture: null
+  unit: sachet de 250 g
+- description: bouteille d'un litre
+  last_update: 2020-10-12 11:36:25.314656
+  name: Lessive à la cendre de Manue (1L)
+  packing: null
+  price: 3.0
+  producer: rumex
+  ref: rumex-lessive-a-la-cendre-de-manue-1l-l
+  rupture: null
+  unit: L
+- description: ''
+  last_update: 2020-10-12 11:37:02.557870
+  name: Lessive à la cendre de Manue (5L)
+  packing: null
+  price: 13.5
+  producer: rumex
+  ref: rumex-lessive-a-la-cendre-de-manue-5l-bidon-de-5l
+  rupture: null
+  unit: bidon de 5L
+- description: Mona Lisa (Chair tendre)
+  last_update: 2020-10-18 18:59:29.425590
+  name: Pommes de terre chair tendre
+  packing: null
+  price: 18.0
+  producer: jean-paul-gabillard
+  ref: jean-paul-gabillard-pommes-de-terre-sac-de-10kg
+  rupture: null
+  unit: Sac de 10kg
+- description: Allians (chair ferme)
+  last_update: 2020-10-19 16:16:36.440557
+  name: Pommes de terre chair ferme
+  packing: null
+  price: 18.0
+  producer: jean-paul-gabillard
+  ref: jean-paul-gabillard-pommes-de-terre-chair-ferme-sac-de-10kg
+  rupture: null
+  unit: Sac de 10kg
+- description: Souffle Tropical
+  last_update: 2020-11-06 22:17:54.549076
+  name: Relivraison suite problème recette dernière distrib
+  packing: null
+  price: 0.0
+  producer: brasserie-du-vieux-singe
+  ref: brasserie-du-vieux-singe-nouveau-monde-de-la-derniere-fois-75cl
+  rupture: null
+  unit: 75cl
+shipping:
+  terra-libra: 7.0
+to_date: 2020-11-26 20:00:00
+where: Le Nid de Poules
