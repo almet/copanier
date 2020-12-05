@@ -54,32 +54,45 @@ In copanier, we only focus on groups of consumers. We want to keep things as str
 
 ## Install copanier locally
 
+### Get the system dependencies
+
+You might need to install some system dependencies. On
+[Debian-based](https://www.debian.org) systems, you can install the
+dependencies with this command:
+
+```bash
+sudo apt install python3-dev python3-venv python3-pip libcairo-dev libpango1.0-dev
+```
+
 The project relies on Python 3.7+, so if you don't have it yet, here's your
 chance!
 
-One way to install it, is to use [pyenv](https://github.com/pyenv/pyenv):
+One way to install it is to use [pyenv](https://github.com/pyenv/pyenv):
 
 ```bash
-$ pyenv install 3.7.1
-$ pyenv global 3.7.1
+pyenv install 3.7.1
+pyenv global 3.7.1
 ```
 
-And then create a virtualenv so everything is installed separately from the
+### Install copanier
+
+We recommend to use virtualenv so everything is installed separately from the
 rest of the system:
 
 ```bash
-$ # Get the source code locally
-$ git clone https://github.com/spiral-project/copanier.git
-$ cd copanier
+# Get the source code locally
+git clone https://github.com/spiral-project/copanier.git
+cd copanier
 
-$ # Create the virtualenv
-$ python -m venv venv
+# Create the virtualenv
+python -m venv venv
+# On some systems, you might need to specify "python3.7 -m venv venv"
 
-$ # Activate it!
-$ source venv/bin/activate
+# Activate it!
+source venv/bin/activate
 
-$ # install everything!
-$ pip install -e .
+# install everything!
+pip install -e .
 ```
 
 ## Run local server
@@ -89,13 +102,13 @@ Once everything is installed, you can use the `copanier` command to run the serv
 Make sure venv is active, then:
 
 ```bash
-$ copanier serve
+copanier serve
 ```
 
 Optionally autoreload the server when you change a python file (needs `hupper`):
 
 ```bash
-$ copanier serve --reload
+copanier serve --reload
 ```
 
 Then browse to [http://localhost:2244](http://localhost:2244)
@@ -106,16 +119,16 @@ If you want to contribute, don't hesitate! In this case, it might be helpful to
 install a few other dependencies.
 
 ```bash
-$ pip instal -e .[test]
+pip instal -e .[test]
 ```
 
 Then, to run the tests:
 
 ```bash
-$ # install the required dependencies for dev
-$ pip install -r requirements-dev.txt
-$ # run the tests
-$ py.test tests
+# install the required dependencies for dev
+pip install -r requirements-dev.txt
+# run the tests
+py.test tests
 ```
 
 ## Configuration
