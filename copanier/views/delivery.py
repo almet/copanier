@@ -338,7 +338,6 @@ async def compute_payments(request, response, id):
             balance.append((group_id, amount))
 
     debiters, crediters = order_balance(balance)
-    check_balance(debiters, crediters)
     results = reduce_balance(debiters[:], crediters[:])
 
     results_dict = defaultdict(partial(defaultdict, float))
