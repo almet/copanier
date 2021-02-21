@@ -4,7 +4,7 @@ from roll import HttpError
 
 from debts.solver import order_balance, check_balance, reduce_balance
 
-from .core import app, staff_only, session, env
+from .core import app, session, env
 from ..models import Delivery, Person, Order, ProductOrder, Groups, SavedConfiguration
 from .. import utils, reports, emails, config
 
@@ -35,7 +35,6 @@ async def new_delivery(request, response):
 
 
 @app.route("/distribution", methods=["POST"])
-@staff_only
 async def create_delivery(request, response):
     form = request.form
     data = {}
@@ -123,14 +122,12 @@ async def export_products(request, response, id):
 
 
 @app.route("/distribution/{id}/edit", methods=["GET"])
-@staff_only
 async def edit_delivery(request, response, id):
     delivery = Delivery.load(id)
     response.html("delivery/edit_delivery.html", {"delivery": delivery})
 
 
 @app.route("/distribution/{id}/edit", methods=["POST"])
-@staff_only
 async def post_delivery(request, response, id):
     delivery = Delivery.load(id)
     form = request.form
@@ -275,7 +272,6 @@ async def generate_report(request, response, id):
 
 
 @app.route("/distribution/{id}/ajuster/{ref}", methods=["GET", "POST"])
-@staff_only
 async def adjust_product(request, response, id, ref):
     delivery = Delivery.load(id)
     delivery_url = f"/distribution/{delivery.id}"
