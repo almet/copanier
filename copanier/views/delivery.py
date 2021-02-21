@@ -303,7 +303,6 @@ async def adjust_product(request, response, id, ref):
 
 
 @app.route("/distribution/{id}/paiements", methods=["GET"])
-@staff_only
 async def compute_payments(request, response, id):
     delivery = Delivery.load(id)
     groups = request["groups"]
