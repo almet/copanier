@@ -12,6 +12,7 @@ SMTP_PASSWORD = ""
 SMTP_LOGIN = ""
 FROM_EMAIL = ""
 STAFF = []
+HIDE_GROUPS_LINK = False
 LOCALE = "fr_FR.UTF-8"
 #LOCALE = "en_US.UTF-8"
 SITE_NAME = "Copanier"

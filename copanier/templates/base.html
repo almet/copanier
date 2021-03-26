@@ -43,9 +43,11 @@
                         <a href="{{ url_for('new_delivery') }}"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle distribution</a>
                     </li>
                     {% endif %}
+                    {% if request.user and (request.user.is_staff or not config.HIDE_GROUPS_LINK) %}
                     <li class="pure-menu-item">
                         <a class="pure-menu-link" href="{{ url_for('groups') }}"><i class="icon-globe"></i>&nbsp;Gérer les groupes</a>
                     </li>
+                    {% endif %}
                     <li class="pure-menu-item">
                         <a href="{{ url_for('logout') }}"><i class="icon-lock"></i>&nbsp;Se déconnecter</a>
                     </li>
@@ -65,8 +67,8 @@
             </div>
         </div>
     </div>
-    
-    
+
+
     <script src="{{ url_for('/static/js/flash.min.js') }}"></script>
     <script src="{{ url_for('/static/js/app.js') }}"></script>
     {% if message %}
@@ -78,6 +80,6 @@
         theme: "dark"
     });
     </script>
-    {% endif %} 
+    {% endif %}
 </body>
 </html>
