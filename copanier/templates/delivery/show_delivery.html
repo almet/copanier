@@ -4,6 +4,8 @@
 
 <div class="header">
     <h1>{{ delivery.name }}</h1>
+    {% include "includes/delivery_progress.html" %}
+    
     <h4>{% if delivery.products %}
         {% include "includes/delivery_status.html" %}
         {% endif %}

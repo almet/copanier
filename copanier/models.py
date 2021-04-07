@@ -293,12 +293,15 @@ class Order(Base):
             p.quantity * _get_price(ref) for ref, p in self.products.items()
         )
 
-        total_shipping = 0
-        if include_shipping:
-            for producer in producers:
-                total_shipping = total_shipping + delivery.shipping_for(email, producer)
+        shipping = self.compute_shipping(delivery, producers, email) if include_shipping else 0
 
-        return round(total_products + total_shipping, 2)
+        return round(total_products + shipping, 2)
+
+    def compute_shipping(self, delivery, producers, email):
+        total_shipping = 0
+        for producer in producers:
+            total_shipping = total_shipping + delivery.shipping_for(email, producer)
+        return total_shipping
 
     @property
     def has_adjustments(self):
@@ -315,6 +318,7 @@ class Delivery(PersistedBase):
     NEED_PRICE_UPDATE = 1
     OPEN = 2
     ADJUSTMENT = 3
+    WAITING_PRODUCTS = 4
 
     name: str
     from_date: datetime_field
@@ -343,6 +347,9 @@ class Delivery(PersistedBase):
             return self.OPEN
         if self.needs_adjustment:
             return self.ADJUSTMENT
+        if self.is_waiting_products:
+            return self.WAITING_PRODUCTS
+        
         return self.CLOSED
 
     def products_need_price_update(self, products=None):
@@ -375,6 +382,15 @@ class Delivery(PersistedBase):
     @property
     def is_open(self):
         return datetime.now().date() <= self.order_before.date()
+    
+    @property
+    def is_waiting_products(self):
+        return (
+            datetime.now().date() >= self.order_before.date()
+            and
+            datetime.now().date() <= self.from_date.date()
+        )
+
 
     @property
     def is_foreseen(self):
