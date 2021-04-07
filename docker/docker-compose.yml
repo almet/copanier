@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: "./docker/Dockerfile"
+    command: /srv/copanier-venv/bin/gunicorn -k roll.worker.Worker copanier:app --bind 0.0.0.0:2244
+  static:
+    image: "nginx:latest"
+    volumes:
+      - "../copanier/static:/srv/copanier_static/static:ro"
+      - "./nginx-default.conf:/etc/nginx/conf.d/default.conf:ro"
+    depends_on:
+      - app
+    ports:
+      - 0.0.0.0:2244:80

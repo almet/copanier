@@ -97,12 +97,16 @@ pip install -e .
 
 ### Running in docker
 
+For this, you need to have [docker](https://docs.docker.com/engine/install/) and [docker-compose](https://docs.docker.com/compose/install/) installed.
+
 To give a try to Copanier quickly, you can use docker:
 
 ```bash
-sudo docker build -t copanier:local .
-sudo docker run --name copanier --rm -p 2244:2244 copanier:local
+cd docker
+sudo docker-compose -p copanier up
 ```
+
+The app will be available at http://localhost:2244
 
 ## Run local server
 
