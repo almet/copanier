@@ -1,0 +1,10 @@
+<ul class="progressbar">
+    <li>Mise à jour des référent·es</li>
+    <li {% if delivery.status == delivery.NEED_PRICE_UPDATE %}class="active"{% endif %}>Mise à jour des prix</li>
+    <li {% if delivery.status == delivery.OPEN %}class="active"{% endif %}>Commande</li>
+    <li {% if delivery.status == delivery.ADJUSTMENT %}class="active"{% endif %}>Ajustements</li>
+    <li {% if delivery.status == delivery.WAITING_PRODUCTS %}class="active"{% endif %}>Récupération des commandes</li>
+    <li>Distribution</li>
+    <li {% if delivery.status == delivery.CLOSED %}class="active"{% endif %}>Répartition des paiements</li>
+</ul>
+<div style="clear: both"></div>

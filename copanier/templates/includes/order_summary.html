@@ -2,10 +2,11 @@
     <tr><th class="product">Produit</th>{% if display_prices %}<th class="price">Prix unitaire</th>{% endif %}<th class="amount">Quantité</th></tr>
     {% for product in delivery.products %}
     {% if order[product].quantity %}
-    <tr>
-        <th class="product" style="text-align: left;">{{ product }}</th>
+    <tr {% if product.rupture %}class="rupture"{% endif %}>
+        <th class="product" style="text-align: left;">{{ product }}{% if product.rupture %} (rupture){% endif %}</th>
         {% if display_prices %}<td>{{ product.price | round(2) }} €</td>{% endif %}<td>{{ order[product].quantity }} x {{ product.unit }}</td>
     </tr>
+    {% if product.rupture %}</del>{% endif %}
     {% endif %}
     {% endfor %}
 </table>

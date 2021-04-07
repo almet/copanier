@@ -566,7 +566,8 @@ details summary {
 }
 
 .rupture {
-  background-color: #ff000083;
+  background-color: #ff000083 !important;
+  text-decoration: line-through;
 }
 
 .list-emails {
