@@ -102,6 +102,7 @@ To give a try to Copanier quickly, you can use docker:
 ```bash
 sudo docker build -t copanier:local .
 sudo docker run --name copanier --rm -p 2244:2244 copanier:local
+```
 
 ## Run local server
 
