@@ -12,9 +12,10 @@ ENV LANG fr_FR.UTF-8
 ENV LANGUAGE fr_FR:fr  
 ENV LC_ALL fr_FR.UTF-8     
 
-RUN git clone https://github.com/spiral-project/copanier /srv/copanier
-RUN cd /srv/copanier/ && python3 -m venv venv && . ./venv/bin/activate && pip install wheel && pip install -e .
+COPY ./ /srv/copanier
+#git clone https://github.com/spiral-project/copanier /srv/copanier
+RUN cd /srv/copanier/ && python3 -m venv /srv/copanier-venv && . /srv/copanier-venv/bin/activate && pip install wheel gunicorn && pip install -e .
 
 RUN dpkg-reconfigure locales
-RUN sed -i 's/simple_server(app, port=2244)/simple_server(app, host="0.0.0.0", port=2244)/g' /srv/copanier/copanier/__init__.py
-ENTRYPOINT ["/srv/copanier/venv/bin/copanier", "serve"]
+# RUN sed -i 's/simple_server(app, port=2244)/simple_server(app, host="0.0.0.0", port=2244)/g' /srv/copanier/copanier/__init__.py
+#ENTRYPOINT ["/srv/copanier/venv/bin/copanier", "serve"]
