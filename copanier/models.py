@@ -293,12 +293,15 @@ class Order(Base):
             p.quantity * _get_price(ref) for ref, p in self.products.items()
         )
 
-        total_shipping = 0
-        if include_shipping:
-            for producer in producers:
-                total_shipping = total_shipping + delivery.shipping_for(email, producer)
+        shipping = self.compute_shipping(delivery, producers, email) if include_shipping else 0
 
-        return round(total_products + total_shipping, 2)
+        return round(total_products + shipping, 2)
+
+    def compute_shipping(self, delivery, producers, email):
+        total_shipping = 0
+        for producer in producers:
+            total_shipping = total_shipping + delivery.shipping_for(email, producer)
+        return total_shipping
 
     @property
     def has_adjustments(self):

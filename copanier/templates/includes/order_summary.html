@@ -1,13 +1,18 @@
 <table class="order">
-    <tr><th class="product">Produit</th>{% if display_prices %}<th class="price">Prix unitaire</th>{% endif %}<th class="amount">Quantité</th></tr>
+    <tr><th class="product">Produit</th>{% if display_prices %}<th class="price">Prix unitaire (€)</th>{% endif %}<th class="amount">Quantité</th>{% if display_prices %}<th class="sum">Somme (€)</th>{% endif %}</tr>
     {% for product in delivery.products %}
     {% if order[product].quantity %}
     <tr {% if product.rupture %}class="rupture"{% endif %}>
         <th class="product" style="text-align: left;">{{ product }}{% if product.rupture %} (rupture){% endif %}</th>
-        {% if display_prices %}<td>{{ product.price | round(2) }} €</td>{% endif %}<td>{{ order[product].quantity }} x {{ product.unit }}</td>
+        {% if display_prices %}
+        <td>{{ product.price | round(2) }} €</td>
+        {% endif %}
+        <td>{{ order[product].quantity }} x {{ product.unit }}</td>
+        {% if display_prices %}
+        <td>{{ order.total([product], delivery, group_id, False) }}</td>
+        {% endif %}
     </tr>
-    {% if product.rupture %}</del>{% endif %}
     {% endif %}
     {% endfor %}
 </table>
-<p>Total: {{ order.total(delivery.products, delivery, group_id) if order else 0 }} €</p>
+<p>Total: {{ order.total(delivery.products, delivery, group_id) if order else 0 }} € (dont {{ order.compute_shipping(delivery, delivery.producers, group_id) | round(2) }} de port)</p>
