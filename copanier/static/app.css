@@ -785,3 +785,7 @@ small {
 .progressbar li.active + li:after {
   background-color: #55b776;
 }
+
+#instructions {
+  height: 100px;
+}

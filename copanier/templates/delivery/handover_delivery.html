@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block toplink %}{% if delivery.id %}<a href="{{ url_for('show_delivery', id=delivery.id) }}">↶ Retourner à la distribution</a>{% endif %}{% endblock %}
+{% block body %}
+<div>
+{% if delivery.id %}
+<h1>Passage de la référence (transmission)</h1>
+
+<p>La distribution est maintenant terminée ! Il est temps de passer le relai à une autre personne.</p>
+<p>Le plus simple est de remplir les détails pour la prochaine distribution, ainsi que les informations pour les référent·es qui vont évoluer</p>
+<p>Et puis on créera la prochaine distribution et on enverra un petit mail à la nouvelle personne référente.</p>
+{% endif %}
+
+</div>
+<form method="post">
+    <label>
+        <p>Nom de la prochaine distribution</p>
+        <input type="text" name="name" value="{{ delivery.name or '' }}">
+    </label>
+    <label>
+        <p>Email du / de la référent⋅e</p>
+        <input type="email" name="contact" value="{{ delivery.contact or request.user.email }}" required>
+    </label>
+    <label>
+        <p>Téléphone pour joindre le / la référent⋅e</p>
+        <input id="contact_phone" onInput="prettifyPhoneNumber('contact_phone')" type="phone" name="contact_phone" value="{{ delivery.contact_phone }}" required>
+    </label>
+    
+    <label>
+        <p>Lieu</p>
+        <input type="text" name="where" value="{{ delivery.where or '' }}" required>
+    </label>
+    <label>
+        <p>Date de distribution</p>
+        <input type="date" name="date" value="{{ delivery.from_date.date() if delivery.from_date else '' }}" required> de <input type="time" name="from_time" value="{{ delivery.from_date.time() if delivery.from_date else '' }}" required> à <input type="time" name="to_time" value="{{ delivery.to_date.time() if delivery.to_date else '' }}" required>
+    </label>
+    <label>
+        <p>Date de limite de commande</p>
+        <input type="date" name="order_before" value="{{ delivery.order_before.date() if delivery.order_before else '' }}" required>
+    </label>
+    <label>
+        <p>Un petit message pour la qui reprend ?</p>
+        <textarea id="instructions" name="email_body" cols="80" rows="100"></textarea>
+    </label>
+
+    <h2>Emails des référent·es</h2>
+    <p>Si il y a un changement de référence pour les producteurs·rices, mettez les info à jour :</p>
+
+    {% for producer_name, producer in delivery.producers.items() %}
+    <h3>{{ producer.name }}</h3>
+
+    <input name="producer_{{ producer_name }}_referent_name" type="text" value="{{ producer.referent_name }}">
+    <input name="producer_{{ producer_name }}_referent_email" type="text" value="{{ producer.referent }}">
+    <input name="producer_{{ producer_name }}_referent_tel" type="text" value="{{ producer.referent_tel }}">
+    {% endfor %}
+    <div>
+        <input type="submit" name="submit" value="Valider" class="primary">
+    </div>
+</form>
+<hr>
+{% endblock body %}

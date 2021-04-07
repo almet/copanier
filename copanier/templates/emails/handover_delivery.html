@@ -1,0 +1,37 @@
+<p>Bonjour,</p>
+
+<p>La personne référente de la dernière distribution vient de la clôturer, et a indiqué que vous étiez la personne référente pour la prochaine distribution.</p>
+
+<p>Bravo :-)</p>
+
+{% if email_body %}
+<p>Elle vous a même laissé un petit message : </p>
+
+<p>{{ email_body}}</p>
+
+{% endif %}
+
+<p>Voici les informations renseignées :</p>
+
+<ul>
+    <li>Nom : {{ delivery.name }}</li>
+    <li>Date et heure : {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}.</li>
+    <li>Lieu : {{ delivery.location }}</li>
+    <li>Commandes avant le {{ delivery.order_before|date }}</li>
+</ul>
+
+Référent·es produits :
+
+<ul>
+
+</ul>
+{% for producer_name, producer in delivery.producers.items() %}
+<li>{{ producer.name }} : {{ producer.referent_name }} - <a href="mailto:{{ producer.referent }}">{{ producer.referent }}</a> - <a href="tel:{{ producer.referent_tel }}">{{ producer.referent_tel }}</a></li>
+{% endfor %}
+
+
+<p>Si vous avez besoin de modifier ces informations, vous pouvez le faire <a href="{{ url_for('show_delivery', id=delivery.id) }}">en suivant ce lien.</a></p>
+
+<p>Bonne journée,</p>
+
+<p>{{ config.EMAIL_SIGNATURE }}</p>

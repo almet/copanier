@@ -20,7 +20,6 @@ SITE_URL = "http://localhost:2244"
 SITE_DESCRIPTION = "Shared orders"
 EMAIL_SIGNATURE = "The kind people behind copanier"
 
-
 def init():
     for key, value in globals().items():
         if key.isupper():

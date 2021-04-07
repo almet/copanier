@@ -3,7 +3,7 @@ from emails import Message
 from . import config
 
 
-def send(to, subject, body, html=None, copy=None, attachments=None):
+def send(to, subject, body, html=None, copy=None, attachments=None, mail_from=None):
     if not attachments:
         attachments = []
 
@@ -20,6 +20,7 @@ def send(to, subject, body, html=None, copy=None, attachments=None):
 
     message.send(
         to=to,
+        mail_from=mail_from,
         smtp={
             "host": config.SMTP_HOST,
             "user": config.SMTP_LOGIN,
@@ -30,11 +31,11 @@ def send(to, subject, body, html=None, copy=None, attachments=None):
     )
 
 
-def send_from_template(env, template, to, subject, **params):
+def send_from_template(env, template, to, subject, mail_from=None, **params):
     params["config"] = config
     html = env.get_template(f"emails/{template}.html").render(**params)
     txt = env.get_template(f"emails/{template}.txt").render(**params)
-    send(to, subject, body=txt, html=html)
+    send(to, subject, body=txt, html=html, mail_from=mail_from)
 
 
 def send_order(request, env, person, delivery, order, group_id, **kwargs):
