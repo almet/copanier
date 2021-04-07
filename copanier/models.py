@@ -315,6 +315,7 @@ class Delivery(PersistedBase):
     NEED_PRICE_UPDATE = 1
     OPEN = 2
     ADJUSTMENT = 3
+    WAITING_PRODUCTS = 4
 
     name: str
     from_date: datetime_field
@@ -343,6 +344,9 @@ class Delivery(PersistedBase):
             return self.OPEN
         if self.needs_adjustment:
             return self.ADJUSTMENT
+        if self.is_waiting_products:
+            return self.WAITING_PRODUCTS
+        
         return self.CLOSED
 
     def products_need_price_update(self, products=None):
@@ -375,6 +379,15 @@ class Delivery(PersistedBase):
     @property
     def is_open(self):
         return datetime.now().date() <= self.order_before.date()
+    
+    @property
+    def is_waiting_products(self):
+        return (
+            datetime.now().date() >= self.order_before.date()
+            and
+            datetime.now().date() <= self.from_date.date()
+        )
+
 
     @property
     def is_foreseen(self):
