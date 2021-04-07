@@ -95,6 +95,15 @@ source venv/bin/activate
 pip install -e .
 ```
 
+### Running in docker
+
+To give a try to Copanier quickly, you can use docker:
+
+```bash
+sudo docker build -t copanier:local .
+sudo docker run --name copanier --rm -p 2244:2244 copanier:local
+```
+
 ## Run local server
 
 Once everything is installed, you can use the `copanier` command to run the server.
