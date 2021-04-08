@@ -16,7 +16,7 @@ def send(to, subject, body, html=None, copy=None, attachments=None):
 
     if not config.SEND_EMAILS:
         body = body.replace("https", "http")
-        return print("Sending email", str(body.encode('utf-8')))
+        return print("Sending email", str(body.encode('utf-8')), flush=True)
 
     message.send(
         to=to,

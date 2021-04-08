@@ -59,7 +59,6 @@ async def send_sesame(request, response):
             token=token.decode(),
             url_for=app.url_for,
         )
-        print(f"sesame: {token.decode()}", flush=True)
     except RuntimeError:
         response.message("Oops, impossible d'envoyer le courriel…", status="error")
     else:
