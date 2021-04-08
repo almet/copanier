@@ -1,0 +1,6 @@
+version: "3.9"
+services:
+  app:
+    command: /srv/copanier-venv/bin/gunicorn -k roll.worker.Worker copanier:app --bind 0.0.0.0:2244 --reload --log-level debug --access-logfile - --error-logfile -
+    volumes:
+      - "../:/srv/copanier/"
