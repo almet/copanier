@@ -2,25 +2,18 @@
 
 <p>La personne référente de la dernière distribution vient de la clôturer, et a indiqué que vous étiez la personne référente pour la prochaine distribution.</p>
 
-<p>Bravo :-)</p>
+<p>Voici donc quelques infos !</p>
 
-{% if email_body %}
-<p>Elle vous a même laissé un petit message : </p>
-
-<p>{{ email_body}}</p>
-
-{% endif %}
-
-<p>Voici les informations renseignées :</p>
+<h2>Infos de distrib</h2>
 
 <ul>
     <li>Nom : {{ delivery.name }}</li>
     <li>Date et heure : {{ delivery.from_date|date }} de {{ delivery.from_date|time }} à {{ delivery.to_date|time }}.</li>
-    <li>Lieu : {{ delivery.location }}</li>
+    <li>Lieu : {{ delivery.where }}</li>
     <li>Commandes avant le {{ delivery.order_before|date }}</li>
 </ul>
 
-Référent·es produits :
+<h2>Référent·es produits</h2>
 
 <ul>
 
@@ -29,8 +22,27 @@ Référent·es produits :
 <li>{{ producer.name }} : {{ producer.referent_name }} - <a href="mailto:{{ producer.referent }}">{{ producer.referent }}</a> - <a href="tel:{{ producer.referent_tel }}">{{ producer.referent_tel }}</a></li>
 {% endfor %}
 
+<h2>Liens utiles</h2>
+<ul>
+    <li>Distribution : <a href="{{ url_for('show_delivery', id=delivery.id) }}">{{ url_for('show_delivery', id=delivery.id) }}</a></li>
+    <li>Boîte à outils : <a href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}">{{ url_for('show_delivery_toolbox', id=delivery.id) }}</a></li>
+</ul>
 
-<p>Si vous avez besoin de modifier ces informations, vous pouvez le faire <a href="{{ url_for('show_delivery', id=delivery.id) }}">en suivant ce lien.</a></p>
+<p>Au cas où, voici les contacts de dernière personne référente : mail <a href="mailto:{{ old_delivery.contact }}">{{ old_delivery.contact }}</a>, tel <a href="tel:{{ old_delivery.contact_phone }}">{{ old_delivery.contact_phone }}</a></p>
+
+{% if email_body %}
+<p>Elle vous a même laissé un petit message : </p>
+<hr />
+
+<p>{{ email_body}}</p>
+
+<hr />
+{% endif %}
+
+<h2>Rappel des dates</h2>
+
+<p>(Les dates sont calculées en fonction de ce qui à été renseigné)</p>
+{% include "includes/delivery_dates_table.html" %}
 
 <p>Bonne journée,</p>
 

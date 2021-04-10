@@ -78,6 +78,10 @@ async def hand_over_delivery_post(request, response, id):
         new_delivery.producers[producer_id] = producer
     new_delivery.persist()
 
+    # Mark the old delivery as over.
+    old_delivery.over = True
+    old_delivery.persist()
+
     emails.send_from_template(
         env,
         "handover_delivery",
@@ -88,6 +92,7 @@ async def hand_over_delivery_post(request, response, id):
         email_body = form.get('email_body'),
         hostname=request.host,
         url_for=app.url_for,
+        old_delivery=old_delivery
     )
      
     response.message("La distribution à bien été créée et le mail envoyé, merci !")

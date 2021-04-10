@@ -319,6 +319,7 @@ class Delivery(PersistedBase):
     OPEN = 2
     ADJUSTMENT = 3
     WAITING_PRODUCTS = 4
+    OVER = 5
 
     name: str
     from_date: datetime_field
@@ -332,6 +333,7 @@ class Delivery(PersistedBase):
     producers: Dict[str, Producer] = field(default_factory=dict)
     orders: Dict[str, Order] = field(default_factory=dict)
     shipping: Dict[str, price_field] = field(default_factory=dict)
+    over: bool = False
 
     def __post_init__(self):
         self.id = None  # Not a field because we don't want to persist it.
@@ -339,6 +341,8 @@ class Delivery(PersistedBase):
 
     @property
     def status(self):
+        if self.over:
+            return self.OVER
         if not self.products:
             return self.EMPTY
         if self.products_need_price_update():
