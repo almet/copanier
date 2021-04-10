@@ -789,3 +789,11 @@ small {
 #instructions {
   height: 100px;
 }
+
+.important-message {
+  padding: 1em;
+  text-align: center;
+  
+  background-color: rgba(233, 161, 28, 0.2);
+  border: 2px black dashed;
+}

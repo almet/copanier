@@ -2,6 +2,11 @@
 {% block is_wide %}{% endblock %}
 {% block body %}
 
+{% if delivery.status == delivery.CLOSED %}
+<div class="important-message">Une fois la distribution terminée, reviens ici pour <a class="button" href="{{ url_for('hand_over_delivery', id=delivery.id) }}">passer le relai !</a></div>
+{% endif %}
+
+
 <div class="header">
     <h1>{{ delivery.name }}</h1>
     {% include "includes/delivery_progress.html" %}
@@ -48,8 +53,6 @@
 <div class="placeholder center">
 Tu es la personne contact pour l'organisation de cette distribution, merci :-) Pour t'aider, tu peux accéder à  
 <a href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}"><i class="icon-tools"></i>&nbsp;la boîte à outils</a> !
-
-{% if delivery.status == delivery.CLOSED %}<p>La distribution est maintenant terminée. C'est le moment de <a href="{{ url_for('hand_over_delivery', id=delivery.id) }}">passer le relai, merci !</a></p>{% endif %}
 </div>
 {% endif %}
 {% if delivery.has_products %}
