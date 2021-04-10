@@ -797,3 +797,13 @@ small {
   background-color: rgba(233, 161, 28, 0.2);
   border: 2px black dashed;
 }
+
+footer {
+  width: 100%;
+  font-size: 0.8em;
+  border-top: 1px solid #eee;
+  margin-top: 4em;
+  padding: 1em;
+  background: #fafafa;
+  text-align: center;
+}
