@@ -33,20 +33,65 @@ async def home(request, response):
 async def new_delivery(request, response):
     response.html("delivery/edit_delivery.html", delivery={})
 
-
-@app.route("/distribution", methods=["POST"])
-async def create_delivery(request, response):
-    form = request.form
+def create_delivery_from_form(form):
     data = {}
     data["from_date"] = f"{form.get('date')} {form.get('from_time')}"
     data["to_date"] = f"{form.get('date')} {form.get('to_time')}"
     for name in Delivery.__dataclass_fields__.keys():
         if name in form:
             data[name] = form.get(name)
-    delivery = Delivery(**data)
+    return Delivery(**data)
+
+
+@app.route("/distribution", methods=["POST"])
+async def create_delivery(request, response):
+    delivery = create_delivery_from_form(request.form)
     delivery.persist()
     response.message("La distribution a bien été créée!")
     response.redirect = f"/distribution/{delivery.id}"
+
+
+@app.route("/distribution/{id}/transmettre", methods=["GET"])
+async def hand_over_delivery(request, response, id):
+    delivery = Delivery.load(id)
+
+    response.html(
+        "delivery/handover_delivery.html",
+        delivery=delivery,
+    )
+
+
+@app.route("/distribution/{id}/transmettre", methods=["POST"])
+async def hand_over_delivery_post(request, response, id):
+    old_delivery = Delivery.load(id)
+
+    form = request.form
+    new_delivery = create_delivery_from_form(form)
+    new_delivery.producers = old_delivery.producers
+    new_delivery.products = old_delivery.products
+
+    # Update referent fields
+    for producer_id, producer in new_delivery.producers.items():
+        producer.referent = form.get(f'producer_{producer_id}_referent_email')
+        producer.referent_name = form.get(f'producer_{producer_id}_referent_name')
+        producer.referent_tel = form.get(f'producer_{producer_id}_referent_tel')
+        new_delivery.producers[producer_id] = producer
+    new_delivery.persist()
+
+    emails.send_from_template(
+        env,
+        "handover_delivery",
+        new_delivery.contact,
+        f"{config.SITE_NAME} - Passage de flambeau",
+        old_delivery.contact,
+        delivery=new_delivery,
+        email_body = form.get('email_body'),
+        hostname=request.host,
+        url_for=app.url_for,
+    )
+     
+    response.message("La distribution à bien été créée et le mail envoyé, merci !")
+    response.redirect = f"/distribution/{new_delivery.id}"
 
 
 @app.route("/distribution/{id}/{producer}/bon-de-commande.pdf", methods=["GET"])

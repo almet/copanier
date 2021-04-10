@@ -14,7 +14,7 @@
             </span>
             {% endif %}
         </h2>
-        <h5>{% if producer_obj.description %}{{ producer_obj.description }}{% endif %}Référent⋅e : <a href="mailto:{{ producer_obj.referent }}">{{ producer_obj.referent_name }}</a> / {{ producer_obj.referent_tel }}.
+        <h5>{% if producer_obj.description %}{{ producer_obj.description }}. {% endif %}Référent⋅e : <a href="mailto:{{ producer_obj.referent }}">{{ producer_obj.referent_name }}</a> / {{ producer_obj.referent_tel }}.
             {% if not edit_mode and producer_obj.has_rupture_products(delivery) %}
             <p><em>Certains produits sont en rupture de stock.</em></p>
             {% endif %}
