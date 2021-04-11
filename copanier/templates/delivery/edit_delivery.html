@@ -27,7 +27,7 @@
     </label>
     <label>
         <p>Téléphone référent⋅e</p>
-        <input id="contact_phone" onInput="prettifyPhoneNumber('contact_phone')" type="phone" name="contact_phone" value="{{ delivery.contact_phone }}" required>
+        <input id="contact_phone" pattern="((\+|00)?[0-9]{2}|0)[1-9]( ?[0-9]){8}" onInput="prettifyPhoneNumber('contact_phone')" type="phone" name="contact_phone" value="{{ delivery.contact_phone }}" required>
     </label>
     
     <label>

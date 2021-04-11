@@ -28,7 +28,9 @@
 {% endif %}
 </div>
 {% if producer and producer.needs_price_update(delivery) %}
-<p class="notification info">Les prix pour {{ producer.name }} ont besoin d'être validés.</p>
+<p class="notification info">Les prix pour {{ producer.name }} ont besoin d'être validés. {% if producer.needs_price_update(delivery) %}
+    <a class="button" href="{{ url_for('validate_producer_prices', delivery_id=delivery.id, producer_id=producer.id) }}">Marquer les prix comme OK</a>
+{% endif %}</p>
 {% endif %}
 <form method="post" class="pure-form pure-form-aligned">
     <fieldset>
@@ -54,7 +56,7 @@
     </div>
     <div class="pure-control-group">
         <label>Téléphone référent⋅e</label>
-        <input onInput="prettifyPhoneNumber('referent_tel')" id="referent_tel" type="tel" name="referent_tel" value="{{ producer.referent_tel or '' }}" required>
+        <input pattern="((\+|00)?[0-9]{2}|0)[1-9]( ?[0-9]){8}" onInput="prettifyPhoneNumber('referent_tel')" id="referent_tel" type="tel" name="referent_tel" value="{{ producer.referent_tel or '' }}" required>
     </div>
     <div class="pure-control-group">
         <label>Contact producteur⋅rice</label>
