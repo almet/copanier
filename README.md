@@ -110,7 +110,11 @@ The app will be available at http://localhost:2244.
 
 Database is saved under `db` folder. This folder is mounted in `app` container to persist data changes on host disk.
 
-For development purpose, you can use both `docker-compose.yml` and `docker-compose-dev.yml` which allows you to work on copanier source code and make gunicorn automatically reload workers when code changes.
+For development purpose, you can use both `docker-compose.yml` and `docker-compose-dev.yml` which allows you to work on copanier source code and make gunicorn automatically reload workers when code changes:
+
+```bash
+sudo docker-compose -p copanier -f docker-compose.yml -f docker-compose-dev.yml up
+```
 
 ## Run local server
 
