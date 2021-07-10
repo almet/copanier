@@ -7,7 +7,7 @@
         {% if display_prices %}
         <td>{{ product.price | round(2) }} €</td>
         {% endif %}
-        <td>{{ order[product].quantity }} x {{ product.unit }}</td>
+        <td class="quantity">{{ order[product].quantity }} x {{ product.unit }}</td>
         {% if display_prices %}
         <td>{{ order.total([product], delivery, group_id, False) }}</td>
         {% endif %}
@@ -15,4 +15,6 @@
     {% endif %}
     {% endfor %}
 </table>
-<p>Total: {{ order.total(delivery.products, delivery, group_id) if order else 0 }} € (dont {{ order.compute_shipping(delivery, delivery.producers, group_id) | round(2) }} de port)</p>
+
+{% set shipping = order.compute_shipping(delivery, delivery.producers, group_id) | round(2) %}
+<p>Total: {{ order.total(delivery.products, delivery, group_id) if order else 0 }} € {% if shipping > 0 %}(dont {{ shipping }}€ de port){% endif %}</p>

@@ -1,5 +1,5 @@
 {% if (delivery.status == delivery.OPEN or delivery.status == delivery.ADJUSTMENT) and delivery.has_products %}
-    <a class="button" href="{{ url_for('place_order', id=delivery.id) }}">
+    <a class="button big-button" href="{{ url_for('place_order', id=delivery.id) }}">
     {% if delivery.status == delivery.ADJUSTMENT %}
         Ajuster ma commande
     {% elif delivery.status == delivery.OPEN %}

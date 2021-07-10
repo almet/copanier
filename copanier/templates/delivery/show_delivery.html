@@ -1,5 +1,27 @@
 {% extends "base.html" %}
 {% block is_wide %}{% endblock %}
+{% block additional_menu %}
+<div class="pure-menu">
+    <ul class="pure-menu-list">
+                <li class="pure-menu-item"><a href="{{ url_for('list_products', id=delivery.id) }}/produits.pdf" class="pure-menu-link"><i class="icon-ribbon"></i>&nbsp;Bons de commande</a></li>
+                <li class="pure-menu-item"><a href="{{ url_for('show_orders_summary', id=delivery.id) }}" class="pure-menu-link"><i class="icon-grid"></i>&nbsp;Commandes groupes</a></li>
+                <li class="pure-menu-item"><a href="{{ url_for('compute_payments', id=delivery.id) }}" class="pure-menu-link"><i class="icon-wallet"></i>&nbsp;Paiements</a></li>
+        {% if request['user'].email == delivery.contact and delivery.status > delivery.EMPTY %}
+        <li class="pure-menu-item">
+            <a class="pure-menu-link" href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}"><i class="icon-tools"></i>&nbsp;Boîte à outils</a>
+        </li>
+        {% endif %}
+        {% if request.user and request.user.is_staff %}
+        <li class="pure-menu-item">
+            <a class="pure-menu-link" href="{{ url_for('edit_delivery', id=delivery.id) }}"><i class="icon-adjustments"></i>&nbsp;Modifier la distrib</a>
+        </li>
+        <li class="pure-menu-item">
+            <a class="pure-menu-link" href="{{ url_for('list_products', id=delivery.id) }}"><i class="icon-pricetags"></i>&nbsp;Éditer produits</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+{% endblock %}
 {% block body %}
 
 {% if delivery.status == delivery.CLOSED %}
@@ -9,50 +31,24 @@
 
 <div class="header">
     <h1>{{ delivery.name }}</h1>
-    {% include "includes/delivery_progress.html" %}
-    
-    <h4>{% if delivery.products %}
+    <h2>
+      Distribution le <i class="icon-clock"></i> {{ delivery.from_date|date }}, {{ delivery.from_date|time }} - {{ delivery.to_date|time }}, à <i class="icon-streetsign"></i> {{ delivery.where }}.
+    </h2>
+
+    <h3>{% if delivery.products %}
         {% include "includes/delivery_status.html" %}
         {% endif %}
         {% include "includes/order_button.html" %}
-    </h4>
-    <h4>
-        Distribution le <i class="icon-clock"></i> {{ delivery.from_date|date }}, {{ delivery.from_date|time }} - {{ delivery.to_date|time }}, à <i class="icon-streetsign"></i> {{ delivery.where }}.
-    </h4>
-    
-    <div class="pure-menu pure-menu-horizontal">
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-                <a href="#" class="pure-menu-link"><i class="icon-printer"></i>&nbsp;Imprimer…</a>
-                <ul class="pure-menu-children">
-                    <li class="pure-menu-item"><a href="{{ url_for('list_products', id=delivery.id) }}/produits.pdf" class="pure-menu-link"><i class="icon-ribbon"></i>&nbsp;Commande producteurs⋅rices</a></li>
-                    <li class="pure-menu-item"><a href="{{ url_for('show_orders_summary', id=delivery.id) }}" class="pure-menu-link"><i class="icon-grid"></i>&nbsp;Résumé de commande par groupe</a></li>
-                    <li class="pure-menu-item"><a href="{{ url_for('compute_payments', id=delivery.id) }}" class="pure-menu-link"><i class="icon-wallet"></i>&nbsp;Répartition des paiements</a></li>
-                </ul>
-            </li>
-            {% if request['user'].email == delivery.contact and delivery.status > delivery.EMPTY %}
-            <li class="pure-menu-item">
-                <a class="pure-menu-link" href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}"><i class="icon-tools"></i>&nbsp;Boîte à outils</a>
-            </li>
-            {% endif %}
-            {% if request.user and request.user.is_staff %}
-            <li class="pure-menu-item">
-                <a class="pure-menu-link" href="{{ url_for('edit_delivery', id=delivery.id) }}"><i class="icon-adjustments"></i>&nbsp;Modifier la distrib</a>
-            </li>
-            <li class="pure-menu-item">
-                <a class="pure-menu-link" href="{{ url_for('list_products', id=delivery.id) }}"><i class="icon-pricetags"></i>&nbsp;Produits</a>
-            </li>
-            {% endif %}
-        </ul>
-    </div>
-    </ul>
+    </h3>
+    {% include "includes/delivery_progress.html" %}
+
 </div>
 
 <article class="delivery">
 {% if request['user'].email == delivery.contact %}
 <div class="placeholder center">
-Tu es la personne contact pour l'organisation de cette distribution, merci :-) Pour t'aider, tu peux accéder à  
-<a href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}"><i class="icon-tools"></i>&nbsp;la boîte à outils</a> !
+Hey, jettes un coup d'oeil à
+<a href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}">&nbsp;la boîte à outils</a> !
 </div>
 {% endif %}
 {% if delivery.has_products %}
@@ -79,13 +75,12 @@ Tu es la personne contact pour l'organisation de cette distribution, merci :-) P
             <li><a href="{{ url_for('create_producer', delivery_id=delivery.id) }}">Ajouter les product⋅eurs⋅rices</a> à la main ;</li>
             <li>Ou bien <a href="{{ url_for('copy_products', id=delivery.id) }}">copier les produits d'une autre distribution</a>.</li>
         </ol>
-    </div>
     {% endif %}
 </div>
 {% endif %}
 </article>
 <hr>
 <ul class="toolbox">
- 
+
 </ul>
 {% endblock body %}

@@ -29,26 +29,25 @@ This is the parent `<div>` that contains the menu and the content area.
     padding-left: 0;
 }
     #layout.active #menu {
-        left: 150px;
-        width: 150px;
+        left: 200px;
+        width: 200px;
     }
 
     #layout.active .menu-link {
-        left: 150px;
+        left: 200px;
     }
 /*
 The content `<div>` is where all your content goes.
 */
 .content {
+    margin: 0 auto;
     padding: 0 2em;
-
     margin-bottom: 50px;
     line-height: 1.6em;
 }
 
 .narrow {
-    margin: 0 auto;
-    max-width: 800px;
+      max-width: 800px;
 }
 
 .header {
@@ -65,7 +64,7 @@ The content `<div>` is where all your content goes.
     }
      .header h2 {
         font-weight: 300;
-        color: #ccc;
+        color: #777;
         padding: 0;
         margin-top: 0;
     }
@@ -93,7 +92,6 @@ appears on the left side of the page.
     z-index: 1000; /* so the menu or its navicon stays above all content */
     background: #191818;
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
 }
     /*
     All anchors inside the menu should be styled like this.
@@ -190,6 +188,7 @@ small screens.
     .menu-link span:before,
     .menu-link span:after {
         background-color: #fff;
+        pointer-events: none;
         width: 100%;
         height: 0.2em;
     }
@@ -249,14 +248,4 @@ Hides the menu at `48em`, but modify this based on your app's needs.
         position: relative;
         left: 200px;
     }
-}
-
-.pure-menu-item a {
-    display: block;
-}
-
-#sitename {
-    color: #ccc;
-    display: block;
-    padding-left: 1em;
 }

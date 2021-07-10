@@ -5,11 +5,10 @@
 {% block body %}
 
 <div class="header">
-    <h1>Gestion de la distribution « {{ delivery.name }} »</h1>
+    <h1>{{ delivery.name }}</h1>
 </div>
 
-{% set display_counts = True %}
-{% include "includes/delivery_head.html" %}
+<i class="icon-lightbulb"></i> <strong>{{ delivery.orders|length }}</strong> groupes, <strong>{{ delivery.products|length }}</strong> produits et <strong>{{ delivery.producers | length}}</strong> fournisseurs. <br /> Total de la commande : <strong>{{ delivery.total }}€</strong></li>
 
 <h2>Rappel des dates</h2>
 {% include "includes/delivery_dates_table.html" %}

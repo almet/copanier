@@ -1,10 +1,10 @@
 <ul class="progressbar">
-    <li>Mise à jour des référent·es</li>
-    <li {% if delivery.status == delivery.NEED_PRICE_UPDATE %}class="active"{% endif %}>Mise à jour des prix</li>
+    <li>Création</li>
+    <li {% if delivery.status == delivery.NEED_PRICE_UPDATE %}class="active"{% endif %}>Mise à jour</li>
     <li {% if delivery.status == delivery.OPEN %}class="active"{% endif %}>Commande</li>
     <li {% if delivery.status == delivery.ADJUSTMENT %}class="active"{% endif %}>Ajustements</li>
-    <li {% if delivery.status == delivery.WAITING_PRODUCTS %}class="active"{% endif %}>Récupération des commandes</li>
-    <li><a href="{{ url_for('show_orders_summary', id=delivery.id) }}">Distribution</a></li>
-    <li {% if delivery.status == delivery.CLOSED %}class="active"{% endif %}><a href="{{ url_for('compute_payments', id=delivery.id) }}">Répartition des paiements</a></li>
+    <li {% if delivery.status == delivery.WAITING_PRODUCTS %}class="active"{% endif %}>Appro</li>
+    <li><a href="{{ url_for('show_orders_summary', id=delivery.id) }}">Distrib</a></li>
+    <li {% if delivery.status == delivery.CLOSED %}class="active"{% endif %}><a href="{{ url_for('compute_payments', id=delivery.id) }}">Paiements</a></li>
 </ul>
 <div style="clear: both"></div>

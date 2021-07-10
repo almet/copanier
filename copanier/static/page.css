@@ -25,4 +25,7 @@
     .page-break {
         page-break-after: always;
     }
+    footer {
+      display: none;
+    }
 }

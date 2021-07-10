@@ -3,16 +3,6 @@
 
 <div class="header">
     <h1>Distributions</h1>
+    {% include "includes/delivery_list.html" %}
 </div>
-    {% with deliveries=incoming %}
-        {% include "includes/delivery_list.html" %}
-    {% endwith %}
-    {% if former %}
-    <div class="header">
-        <h1>Distributions passées</h1>
-    </div>
-    {% with deliveries=former %}
-        {% include "includes/delivery_small_list.html" %}
-    {% endwith %}
-    {% endif %}
 {% endblock body %}

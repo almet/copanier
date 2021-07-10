@@ -22,10 +22,28 @@ async def home(request, response):
     if not request["user"].group_id:
         response.redirect = app.url_for("groups")
         return
+
+    deliveries=Delivery.incoming()
+    if len(deliveries) == 1:
+        response.redirect = app.url_for("show_delivery", id=deliveries[0].id)
+    else:
+        response.html(
+            "delivery/list_deliveries.html",
+            deliveries=Delivery.incoming(),
+        )
+
+
+@app.route("/archives", methods=["GET"])
+async def archives(request, response):
+    if not Delivery.is_defined() and not Groups.is_defined():
+        response.redirect = app.url_for("onboarding")
+        return
+    if not request["user"].group_id:
+        response.redirect = app.url_for("groups")
+        return
     response.html(
         "delivery/list_deliveries.html",
-        incoming=Delivery.incoming(),
-        former=Delivery.former(),
+        deliveries=Delivery.former(),
     )
 
 
@@ -94,7 +112,7 @@ async def hand_over_delivery_post(request, response, id):
         url_for=app.url_for,
         old_delivery=old_delivery
     )
-     
+
     response.message("La distribution à bien été créée et le mail envoyé, merci !")
     response.redirect = f"/distribution/{new_delivery.id}"
 
@@ -297,7 +315,7 @@ async def show_orders_summary(request, response, id):
     delivery = Delivery.load(id)
     response.pdf(
         "delivery/show_orders_summary.html",
-        {"delivery": delivery},
+        {"delivery": delivery, "display_prices": True},
         css="order-summary.css",
         filename=utils.prefix("résumé-de-commandes.pdf", delivery),
     )

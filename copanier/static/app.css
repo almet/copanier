@@ -110,7 +110,7 @@ legend {
 }
 
 h1 { font-size: 2.2rem }
-h2 { font-size: 1.8rem }
+h2 { font-size: 1rem }
 h3 { font-size: 1.4rem }
 h4 { font-size: 1.1rem }
 
@@ -317,6 +317,7 @@ th + td,
 th + th,
 td + th {
   border-left: 1px solid #aaa;
+  padding: 5px;
 }
 th {
   color: #363636;
@@ -335,7 +336,7 @@ th.price {
   text-align: center;
 }
 th.amount {
-  width: 5rem;
+  width: 10rem;
 }
 .ref {
   width: 5rem;
@@ -351,7 +352,7 @@ th.total {
 }
 
 tr:nth-child(even) {
-  background-color: #ddd;
+  background-color: #f0efef;
 }
 thead tr {
   background-color: var(--neutral-color);
@@ -361,6 +362,9 @@ thead tr * {
 }
 thead th + th {
   border-left: 1px solid white;
+}
+th, td {
+  padding: 5px !important;
 }
 
 tr .producer {
@@ -376,18 +380,28 @@ article.order {
   margin-left: auto;
   margin-right: auto;
 }
-table.order th.product {
+
+table th.product {
   min-width: 10rem;
   width: inherit;
-  max-width: 25em;
-  overflow: hidden;
+  max-width: 15em;
+  word-wrap: break-word;
+  overflow: auto;
+  white-space: initial;
 }
+
+table.order td.quantity {
+  max-width: 10em;
+  word-wrap: break-word;
+  overflow: auto;
+  white-space: initial;
+}
+
 td.with-input {
   padding: 0;
   text-align: left;
 }
 td.with-input input {
-  width: 50%;
   text-align: center;
 }
 
@@ -566,9 +580,11 @@ details summary {
 }
 
 .rupture {
-  background-color: #ff000083 !important;
   text-decoration: line-through;
+  font-style: italic;
+  background-color: #fbb !important;
 }
+
 
 .list-emails {
   display: block;
@@ -623,7 +639,7 @@ table.paiements tr:hover td {
 
 .container {
   width: 600px;
-  margin: 100px auto; 
+  margin: 100px auto;
 }
 .progressbar {
   counter-reset: step;
@@ -715,7 +731,7 @@ ul.actions > li {
 }
 
 .fixed-table td, .fixed-table th{
-  white-space:pre-wrap; 
+  white-space:pre-wrap;
 }
 
 small {
@@ -793,7 +809,7 @@ small {
 .important-message {
   padding: 1em;
   text-align: center;
-  
+
   background-color: rgba(233, 161, 28, 0.2);
   border: 2px black dashed;
 }
@@ -807,3 +823,5 @@ footer {
   background: #fafafa;
   text-align: center;
 }
+
+.big-button { margin: 2em;}

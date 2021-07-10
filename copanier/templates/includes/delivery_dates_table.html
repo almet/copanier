@@ -1,14 +1,14 @@
 <table class="pure-table fixed-table">
     <thead>
         <tr>
-            <th>Quoi ?</th><th>Dates</th><th>Coordinatrice⋅eur</th><th>Référent⋅e⋅s produits</th>
+            <th></th><th>Dates</th><th>Coord</th><th>Référent⋅e⋅s</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <th>Création de la distribution</th>
             <td>{{ delivery.dates.creation_date | date}}</td>
-            <td>Rappeler aux référent⋅e⋅s produit de mettre leurs prix à jour, vérifier que tous les producteurs⋅rices sont bien présentes, en ajouter si besoin</td>
+            <td>Rappeler aux référent⋅e⋅s produit de mettre leurs prix à jour, vérifier que tous les produits sont bien présentes, en ajouter si besoin</td>
             <td>-</td>
         </tr>
         <tr>
@@ -18,27 +18,27 @@
             <td>Les référent⋅e⋅s produit mettent les prix à jour.</td>
         </tr>
         <tr>
-            <th>Commandes</td>
+            <th>Commandes</th>
             <td>Du {{ delivery.dates.price_update_deadline | date }} au {{ delivery.dates.order_before | date }}</td>
-            <td>Envoyer le lien de commande aux groupes pour qu'iels commandent</td>
+            <td>Envoyer le lien de commande aux groupes</td>
             <td>—</td>
         </tr>
         <tr>
             <th>Ajustements</th>
             <td>Du {{ delivery.dates.order_before | date }} au {{ delivery.dates.adjustment_deadline | date }}</td>
-            <td>S'assurer que les ajustements sont bien faits par les participant⋅e⋅s</td>
+            <td>S'assurer que les produits qui doivent être tomber rond tombent bien rond ! Ajuster si besoin.</td>
             <td>Faire les ajustements à la main si besoin</td>
         </tr>
         <tr>
-            <th>Approvisionnements</th>
+            <th>Récup des produits</th>
             <td>Du {{ delivery.dates.adjustment_deadline | date }} au {{ delivery.dates.delivery_date | date }}</td>
             <td><a href="{{ url_for('send_referent_emails', id=delivery.id) }}">Envoyer les infos de commande aux référent⋅e⋅s</a></td>
-            <td>Faire les commandes aux producteurs⋅rices, <strong>récupérer les produits</strong></td>
+            <td>Transmettre les commandes, <strong>récupérer les produits</strong></td>
         </tr>
         <tr>
             <th>Préparation de la distribution</th>
             <td>La veille du {{ delivery.dates.delivery_date | date }}</td>
-            <td><a href="{{ url_for('show_orders_summary', id=delivery.id) }}">Imprimer les bons de commandes par colocation</a></td>
+            <td><a href="{{ url_for('show_orders_summary', id=delivery.id) }}">Imprimer les bons de commandes par groupe</a></td>
             <td>—</td>
         </tr>
         <tr>
