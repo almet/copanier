@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
     {% for group_id, order in delivery.orders.items() %}
-        <h3>{{ request.groups.groups[group_id].name }}</h3>
+        <h3>{{ request.groups.groups[group_id].name }} - {{ order.phone_number }}</h3>
         {% include "includes/order_summary.html" %}
         <hr class="page-break">
     {% endfor %}
