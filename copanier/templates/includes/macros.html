@@ -2,7 +2,7 @@
 {% if label %}
 <label for="modal-{{ id }}" class="toggle-label">{{ label }}</label>
 {% endif %}
-<input type="checkbox" id="modal-{{ id }}" class="toggle" {% if checked %}checked{% endif %}>
+<input type="checkbox" id="modal-{{ id }}" class="toggle" {% if checked %}checked{% endif %} />
 <label for="modal-{{ id }}" class="toggle-background"></label>
 <div class="toggle-container">
     {{ body }}

@@ -25,7 +25,7 @@ class Response(RollResponse):
                 message = json.loads(self.request.cookies["message"])
                 context["message"] = message
             except ValueError:
-                print('Unable to read the content of the cookie message. Skipping it.') 
+                print('Unable to read the content of the cookie message. Skipping it.')
             self.cookies.set("message", "")
         return env.get_template(template_name).render(*args, **context)
 
@@ -148,6 +148,7 @@ def configure():
 env = Environment(
     loader=PackageLoader("copanier", "templates"),
     autoescape=select_autoescape(["copanier"]),
+    extensions=['jinja2.ext.loopcontrols']
 )
 
 

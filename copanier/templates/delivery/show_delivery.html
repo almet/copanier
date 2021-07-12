@@ -63,6 +63,7 @@ Hey, jettes un coup d'oeil à
     <a class="button" href="{{ url_for('edit_producer', delivery_id=delivery.id, producer_id=producer.id) }}#products">Oui, mettre à jour les prix pour {{ producer.name }}</a>
     {%- endset %}
     {{ macros.modal(id="update-price", body=modal_body, checked=True) }}
+    {% break %}
     {% endif %}
     {% endfor %}
     {% include "includes/delivery_table.html" %}
