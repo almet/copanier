@@ -363,9 +363,7 @@ thead tr * {
 thead th + th {
   border-left: 1px solid white;
 }
-th, td {
-  padding: 5px !important;
-}
+
 
 tr .producer {
   border-bottom: 1px solid #aaa;
@@ -382,7 +380,7 @@ article.order {
 }
 
 table th.product {
-  min-width: 10rem;
+  min-width: 6rem;
   width: inherit;
   max-width: 15em;
   word-wrap: break-word;
@@ -398,11 +396,17 @@ table.order td.quantity {
 }
 
 td.with-input {
-  padding: 0;
+  padding: 3em;
   text-align: left;
 }
-td.with-input input {
-  text-align: center;
+
+.product_unit {
+    font-size: 0.8em;
+    font-style: italic;
+}
+
+td.with-input > input {
+  width: 100px;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -464,7 +468,6 @@ hr {
   text-align: center;
   color: white;
   line-height: 3rem;
-  height: 3rem;
   vertical-align: middle;
   margin: 1rem;
 }
@@ -541,13 +544,14 @@ ul.delivery > li {
   margin: 0;
 }
 ul.delivery-head {
+  padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px , 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(10em , 1fr));
   grid-gap: 10px;
 }
 ul.delivery-head li {
   list-style: none;
-  padding: 0;
+  padding: 0.5em;
   margin: 0;
   font-size: 0.8em;
 }

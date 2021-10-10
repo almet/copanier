@@ -35,16 +35,18 @@
             {% for product in delivery.get_products_by(producer.id) %}
             {% if not product.rupture %}
                 <tr>
-                    <th class="product {% if product.rupture %}rupture{% endif %}">{{ product }} {% if product.rupture %}(RUPTURE !){% endif %}
-                        {% if product.description %}
-                        <br /><small title="{{ product.description }}">{{ product.description }}</small>
+                    <th class="product {% if product.rupture %}rupture{% endif %}"><div {% if product.description %}title="{{ product.description }}"{% endif %}>{{ product }} {% if product.rupture %}(RUPTURE !){% endif %}</div>
+                        {% if product.description and product.description | length > 30 %}
+                        <small title="{{ product.description }}">+ d'infos…</small>
+                        {% else %}
+                        <small title="{{ product.description }}">{{ product.description }}</small>
                         {% endif %}
                     </th>
                     <td>{{ product.price | round(2) }} €</td>
                     {% if producer.has_packing %}
                         <td {% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} class="missing" title="Les commandes individuelles ne correspondent pas aux conditionnements"{% endif %}>{{ product.packing or "—" }}{% if delivery.status == delivery.ADJUSTMENT and delivery.product_missing(product) %} (manque {{ delivery.product_missing(product) }}){% endif %}</td>
                     {% endif %}
-                    <td class="with-input"><input {% if not request.user.is_referent(delivery) and delivery.status != delivery.OPEN or product.rupture %}type="text" readonly{% else%}type="number"{% endif%} min=0 name="wanted:{{ product.ref }}" value="{{ order[product].wanted }}">{% if not (delivery.status == delivery.ADJUSTMENT or force_adjustments) %} x {{ product.unit }}{% endif %}</td>
+                    <td class="with-input"><input {% if not request.user.is_referent(delivery) and delivery.status != delivery.OPEN or product.rupture %}type="text" readonly{% else%}type="number"{% endif%} min=0 name="wanted:{{ product.ref }}" value="{{ order[product].wanted }}"><br />{% if not (delivery.status == delivery.ADJUSTMENT or force_adjustments) %}<div class="product_unit"> x {{ product.unit }}</div>{% endif %}</td>
                     {% if delivery.status == delivery.ADJUSTMENT or force_adjustments %}
                     <td class="with-input"><input type="number" name="adjustment:{{ product.ref }}" value="{{ order[product].adjustment }}" min="{{ order[product].wanted * -1 }}" {% if not (delivery.product_missing(product) or force_adjustment) %}readonly{% endif %}> x {{ product.unit }}</td>
                     {% endif %}

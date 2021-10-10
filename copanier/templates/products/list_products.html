@@ -9,7 +9,10 @@
                 <a class="pure-menu-link" href="{{ url_for('create_producer', delivery_id=delivery.id) }}"><i class="icon-heart"></i>&nbsp;Ajouter un⋅e producteur⋅rice</a>
             </li>
             <li class="pure-menu-item">
-                <a class="pure-menu-link" href="{{ url_for('copy_products', id=delivery.id) }}"><i class="icon-hotairballoon"></i>&nbsp;Réutiliser les produits d'une autre distrib</a>
+                <a class="pure-menu-link" href="{{ url_for('copy_products', id=delivery.id) }}"><i class="icon-hotairballoon"></i>&nbsp;Copier une distribution</a>
+            </li>
+            <li class="pure-menu-item">
+                <a class="pure-menu-link" href="{{ url_for('mark_all_prices_as_ok', delivery_id=delivery.id) }}"><i class="icon-megaphone"></i>&nbsp;Valider tous les prix</a>
             </li>
         </ul>
     </div>

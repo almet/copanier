@@ -75,15 +75,23 @@
     <script src="{{ url_for('/static/js/flash.min.js') }}"></script>
     <script src="{{ url_for('/static/js/app.js') }}"></script>
 		<script src="{{ url_for('/static/js/menus.js') }}"></script>
+		<script>
     {% if message %}
-    <script>
     new window.FlashMessage("{{ message[0] }}", "{{ message[1] }}", {
         progress: true,
         interactive: true,
         timeout: 8000,
         theme: "dark"
     });
+		{% endif %}
+
+		// Disable scrolling on inputs, as it make users do weird things.
+		// Taken from https://stackoverflow.com/a/38589039/147077
+		document.addEventListener("wheel", function(event){
+		    if(document.activeElement.type === "number"){
+		        document.activeElement.blur();
+		    }
+		});
     </script>
-    {% endif %}
 </body>
 </html>
