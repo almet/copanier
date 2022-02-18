@@ -18,18 +18,13 @@ async def auth_required(request, response):
     else:
         setattr(config, 'DEMO_MODE', False)
 
-    logger = logging.getLogger('roll')
-    logger.info("auth required")
     if request.route.payload and not request.route.payload.get("unprotected"):
-        logger.info("unprotected")
         token = request.cookies.get("token")
         email = None
         if token:
-            logger.info("token detected")
             decoded = utils.read_token(token)
             email = decoded.get("sub")
         if not email:
-            logger.info("no email detected")
             response.redirect = f"/connexion?next={url(request.path)}"
             return response
 
