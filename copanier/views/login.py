@@ -18,13 +18,18 @@ async def auth_required(request, response):
     else:
         setattr(config, 'DEMO_MODE', False)
 
+    logger = logging.getLogger('roll')
+    logger.info("auth required")
     if request.route.payload and not request.route.payload.get("unprotected"):
+        logger.info("unprotected")
         token = request.cookies.get("token")
         email = None
         if token:
+            logger.info("token detected")
             decoded = utils.read_token(token)
             email = decoded.get("sub")
         if not email:
+            logger.info("no email detected")
             response.redirect = f"/connexion?next={url(request.path)}"
             return response
 
@@ -75,7 +80,6 @@ async def set_sesame(request, response, token):
     if not decoded:
         response.message("Sésame invalide :(", status="error")
     else:
-        response.message("Yay ! Le sésame a fonctionné. Bienvenue à bord ! :-)")
         response.cookies.set(
             name="token",
             value=token,
@@ -83,6 +87,8 @@ async def set_sesame(request, response, token):
             max_age=60 * 60 * 24 * 7,
             samesite="Strict",
         )
+        request.cookies = response.cookies
+        response.message("Yay ! Le sésame a fonctionné. Bienvenue à bord ! :-)")
     response.redirect = "/"
 
 
@@ -109,4 +115,3 @@ async def desactivate_demo(request, response):
     saved_config.demo_mode_enabled = False
     saved_config.persist()
     response.redirect = "/"
-    
