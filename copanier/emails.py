@@ -18,16 +18,27 @@ def send(to, subject, body, html=None, copy=None, attachments=None, mail_from=No
         body = body.replace("https", "http")
         return print("Sending email", str(body.encode('utf-8')), flush=True)
 
-    message.send(
-        to=to,
-        mail_from=mail_from,
+    # if no SMTP_LOGIN specified, don't create user and password fields, as the smtp server don't want them !
+    if config.SMTP_LOGIN=="":
+        smtp={
+            "host": config.SMTP_HOST,
+            "port": "25",
+            "ssl": False,
+        }
+
+    else:
         smtp={
             "host": config.SMTP_HOST,
             "user": config.SMTP_LOGIN,
             "password": config.SMTP_PASSWORD,
-            "port": "465",
-            "ssl": True,
-        },
+            "port": "25",
+            "ssl": False,
+        }
+
+    message.send(
+        to=to,
+        mail_from=mail_from,
+        smtp=smtp
     )
 
 
