@@ -37,9 +37,10 @@
                 <tr>
                     <th class="product {% if product.rupture %}rupture{% endif %}"><div {% if product.description %}title="{{ product.description }}"{% endif %}>{{ product }} {% if product.rupture %}(RUPTURE !){% endif %}</div>
                         {% if product.description and product.description | length > 30 %}
-                        <small title="{{ product.description }}">+ d'infos…</small>
+                        <small class="moreinfos" tabindex="1">Plus d’infos…</small>
+                        <small class="infos-hidden">{{ product.description }}</small>
                         {% else %}
-                        <small title="{{ product.description }}">{{ product.description }}</small>
+                        <small>{{ product.description }}</small>
                         {% endif %}
                     </th>
                     <td>{{ product.price | round(2) }} €</td>
