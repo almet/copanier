@@ -829,3 +829,17 @@ footer {
 }
 
 .big-button { margin: 2em;}
+
+/* Bouton plus d'infos */
+
+.moreinfos {
+  cursor: pointer;
+}
+
+.infos-hidden {
+  display: none;
+}
+
+.moreinfos:focus+.infos-hidden {
+  display: block;
+}
