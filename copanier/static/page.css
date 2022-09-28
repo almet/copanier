@@ -28,4 +28,7 @@
     footer {
       display: none;
     }
+    .infos-hidden {
+      display: block;
+    }
 }
