@@ -1,13 +1,13 @@
-
 {% import "includes/macros.html" as macros %}
 
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>{% if title %}{{ title }} - {% endif %}{{ config.SITE_NAME }}</title>
+    <title>{% if title %}{{ title }} - {% endif %}{{ config.SITE_NAME }}</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('/static/app.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('/static/app.css') }}?v={{ version }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('/static/icomoon.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('/static/purecss.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('/static/side-menu.css') }}">
@@ -18,11 +18,13 @@
     {% endblock head %}
 
 </head>
+
 <body>
     {% if config.DEMO_MODE %}
     <div class="header">
         <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed demo-mode">
-            <p class="pure-menu-heading">Le site est en mode démo. <a href="{{ url_for('desactivate_demo') }}">désactiver</a></p>
+            <p class="pure-menu-heading">Le site est en mode démo. <a
+                    href="{{ url_for('desactivate_demo') }}">désactiver</a></p>
         </div>
     </div>
     {% endif %}
@@ -35,23 +37,27 @@
         <div id="menu">
             <div class="pure-menu">
                 <h1 id="sitename"><a href="{{ url_for('home') }}">{{ config.SITE_NAME }}</a></h1>
-								{% block additional_menu %}{% endblock %}
+                {% block additional_menu %}{% endblock %}
                 <ul class="pure-menu-list">
                     <li class="pure-menu-item">
-                        <a class="pure-menu-link" href="{{ url_for('archives') }}"><i class="icon-happy"></i>&nbsp;Voir les archives</a>
+                        <a class="pure-menu-link" href="{{ url_for('archives') }}"><i class="icon-happy"></i>&nbsp;Voir
+                            les archives</a>
                     </li>
                     {% if request.user and request.user.is_staff %}
                     <li class="pure-menu-item">
-                        <a class="pure-menu-link" href="{{ url_for('new_delivery') }}"><i class="icon-hotairballoon"></i>&nbsp;Nouvelle distribution</a>
+                        <a class="pure-menu-link" href="{{ url_for('new_delivery') }}"><i
+                                class="icon-hotairballoon"></i>&nbsp;Nouvelle distribution</a>
                     </li>
                     {% endif %}
                     {% if request.user and (request.user.is_staff or not config.HIDE_GROUPS_LINK) %}
                     <li class="pure-menu-item">
-                        <a class="pure-menu-link" class="pure-menu-link" href="{{ url_for('groups') }}"><i class="icon-globe"></i>&nbsp;Gérer les groupes</a>
+                        <a class="pure-menu-link" class="pure-menu-link" href="{{ url_for('groups') }}"><i
+                                class="icon-globe"></i>&nbsp;Gérer les groupes</a>
                     </li>
                     {% endif %}
                     <li class="pure-menu-item">
-                        <a class="pure-menu-link" href="{{ url_for('logout') }}"><i class="icon-lock"></i>&nbsp;Se déconnecter</a>
+                        <a class="pure-menu-link" href="{{ url_for('logout') }}"><i class="icon-lock"></i>&nbsp;Se
+                            déconnecter</a>
                     </li>
                 </ul>
             </div>
@@ -60,7 +66,7 @@
         <h1 id="sitename">{{ config.SITE_NAME }}</h1>
         {% endif %}
         <div class="toplink">
-        {% block toplink %}{% endblock %}
+            {% block toplink %}{% endblock %}
         </div>
         <div id="main">
             <div class="content {% block is_wide %}narrow{% endblock %}">
@@ -68,30 +74,32 @@
                 {% endblock body %}
             </div>
         </div>
-        <footer>Copanier est un logiciel libre. <a href="https://github.com/spiral-project/copanier">Vous pouvez y contribuer et l'améliorer ! ❤️</a></footer>
+        <footer>Copanier est un logiciel libre. <a href="https://github.com/spiral-project/copanier">Vous pouvez y
+                contribuer et l'améliorer ! ❤️</a></footer>
     </div>
 
 
     <script src="{{ url_for('/static/js/flash.min.js') }}"></script>
     <script src="{{ url_for('/static/js/app.js') }}"></script>
-		<script src="{{ url_for('/static/js/menus.js') }}"></script>
-		<script>
-    {% if message %}
-    new window.FlashMessage("{{ message[0] }}", "{{ message[1] }}", {
-        progress: true,
-        interactive: true,
-        timeout: 8000,
-        theme: "dark"
-    });
-		{% endif %}
+    <script src="{{ url_for('/static/js/menus.js') }}"></script>
+    <script>
+        {% if message %}
+        new window.FlashMessage("{{ message[0] }}", "{{ message[1] }}", {
+            progress: true,
+            interactive: true,
+            timeout: 8000,
+            theme: "dark"
+        });
+        {% endif %}
 
-		// Disable scrolling on inputs, as it make users do weird things.
-		// Taken from https://stackoverflow.com/a/38589039/147077
-		document.addEventListener("wheel", function(event){
-		    if(document.activeElement.type === "number"){
-		        document.activeElement.blur();
-		    }
-		});
+        // Disable scrolling on inputs, as it make users do weird things.
+        // Taken from https://stackoverflow.com/a/38589039/147077
+        document.addEventListener("wheel", function (event) {
+            if (document.activeElement.type === "number") {
+                document.activeElement.blur();
+            }
+        });
     </script>
 </body>
+
 </html>
