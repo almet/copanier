@@ -20,6 +20,8 @@ class Response(RollResponse):
         context["config"] = config
         context["request"] = self.request
         context["url_for"] = app.url_for
+        from .. import __version__
+        context["version"] = __version__
         if self.request.cookies.get("message"):
             try:
                 message = json.loads(self.request.cookies["message"])

@@ -5,6 +5,7 @@ from roll.extensions import simple_server, static
 from .models import Product, Person, Order, Delivery
 from .views.core import app
 
+__version__ = "0.0.5"
 
 @minicli.cli()
 def shell():
