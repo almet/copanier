@@ -1,6 +1,7 @@
 import inspect
 import threading
 import uuid
+from collections import Counter
 from datetime import datetime, timedelta
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
@@ -426,6 +427,14 @@ class Delivery(PersistedBase):
         if not path.exists():
             raise DoesNotExist
         data = yaml.safe_load(path.read_text())
+        # Get the most common product key.
+        # If we have multiple keys with the same name
+        # dedupe them by appending something to the newest of them.
+        if 'products' in data:
+            counter = Counter([i['ref'] for i in data['products']])
+            most_common = counter.most_common(1)[0]
+            if most_common[1] > 1:
+                raise Exception(f'Duplicate product keys for "{most_common[0]}"')
         # Tolerate extra fields (but we'll lose them if instance is persisted)
         data = {k: v for k, v in data.items() if k in cls.__dataclass_fields__}
         delivery = cls(**data)
