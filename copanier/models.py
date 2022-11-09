@@ -426,19 +426,52 @@ class Delivery(PersistedBase):
         path = cls.get_root() / f"{id}.yml"
         if not path.exists():
             raise DoesNotExist
-        data = yaml.safe_load(path.read_text())
-        # Get the most common product key.
-        # If we have multiple keys with the same name
-        # dedupe them by appending something to the newest of them.
-        if 'products' in data:
-            counter = Counter([i['ref'] for i in data['products']])
+
+        def _dedupe_products(raw_data):
+            """On some rare occasions, different products get
+               the same identifier (ref).
+
+               This function finds them and appends "-dedupe" to it.
+               This is not ideal but fixes the problem before it causes more
+               trouble (such as https://github.com/spiral-project/copanier/issues/136)
+
+               This function returns True if dupes have been found.
+            """
+            if ('products' not in raw_data) or len(raw_data['products']) < 1:
+                return False
+            
+            products = raw_data['products']
+
+            counter = Counter([p['ref'] for p in products])
             most_common = counter.most_common(1)[0]
-            if most_common[1] > 1:
-                raise Exception(f'Duplicate product keys for "{most_common[0]}"')
+            number_of_dupes = most_common[1]
+
+            if number_of_dupes < 2:
+                return False
+            
+            dupe_id = most_common[0]
+            # Reconstruct the products list but change the duplicated ID.
+            counter = 0
+            new_products = []
+            for product in products:
+                ref = product['ref']
+                if ref == dupe_id:
+                    counter = counter + 1
+                    if counter == number_of_dupes: # Only change the last occurence.
+                        product['ref'] = f'{ref}-dedupe'
+                new_products.append(product)
+            raw_data['products'] = new_products
+            return True
+
+        data = yaml.safe_load(path.read_text())
+        dupe_found = _dedupe_products(data)
         # Tolerate extra fields (but we'll lose them if instance is persisted)
         data = {k: v for k, v in data.items() if k in cls.__dataclass_fields__}
         delivery = cls(**data)
         delivery.id = id
+
+        if dupe_found:
+            delivery.persist()
         return delivery
 
     @classmethod
