@@ -1,5 +1,8 @@
 from datetime import datetime
 
+import random
+import string
+
 from slugify import slugify
 from .core import app
 from ..models import Delivery, Product, Producer
@@ -153,7 +156,8 @@ async def create_product(request, response, delivery_id, producer_id):
         product.producer = producer_id
         form = request.form
         product.update_from_form(form)
-        product.ref = slugify(f"{producer_id}-{product.name}-{product.unit}")
+        random_string = "".join(random.choices(string.ascii_lowercase + string.digits, k=8))
+        product.ref = slugify(f"{producer_id}-{product.name}-{product.unit}-{random_string}")
 
         delivery.products.append(product)
         delivery.persist()
