@@ -3,7 +3,7 @@ FROM debian:buster
 EXPOSE 2244
 ENV DEBIAN_FRONTEND=noninteractive 
 RUN apt-get -y update
-RUN apt-get -y install git python3-dev python3-venv python3-pip libcairo-dev libpango1.0-dev locales
+RUN apt-get -y install git python3-dev python3-venv python3-pip libcairo-dev libpango1.0-dev libjpeg-dev locales
 
 RUN sed -i -e 's/# fr_FR.UTF-8 UTF-8/fr_FR.UTF-8 UTF-8/' /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \
