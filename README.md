@@ -182,6 +182,41 @@ You can run it with this command:
 gunicorn -k roll.worker.Worker copanier:app --bind [$IP]:$PORT
 ```
 
+## Installation on AlwaysData
+
+[AlwaysData](https://alwaysdata.net) has a free plan capable of hosting copanier. Here are the steps to install there :
+
+1. Create a free account
+1. Connect via ssh
+1. `git clone https://github.com/spiral-project/copanier.git`
+1. Create the venv with `python3.9 -m venv venv` (using python 3.9 right now to avoid issues with cython)
+1. Create a `copanier.env` and `runserver.sh` file with the contents below
+
+```env
+export COPANIER_SITE_NAME="Copanier"
+export COPANIER_SITE_URL="https://xxx.alwaysdata.net"
+export COPANIER_SITE_DESCRIPTION="Copanier"
+export COPANIER_XLSX_FILENAME="produits"
+export COPANIER_SEND_EMAILS=True
+
+export COPANIER_SMTP_HOST="xxx"
+export COPANIER_SMTP_PASSWORD="xxx"
+export COPANIER_SMTP_LOGIN="xxx"
+
+export COPANIER_FROM_EMAIL="xxx"
+export COPANIER_EMAIL_SIGNATURE="Copanier"
+export COPANIER_STAFF=""
+```
+
+```bash
+#!/bin/bash
+source copanier.env && /home/copanier/venv/bin/gunicorn -k roll.worker.Worker copanier:app --bind [$IP]:$PORT
+```
+
+Then in the admin pannel create a website with a custom script that runs
+`/runserver.sh` and another site which points to the static files. You should
+be good to go.
+
 ## Fork
 
 This project is a continuation of the work done by [Yohan](https://framagit.org/ybon/copanier),
