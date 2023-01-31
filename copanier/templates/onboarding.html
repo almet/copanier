@@ -4,9 +4,13 @@
 <p>On dirait que vous venez de lancer ce logiciel pour la première fois, bienvenue ici 😀.</p>
 <p>Pour commencer, deux options :</p>
 <ul>
-    <li><a href=" {{ url_for('activate_demo') }}">Activer le mode de démonstration</a>, cela va charger des données de démonstration pour que vous puissiez aller jeter un coup d'oeil au fonctionnement du logiciel ;</li>
-    <li>Ou alors si vous avez envie de commencer à utiliser le logiciel, vous devez commencer par <a href="{{ url_for('groups') }}">rejoindre un groupe</a> et commencer une distribution.</p></li>
+    <li><a class="button" href=" {{ url_for('activate_demo') }}">Activer le mode de démonstration</a> pour jeter un coup
+        d'œil rapidement aux fonctionalités.</li>
+    <li>Sinon, vous pouvez commencer par <a class="button" href="{{ url_for('groups') }}">rejoindre un foyer</a> et
+        commencer une distribution.</p>
+    </li>
 
 </ul>
-<p>Bon voyage 🙏 !</p>
+<p>La peinture est encore fraiche, alors si vous avez besoin d'un coup de main, n'hésitez pas à <a
+        href="mailto:alexis@notmyidea.org">m'envoyer un mail</a> ! 🙏</p>
 {% endblock body %}

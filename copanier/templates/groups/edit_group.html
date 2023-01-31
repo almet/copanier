@@ -3,11 +3,11 @@
 {% block body %}
 <div class="header">
     {% if group.id %}
-    <h1>Modifier le groupe</h1>
+    <h1>Modifier le foyer</h1>
     {% else %}
-    <h1>Créer un nouveau groupe</h1>
+    <h1>Créer un nouveau foyer</h1>
     {% endif %}
-    <h4>Les groupes permettent de gérer les commandes pour d'autres personnes (colocs, familles, etc)</h4>
+    <h4>Les foyers permettent de gérer les commandes pour d'autres personnes (colocs, familles, etc)</h4>
 </div>
 
 <form method="post">
@@ -16,7 +16,7 @@
         <input type="text" name="name" value="{{ group.name or '' }}" required>
     </label>
     <label>
-        <p>Membres du groupe (emails, séparés par des virgules)</p>
+        <p>Membres du foyer (emails, séparés par des virgules)</p>
         <input type="text" name="members" value="{{ ', '.join(group.members) if group.members else '' }}">
     </label>
     <div>
@@ -27,7 +27,8 @@
 {% if group.id %}
 <ul class="toolbox">
     <li>
-        <a href="{{ url_for('delete_group', id=group.id) }}" class="button danger"><i class="icon-hazardous"></i>&nbsp;Supprimer ce groupe</a>
+        <a href="{{ url_for('delete_group', id=group.id) }}" class="button danger"><i
+                class="icon-hazardous"></i>&nbsp;Supprimer ce foyer</a>
     </li>
 </ul>
 {% endif %}

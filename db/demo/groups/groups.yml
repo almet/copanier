@@ -5,64 +5,38 @@ groups:
     - gilki@tenhe.ls
     - mohu@zab.tj
     - nazhap@opolarti.ly
+    - youpi@notmyidea.org
     name: Permuflard
-  john:
-    id: john
-    members:
-    - voige@sida.li
-    name: John
-  pre-du-fond:
-    id: pre-du-fond
-    members:
-    - sakzace@cetbageg.ne
-    - es@worru.cx
-    name: Pré du fond
-  chez-louise:
-    id: chez-louise
-    members:
-    - suznala@iflavra.ch
-    - sihvo@vo.gn
-    name: Chez Louise
-  les-filles-du-bout:
-    id: les-filles-du-bout
-    members:
-    - tecuhmiz@ilmifhaf.edu
-    - pi@hozep.sj
-    name: Les filles du bout
   chaton:
     id: chaton
     members:
     - puet@helzet.ax
     - bi@noto.fm
     name: Châton
+  chez-louise:
+    id: chez-louise
+    members:
+    - suznala@iflavra.ch
+    - sihvo@vo.gn
+    name: Chez Louise
   chez-pascale:
     id: chez-pascale
     members:
     - gawumnud@izkep.bb
     name: Chez Pascale
-  laxe:
-    id: laxe
+  john:
+    id: john
     members:
-    - couv@rujli.lr
-    - casceci@ziceda.mv
-    name: Laxe
-  mouin:
-    id: mouin
+    - voige@sida.li
+    name: John
+  la-bas-au-loin:
+    id: la-bas-au-loin
     members:
-    - rop@uznofkoz.za
-    - ga@ma.gb
-    - fuatogi@bip.sb
-    - te@itiorapa.gn
-    name: Mouin
-  le-chauffage:
-    id: le-chauffage
-    members:
-    - jaigo@hevef.gl
-    - du@nozcoze.lt
-    - em@ca.fk
-    - ifegomcic@pi.lt
-    - zow@hanheh.tn
-    name: Le chauffage
+    - uwuvenfo@dunam.na
+    - va@nowuk.th
+    - ohu@vukuk.vu
+    - ewmu@migo.hm
+    name: La Bas au loin
   la-lointaine:
     id: la-lointaine
     members:
@@ -72,14 +46,6 @@ groups:
     - viw@iwfifbe.ua
     - enji@ladbaped.lt
     name: La lointaine
-  la-bas-au-loin:
-    id: la-bas-au-loin
-    members:
-    - uwuvenfo@dunam.na
-    - va@nowuk.th
-    - ohu@vukuk.vu
-    - ewmu@migo.hm
-    name: La Bas au loin
   la-lumiere:
     id: la-lumiere
     members:
@@ -88,6 +54,12 @@ groups:
     - uveruopo@gic.org
     - zimpok@gogav.sy
     name: La lumière
+  la-moins:
+    id: la-moins
+    members:
+    - cuud@cof.sc
+    - gavciawu@huzip.ga
+    name: La Moins
   la-reclue:
     id: la-reclue
     members:
@@ -100,12 +72,21 @@ groups:
     - pej@je.pk
     - fotopesu@sumfu.sm
     name: la Ville Z
-  la-moins:
-    id: la-moins
+  laxe:
+    id: laxe
     members:
-    - cuud@cof.sc
-    - gavciawu@huzip.ga
-    name: La Moins
+    - couv@rujli.lr
+    - casceci@ziceda.mv
+    name: Laxe
+  le-chauffage:
+    id: le-chauffage
+    members:
+    - jaigo@hevef.gl
+    - du@nozcoze.lt
+    - em@ca.fk
+    - ifegomcic@pi.lt
+    - zow@hanheh.tn
+    name: Le chauffage
   le-foin:
     id: le-foin
     members:
@@ -126,12 +107,20 @@ groups:
     - rocvibuv@nosmijij.tz
     - it@za.rs
     name: Le grand champ
-  ttre:
-    id: ttre
+  les-filles-du-bout:
+    id: les-filles-du-bout
     members:
-    - hutfiro@aje.gov
-    - ce@bowzodda.in
-    name: TTRE
+    - tecuhmiz@ilmifhaf.edu
+    - pi@hozep.sj
+    name: Les filles du bout
+  mouin:
+    id: mouin
+    members:
+    - rop@uznofkoz.za
+    - ga@ma.gb
+    - fuatogi@bip.sb
+    - te@itiorapa.gn
+    name: Mouin
   passage-creuse:
     id: passage-creuse
     members:
@@ -153,12 +142,6 @@ groups:
     - budavwa@ciwun.mt
     - jisafu@huvogu.jm
     name: Pataudes
-  rs:
-    id: rs
-    members:
-    - bok@rebu.de
-    - beko@noza.bz
-    name: R&S
   peug:
     id: peug
     members:
@@ -169,3 +152,21 @@ groups:
     - zahpepez@toteppe.hu
     - fiodvif@fafij.cm
     name: Peug'
+  pre-du-fond:
+    id: pre-du-fond
+    members:
+    - sakzace@cetbageg.ne
+    - es@worru.cx
+    name: Pré du fond
+  rs:
+    id: rs
+    members:
+    - bok@rebu.de
+    - beko@noza.bz
+    name: R&S
+  ttre:
+    id: ttre
+    members:
+    - hutfiro@aje.gov
+    - ce@bowzodda.in
+    name: TTRE

@@ -134,9 +134,7 @@ async def validate_producer_prices(request, response, delivery_id, producer_id):
 @app.route("/produits/{delivery_id}/valider-prix", methods=["GET"])
 async def mark_all_prices_as_ok(request, response, delivery_id):
     delivery = Delivery.load(delivery_id)
-
-    for product in delivery.products:
-        product.last_update = datetime.now()
+    delivery.validate_all_prices()
     delivery.persist()
 
     response.message(f"Les prix ont été marqués comme OK pour toute la distribution !")
@@ -156,8 +154,12 @@ async def create_product(request, response, delivery_id, producer_id):
         product.producer = producer_id
         form = request.form
         product.update_from_form(form)
-        random_string = "".join(random.choices(string.ascii_lowercase + string.digits, k=8))
-        product.ref = slugify(f"{producer_id}-{product.name}-{product.unit}-{random_string}")
+        random_string = "".join(
+            random.choices(string.ascii_lowercase + string.digits, k=8)
+        )
+        product.ref = slugify(
+            f"{producer_id}-{product.name}-{product.unit}-{random_string}"
+        )
 
         delivery.products.append(product)
         delivery.persist()

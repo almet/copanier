@@ -3,20 +3,26 @@
 {% block additional_menu %}
 <div class="pure-menu">
     <ul class="pure-menu-list">
-                <li class="pure-menu-item"><a href="{{ url_for('list_products', id=delivery.id) }}/produits.pdf" class="pure-menu-link"><i class="icon-ribbon"></i>&nbsp;Bons de commande</a></li>
-                <li class="pure-menu-item"><a href="{{ url_for('show_orders_summary', id=delivery.id) }}" class="pure-menu-link"><i class="icon-grid"></i>&nbsp;Commandes groupes</a></li>
-                <li class="pure-menu-item"><a href="{{ url_for('compute_payments', id=delivery.id) }}" class="pure-menu-link"><i class="icon-wallet"></i>&nbsp;Paiements</a></li>
+        <li class="pure-menu-item"><a href="{{ url_for('list_products', id=delivery.id) }}/produits.pdf"
+                class="pure-menu-link"><i class="icon-ribbon"></i>&nbsp;Bons de commande</a></li>
+        <li class="pure-menu-item"><a href="{{ url_for('show_orders_summary', id=delivery.id) }}"
+                class="pure-menu-link"><i class="icon-grid"></i>&nbsp;Commandes foyers</a></li>
+        <li class="pure-menu-item"><a href="{{ url_for('compute_payments', id=delivery.id) }}" class="pure-menu-link"><i
+                    class="icon-wallet"></i>&nbsp;Paiements</a></li>
         {% if request['user'].email == delivery.contact and delivery.status > delivery.EMPTY %}
         <li class="pure-menu-item">
-            <a class="pure-menu-link" href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}"><i class="icon-tools"></i>&nbsp;Boîte à outils</a>
+            <a class="pure-menu-link" href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}"><i
+                    class="icon-tools"></i>&nbsp;Boîte à outils</a>
         </li>
         {% endif %}
         {% if request.user and request.user.is_staff %}
         <li class="pure-menu-item">
-            <a class="pure-menu-link" href="{{ url_for('edit_delivery', id=delivery.id) }}"><i class="icon-adjustments"></i>&nbsp;Modifier la distrib</a>
+            <a class="pure-menu-link" href="{{ url_for('edit_delivery', id=delivery.id) }}"><i
+                    class="icon-adjustments"></i>&nbsp;Modifier la distrib</a>
         </li>
         <li class="pure-menu-item">
-            <a class="pure-menu-link" href="{{ url_for('list_products', id=delivery.id) }}"><i class="icon-pricetags"></i>&nbsp;Éditer produits</a>
+            <a class="pure-menu-link" href="{{ url_for('list_products', id=delivery.id) }}"><i
+                    class="icon-pricetags"></i>&nbsp;Éditer produits</a>
         </li>
         {% endif %}
     </ul>
@@ -25,14 +31,16 @@
 {% block body %}
 
 {% if delivery.status == delivery.CLOSED %}
-<div class="important-message">Une fois la distribution terminée, reviens ici pour <a class="button" href="{{ url_for('hand_over_delivery', id=delivery.id) }}">passer le relai !</a></div>
+<div class="important-message">Une fois la distribution terminée, reviens ici pour <a class="button"
+        href="{{ url_for('hand_over_delivery', id=delivery.id) }}">passer le relai !</a></div>
 {% endif %}
 
 
 <div class="header">
     <h1>{{ delivery.name }}</h1>
     <h2>
-      Distribution le <i class="icon-clock"></i> {{ delivery.from_date|date }}, {{ delivery.from_date|time }} - {{ delivery.to_date|time }}, à <i class="icon-streetsign"></i> {{ delivery.where }}.
+        Distribution le <i class="icon-clock"></i> {{ delivery.from_date|date }}, {{ delivery.from_date|time }} - {{
+        delivery.to_date|time }}, à <i class="icon-streetsign"></i> {{ delivery.where }}.
     </h2>
 
     <h3>{% if delivery.products %}
@@ -45,13 +53,13 @@
 </div>
 
 <article class="delivery">
-{% if request['user'].email == delivery.contact %}
-<div class="placeholder center">
-Hey, jettes un coup d'oeil à
-<a href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}">&nbsp;la boîte à outils</a> !
-</div>
-{% endif %}
-{% if delivery.has_products %}
+    {% if request['user'].email == delivery.contact %}
+    <div class="placeholder center">
+        Hey, jettes un coup d'oeil à
+        <a href="{{ url_for('show_delivery_toolbox', id=delivery.id) }}">&nbsp;la boîte à outils</a> !
+    </div>
+    {% endif %}
+    {% if delivery.has_products %}
     {% for (id, producer) in delivery.get_producers_for_referent(request.user.email).items() %}
     {% if producer.needs_price_update(delivery) %}
     {% set modal_body %}
@@ -60,25 +68,29 @@ Hey, jettes un coup d'oeil à
     Certains produits dont tu est référent⋅e ont besoin d'être mis à jour.<br /><br />
     Est-ce que tu veux t'en occuper maintenant ?<br />
 
-    <a class="button" href="{{ url_for('edit_producer', delivery_id=delivery.id, producer_id=producer.id) }}#products">Oui, mettre à jour les prix pour {{ producer.name }}</a>
+    <a class="button"
+        href="{{ url_for('edit_producer', delivery_id=delivery.id, producer_id=producer.id) }}#products">Oui, mettre à
+        jour les prix pour {{ producer.name }}</a>
     {%- endset %}
     {{ macros.modal(id="update-price", body=modal_body, checked=True) }}
     {% break %}
     {% endif %}
     {% endfor %}
     {% include "includes/delivery_table.html" %}
-{% else %}
-<div class="placeholder">
-    <h2>😔 Pour le moment, cette distribution est bien vide…</h2>
-    {% if request.user and request.user.is_staff %}
+    {% else %}
+    <div class="placeholder">
+        <h2>😔 Pour le moment, cette distribution est bien vide…</h2>
+        {% if request.user and request.user.is_staff %}
         Occupons-nous donc de ça ! Deux options :
         <ol>
-            <li><a href="{{ url_for('create_producer', delivery_id=delivery.id) }}">Ajouter les product⋅eurs⋅rices</a> à la main ;</li>
-            <li>Ou bien <a href="{{ url_for('copy_products', id=delivery.id) }}">copier les produits d'une autre distribution</a>.</li>
+            <li><a href="{{ url_for('create_producer', delivery_id=delivery.id) }}">Ajouter les product⋅eurs⋅rices</a> à
+                la main ;</li>
+            <li>Ou bien <a href="{{ url_for('copy_products', id=delivery.id) }}">copier les produits d'une autre
+                    distribution</a>.</li>
         </ol>
+        {% endif %}
+    </div>
     {% endif %}
-</div>
-{% endif %}
 </article>
 <hr>
 <ul class="toolbox">

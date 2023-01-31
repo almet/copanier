@@ -2,28 +2,31 @@
 
 {% block body %}
 <div class="header">
-    <h1>Groupes</h1>
+    <h1>Foyers</h1>
     <div class="pure-menu pure-menu-horizontal">
         <ul class="pure-menu-list">
             <li class="pure-menu-item">
-                <a class="pure-menu-link" href="{{ url_for('create_group') }}"><i class="icon-globe"></i>&nbsp;Créer un nouveau groupe</a>
+                <a class="pure-menu-link" href="{{ url_for('create_group') }}"><i class="icon-globe"></i>&nbsp;Créer un
+                    nouveau foyer</a>
             </li>
         </ul>
     </div>
 </div>
 
 {% if not request['user'].group_id %}
-<p>Bienvenue ! Avant de pouvoir commander, peux-tu nous indiquer pour quelle coloc / famille tu vas passer commande ? </p>
+<p>Bienvenue ! Avant de pouvoir commander, peux-tu nous indiquer pour quel foyer tu vas passer commande ?
+</p>
 {% endif %}
 {% if not groups.groups %}
-<p>On dirait que tu arrive parmis les premier⋅es ! <a class="button" href="{{ url_for('create_group') }}"><i class="icon-globe"></i>&nbsp;Créé un nouveau groupe.</a></p>
+<p>On dirait que tu arrive parmis les premier⋅es ! <a class="button" href="{{ url_for('create_group') }}"><i
+            class="icon-globe"></i>&nbsp;Créé un nouveau foyer.</a></p>
 
 {% else %}
 
 <table id="groups" class="pure-table">
     <thead>
         <tr>
-            <th>Groupe</th>
+            <th>Foyer</th>
             <th>Membres</th>
             <th>Actions</th>
         </tr>
@@ -39,13 +42,16 @@
                     {% endfor %}
                 </ul>
             </td>
-            <td>{% if group.id != request['user'].group_id %}<a class="pure-button" href="{{ url_for('join_group', id=group.id) }}">rejoindre</a>{% endif %} <a class="pure-button" href="{{ url_for('edit_group', id=group.id) }}">éditer</a></td>
+            <td>{% if group.id != request['user'].group_id %}<a class="pure-button"
+                    href="{{ url_for('join_group', id=group.id) }}">rejoindre</a>{% endif %} <a class="pure-button"
+                    href="{{ url_for('edit_group', id=group.id) }}">éditer</a></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<p>Tu ne fais partie d'aucun des groupes listés ici ? Tu peux <a class="button" href="{{ url_for('create_group') }}"><i class="icon-globe"></i>&nbsp;en créer un nouveau</a></p>
+<p>Tu ne fais partie d'aucun des foyers listés ici ? Tu peux <a class="button" href="{{ url_for('create_group') }}"><i
+            class="icon-globe"></i>&nbsp;en créer un nouveau</a></p>
 {% endif %}
 
 {% endblock %}

@@ -12,6 +12,10 @@ import yaml
 from . import config
 
 
+def demo_mode_enabled():
+    return getattr(config, "DEMO_MODE", False)
+
+
 class DoesNotExist(ValueError):
     pass
 
@@ -78,13 +82,12 @@ class Base:
 
 @dataclass
 class PersistedBase(Base):
-
     @classmethod
     def get_root(cls):
         root = Path(config.DATA_ROOT)
-        if getattr(config, 'DEMO_MODE', False):
+        if demo_mode_enabled():
             root = root / "demo"
-        
+
         return root / cls.__root__
 
 
@@ -110,6 +113,7 @@ class SavedConfiguration(PersistedBase):
         else:
             data = {}
         return cls(**data)
+
 
 @dataclass
 class Person(Base):
@@ -162,19 +166,18 @@ class Groups(PersistedBase):
             data = {"groups": {}}
         groups = cls(**data)
         return groups
-    
+
     @classmethod
     def is_defined(cls):
         groups = cls.load()
         return len(groups.groups) > 0
-
 
     def persist(self):
         with self.__lock__:
             self.get_path().write_text(self.dump())
 
     def add_group(self, group):
-        assert group.id not in self.groups, "Un groupe avec ce nom existe déjà."
+        assert group.id not in self.groups, "Un foyer avec ce nom existe déjà."
         self.groups[group.id] = group
 
     def add_user(self, email, group_id):
@@ -294,7 +297,9 @@ class Order(Base):
             p.quantity * _get_price(ref) for ref, p in self.products.items()
         )
 
-        shipping = self.compute_shipping(delivery, producers, email) if include_shipping else 0
+        shipping = (
+            self.compute_shipping(delivery, producers, email) if include_shipping else 0
+        )
 
         return round(total_products + shipping, 2)
 
@@ -354,15 +359,19 @@ class Delivery(PersistedBase):
             return self.ADJUSTMENT
         if self.is_waiting_products:
             return self.WAITING_PRODUCTS
-        
+
         return self.CLOSED
 
     def products_need_price_update(self, products=None):
         products = products or self.products
         max_age = self.from_date.date() - timedelta(days=60)
-        return any([product.last_update.date() < max_age
-                   for product in products
-                   if product.producer in self.producers])
+        return any(
+            [
+                product.last_update.date() < max_age
+                for product in products
+                if product.producer in self.producers
+            ]
+        )
 
     @property
     def dates(self):
@@ -373,7 +382,7 @@ class Delivery(PersistedBase):
             "price_update_deadline": self.order_before - timedelta(weeks=2),
             "order_before": self.order_before,
             "adjustment_deadline": self.order_before + timedelta(days=4),
-            "delivery_date": delivery_date
+            "delivery_date": delivery_date,
         }
 
     @property
@@ -387,15 +396,13 @@ class Delivery(PersistedBase):
     @property
     def is_open(self):
         return datetime.now().date() <= self.order_before.date()
-    
+
     @property
     def is_waiting_products(self):
         return (
             datetime.now().date() >= self.order_before.date()
-            and
-            datetime.now().date() <= self.from_date.date()
+            and datetime.now().date() <= self.from_date.date()
         )
-
 
     @property
     def is_foreseen(self):
@@ -429,49 +436,58 @@ class Delivery(PersistedBase):
 
         def _dedupe_products(raw_data):
             """On some rare occasions, different products get
-               the same identifier (ref).
+            the same identifier (ref).
 
-               This function finds them and appends "-dedupe" to it.
-               This is not ideal but fixes the problem before it causes more
-               trouble (such as https://github.com/spiral-project/copanier/issues/136)
+            This function finds them and appends "-dedupe" to it.
+            This is not ideal but fixes the problem before it causes more
+            trouble (such as https://github.com/spiral-project/copanier/issues/136)
 
-               This function returns True if dupes have been found.
+            This function returns True if dupes have been found.
             """
-            if ('products' not in raw_data) or len(raw_data['products']) < 1:
+            if ("products" not in raw_data) or len(raw_data["products"]) < 1:
                 return False
-            
-            products = raw_data['products']
 
-            counter = Counter([p['ref'] for p in products])
+            products = raw_data["products"]
+
+            counter = Counter([p["ref"] for p in products])
             most_common = counter.most_common(1)[0]
             number_of_dupes = most_common[1]
 
             if number_of_dupes < 2:
                 return False
-            
+
             dupe_id = most_common[0]
             # Reconstruct the products list but change the duplicated ID.
             counter = 0
             new_products = []
             for product in products:
-                ref = product['ref']
+                ref = product["ref"]
                 if ref == dupe_id:
                     counter = counter + 1
-                    if counter == number_of_dupes: # Only change the last occurence.
-                        product['ref'] = f'{ref}-dedupe'
+                    if counter == number_of_dupes:  # Only change the last occurence.
+                        product["ref"] = f"{ref}-dedupe"
                 new_products.append(product)
-            raw_data['products'] = new_products
+            raw_data["products"] = new_products
             return True
 
         data = yaml.safe_load(path.read_text())
         dupe_found = _dedupe_products(data)
+
         # Tolerate extra fields (but we'll lose them if instance is persisted)
         data = {k: v for k, v in data.items() if k in cls.__dataclass_fields__}
         delivery = cls(**data)
         delivery.id = id
 
+        if demo_mode_enabled():
+            delivery.from_date = datetime.now()
+            delivery.to_date = datetime.now() + timedelta(days=10)
+            delivery.order_before = datetime.now() + timedelta(days=5)
+            delivery.validate_all_prices()
+            delivery.persist()
+
         if dupe_found:
             delivery.persist()
+
         return delivery
 
     @classmethod
@@ -480,7 +496,7 @@ class Delivery(PersistedBase):
         for path in root.glob("*.yml"):
             id_ = str(path.relative_to(cls.get_root())).replace(".yml", "")
             yield Delivery.load(id_)
-    
+
     @classmethod
     def is_defined(cls):
         return len(list(cls.all())) > 0
@@ -591,3 +607,7 @@ class Delivery(PersistedBase):
         percentage_person = person_amount / producer_total
         shipping = percentage_person * producer_shipping
         return shipping
+
+    def validate_all_prices(self):
+        for product in self.products:
+            product.last_update = datetime.now()

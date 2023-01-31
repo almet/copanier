@@ -1,6 +1,6 @@
 from .core import app, session, env, url
 
-from ..models import Groups, Person, SavedConfiguration
+from ..models import Groups, Person, SavedConfiguration, Delivery
 from .. import utils, emails, config
 
 
@@ -14,9 +14,9 @@ async def auth_required(request, response):
 
     saved_config = SavedConfiguration.load()
     if saved_config.demo_mode_enabled:
-        setattr(config, 'DEMO_MODE', True)
+        setattr(config, "DEMO_MODE", True)
     else:
-        setattr(config, 'DEMO_MODE', False)
+        setattr(config, "DEMO_MODE", False)
 
     if request.route.payload and not request.route.payload.get("unprotected"):
         token = request.cookies.get("token")
@@ -96,12 +96,15 @@ async def logout(request, response):
 async def onboarding(request, response):
     response.html("onboarding.html")
 
+
 @app.route("/premier-lancement/demo", methods=["GET"])
 async def activate_demo(request, response):
     saved_config = SavedConfiguration.load()
     saved_config.demo_mode_enabled = True
+
     saved_config.persist()
     response.redirect = "/"
+
 
 @app.route("/premier-lancement/demo/désactiver", methods=["GET"])
 async def desactivate_demo(request, response):

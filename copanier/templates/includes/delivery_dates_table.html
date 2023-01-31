@@ -1,26 +1,31 @@
 <table class="pure-table fixed-table">
     <thead>
         <tr>
-            <th></th><th>Dates</th><th>Coord</th><th>Référent⋅e⋅s</th>
+            <th></th>
+            <th>Dates</th>
+            <th>Coord</th>
+            <th>Référent⋅e⋅s</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <th>Création de la distribution</th>
             <td>{{ delivery.dates.creation_date | date}}</td>
-            <td>Rappeler aux référent⋅e⋅s produit de mettre leurs prix à jour, vérifier que tous les produits sont bien présentes, en ajouter si besoin</td>
+            <td>Rappeler aux référent⋅e⋅s produit de mettre leurs prix à jour, vérifier que tous les produits sont bien
+                présentes, en ajouter si besoin</td>
             <td>-</td>
         </tr>
         <tr>
             <th>Mise à jour des prix</th>
-            <td>Du {{ delivery.dates.price_update_start | date }} au {{ delivery.dates.price_update_deadline | date}}</td>
+            <td>Du {{ delivery.dates.price_update_start | date }} au {{ delivery.dates.price_update_deadline | date}}
+            </td>
             <td>—</td>
             <td>Les référent⋅e⋅s produit mettent les prix à jour.</td>
         </tr>
         <tr>
             <th>Commandes</th>
             <td>Du {{ delivery.dates.price_update_deadline | date }} au {{ delivery.dates.order_before | date }}</td>
-            <td>Envoyer le lien de commande aux groupes</td>
+            <td>Envoyer le lien de commande aux foyers</td>
             <td>—</td>
         </tr>
         <tr>
@@ -32,25 +37,29 @@
         <tr>
             <th>Récup des produits</th>
             <td>Du {{ delivery.dates.adjustment_deadline | date }} au {{ delivery.dates.delivery_date | date }}</td>
-            <td><a href="{{ url_for('send_referent_emails', id=delivery.id) }}">Envoyer les infos de commande aux référent⋅e⋅s</a></td>
+            <td><a href="{{ url_for('send_referent_emails', id=delivery.id) }}">Envoyer les infos de commande aux
+                    référent⋅e⋅s</a></td>
             <td>Transmettre les commandes, <strong>récupérer les produits</strong></td>
         </tr>
         <tr>
             <th>Préparation de la distribution</th>
             <td>La veille du {{ delivery.dates.delivery_date | date }}</td>
-            <td><a href="{{ url_for('show_orders_summary', id=delivery.id) }}">Imprimer les bons de commandes par groupe</a></td>
+            <td><a href="{{ url_for('show_orders_summary', id=delivery.id) }}">Imprimer les bons de commandes par
+                    foyer</a></td>
             <td>—</td>
         </tr>
         <tr>
             <th>Distribution</th>
             <td>{{ delivery.dates.delivery_date | date }}</td>
-            <td>Coordonner la distribution, <a href="{{ url_for('compute_payments', id=delivery.id) }}">faire la répartition des chèques</a></td>
+            <td>Coordonner la distribution, <a href="{{ url_for('compute_payments', id=delivery.id) }}">faire la
+                    répartition des chèques</a></td>
             <td>Arriver 30mn avant le début de la distribution, répartir les produits par coloc</td>
         </tr>
         <tr>
             <th>Transmission</th>
             <td>Après la distribution</td>
-            <td><a href="{{ url_for('hand_over_delivery', id=delivery.id) }}">Passer le relai à la nouvelle personne référente</a></a></td>
+            <td><a href="{{ url_for('hand_over_delivery', id=delivery.id) }}">Passer le relai à la nouvelle personne
+                    référente</a></a></td>
             <td>—</td>
         </tr>
     </tbody>

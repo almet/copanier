@@ -9,21 +9,26 @@
 <table class="paiements">
     <tr>
         <td></td>
-        {% for crediter in crediters %}<td>{% if crediter[0] in crediters_groups %} {{ crediters_groups[crediter[0]] }}*{% else %}{{ crediter[0] }}{% endif %} (+{{ crediter[1] | round(2) }})</td>{% endfor %}
+        {% for crediter in crediters %}<td>{% if crediter[0] in crediters_groups %} {{ crediters_groups[crediter[0]]
+            }}*{% else %}{{ crediter[0] }}{% endif %} (+{{ crediter[1] | round(2) }})</td>{% endfor %}
     </tr>
     {% for debiter in debiters %}
     <tr>
-        <td>{% if debiter[0] in debiters_groups %} {{ debiters_groups[debiter[0]].name }}{% else %}{{ debiter[0] }}{% endif %} ({{ debiter[1] | round(2) }})</td>
+        <td>{% if debiter[0] in debiters_groups %} {{ debiters_groups[debiter[0]].name }}{% else %}{{ debiter[0] }}{%
+            endif %} ({{ debiter[1] | round(2) }})</td>
         {% for crediter in crediters %}
         {% set due_amount = results[debiter[0]][crediter[0]] | round(2) %}
-        
+
         <td>{% if due_amount != 0.00 %}{{due_amount}}{% endif %}</td>
         {% endfor %}
     </tr>
     {% endfor %}
 </table>
 
-<p class="info"><i class="icon-lightbulb"></i>&nbsp; <strong>Mais, comment ça marche ?</strong> La répartition des chèques se fait automatiquement, en soustrayant ce que les personnes doivent (au nom de leur coloc / groupe) à ce qui leur est du (dans le cas où elles sont référentes pour certains produits).</p>
-<p class="info">Les personnes indiquées avec un <code>*</code> à côté de leur nom sont celles qui ont payé cette commande pour leur groupe.</p>
+<p class="info"><i class="icon-lightbulb"></i>&nbsp; <strong>Mais, comment ça marche ?</strong> La répartition des
+    chèques se fait automatiquement, en soustrayant ce que les personnes doivent (au nom de leur foyer) à ce
+    qui leur est du (dans le cas où elles sont référentes pour certains produits).</p>
+<p class="info">Les personnes indiquées avec un <code>*</code> à côté de leur nom sont celles qui ont payé cette
+    commande pour leur foyer.</p>
 
 {% endblock body %}

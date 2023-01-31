@@ -20,7 +20,7 @@ async def join_group(request, response, id):
     request["groups"].persist()
     redirect = "/" if not request["user"].group_id else "/groupes"
 
-    response.message(f"Vous avez bien rejoint le groupe « {group.name} »")
+    response.message(f"Vous avez bien rejoint le foyer « {group.name} »")
     response.redirect = redirect
 
 
@@ -41,14 +41,14 @@ async def create_group(request, response):
         )
         request["groups"].add_group(group)
         request["groups"].persist()
-        response.message(f"Le groupe {group.name} à bien été créé")
+        response.message(f"Le foyer {group.name} à bien été créé")
         response.redirect = "/"
     response.html("groups/edit_group.html", group=group)
 
 
 @app.route("/groupes/{id}/éditer", methods=["GET", "POST"])
 async def edit_group(request, response, id):
-    assert id in request["groups"].groups, "Impossible de trouver le groupe"
+    assert id in request["groups"].groups, "Impossible de trouver le foyer"
     group = request["groups"].groups[id]
     if request.method == "POST":
         form = request.form
@@ -65,8 +65,8 @@ async def edit_group(request, response, id):
 
 @app.route("/groupes/{id}/supprimer", methods=["GET"])
 async def delete_group(request, response, id):
-    assert id in request["groups"].groups, "Impossible de trouver le groupe"
+    assert id in request["groups"].groups, "Impossible de trouver le foyer"
     deleted = request["groups"].groups.pop(id)
     request["groups"].persist()
-    response.message(f"Le groupe {deleted.name} à bien été supprimé")
+    response.message(f"Le foyer {deleted.name} à bien été supprimé")
     response.redirect = "/groupes"

@@ -40,7 +40,7 @@ Avant et pendant la distrib :
 
   Modifier la commande (dates, lieu, référent⋅e, etc)
   Modifier les produits, les product⋅rices⋅eurs
-  Gérer les groupes / colocs
+  Gérer les foyers
 
 Une fois les commandes passées (après le dimanche 26 janvier)
   Télécharger les bons de distribution
