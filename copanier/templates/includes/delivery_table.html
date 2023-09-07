@@ -30,7 +30,7 @@
                     <th class="amount">Total</th>
                     {% if not list_only %}
                     {% for orderer, order in delivery.orders.items() %}
-                        {% set orderer_name = request.groups.groups[orderer].name %}
+                        {% set orderer_name = request.groups.groups[orderer].name if request.groups.groups[orderer] else orderer %}
                         <th class="person">
                             {% if request.user and (request.user.is_staff or request.user.is_referent(delivery)) %}
                                 <a class="underline" href="{{ url_for('place_order', id=delivery.id) }}?orderer={{ orderer }}" title="{{ orderer }}">{{ orderer_name }} <i class="icon-pencil"></i></a>
