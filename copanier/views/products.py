@@ -70,6 +70,7 @@ async def edit_producer(request, response, delivery_id, producer_id):
         producer.referent_name = form.get("referent_name")
         producer.description = form.get("description")
         producer.contact = form.get("contact")
+        producer.practical_info = form.get("practical_info")
         delivery.producers[producer_id] = producer
         delivery.persist()
 

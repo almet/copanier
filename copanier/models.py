@@ -210,6 +210,7 @@ class Producer(Base):
     referent_name: str = ""
     contact: str = ""
     description: str = ""
+    practical_info: str = ""
 
     def has_active_products(self, delivery):
         products = delivery.get_products_by(self.id)
