@@ -504,13 +504,13 @@ class Delivery(PersistedBase):
 
     @classmethod
     def incoming(cls):
-        return sorted(
-            [d for d in cls.all() if d.is_foreseen], key=lambda d: d.order_before
-        )
+        incoming_deliveries = [d for d in cls.all() if d.is_foreseen]
+        return sorted(incoming_deliveries, key=lambda d: d.order_before)
 
     @classmethod
     def former(cls):
-        return [d for d in cls.all() if not d.is_foreseen]
+        former_deliveries = [d for d in cls.all() if not d.is_foreseen]
+        return sorted(former_deliveries, key=lambda d: d.from_date, reverse=True)
 
     @property
     def path(self):
