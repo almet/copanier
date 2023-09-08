@@ -34,37 +34,56 @@
 {% endif %}
 <form method="post" class="pure-form pure-form-aligned">
     <fieldset>
-    {% if producer.id %}
-    <input type="hidden" name="id" value="{{ producer.id }}">
-    {% else %}
-    <div class="pure-control-group">
-        <label for="name">Nom</label>
-        <input id="name" type="text" name="name" value="{{ producer.name or '' }}" required>
-    </div>
-    {% endif %}
-    <div class="pure-control-group">
-        <label>Description</label>
-        <input type="text" name="description" value="{{ producer.description or '' }}">
-    </div>
-    <div class="pure-control-group">
-        <label>Email référent⋅e</label>
-        <input type="email" name="referent" value="{{ producer.referent or '' }}" required>
-    </div>
-    <div class="pure-control-group">
-        <label>Nom référent⋅e</label>
-        <input type="text" name="referent_name" value="{{ producer.referent_name or '' }}" required>
-    </div>
-    <div class="pure-control-group">
-        <label>Téléphone référent⋅e</label>
-        <input pattern="((\+|00)?[0-9]{2}|0)[1-9]( ?[0-9]){8}" onInput="prettifyPhoneNumber('referent_tel')" id="referent_tel" type="tel" name="referent_tel" value="{{ producer.referent_tel or '' }}" required>
-    </div>
-    <div class="pure-control-group">
-        <label>Contact producteur⋅rice</label>
-        <input type="text" name="contact" value="{{ producer.contact or '' }}">
-    </div>
-    <div class="pure-controls">
-        <input type="submit" name="submit" value="Valider" class="primary">
-    </div>
+        {% if producer.id %}
+            <input type="hidden" name="id" value="{{ producer.id }}">
+        {% else %}
+            <div class="pure-control-group">
+                <label for="producer_name">Nom</label>
+                <input id="producer_name" type="text" name="name" value="{{ producer.name or '' }}" required>
+            </div>
+        {% endif %}
+
+        <div class="pure-control-group">
+            <label for="producer_description" class="pure-input-1-3">Description</label>
+            <input class="pure-input-2-3" type="text" id="producer_description" name="description" value="{{ producer.description or '' }}">
+        </div>
+        <div class="pure-control-group">
+            <label for="producer_referent" class="pure-input-1-3">Email référent⋅e</label>
+            <input class="pure-input-2-3" type="email" id="producer_referent" name="referent" value="{{ producer.referent or '' }}" required>
+        </div>
+        <div class="pure-control-group">
+            <label for="producer_referent_name" class="pure-input-1-3">Nom référent⋅e</label>
+            <input class="pure-input-2-3" type="text" id="producer_referent_name" name="referent_name" value="{{ producer.referent_name or '' }}" required>
+        </div>
+        <div class="pure-control-group">
+            <label for="producer_referent_tel" class="pure-input-1-3">Téléphone référent⋅e</label>
+            <input class="pure-input-2-3"
+                type="tel"
+                id="producer_referent_tel"
+                name="referent_tel"
+                pattern="((\+|00)?[0-9]{2}|0)[1-9]( ?[0-9]){8}"
+                onInput="prettifyPhoneNumber('referent_tel')"
+                value="{{ producer.referent_tel or '' }}"
+                required
+            />
+        </div>
+        <div class="pure-control-group">
+            <label for="producer_contact" class="pure-input-1-3">Contact producteur⋅rice</label>
+            <input class="pure-input-2-3" type="text" id="producer_contact" name="contact" value="{{ producer.contact or '' }}">
+        </div>
+        <div class="pure-control-group">
+            <label for="producer_practical_info" class="pure-input-1-1">Infos pratiques</label>
+            <textarea
+                class="pure-input-2-3"
+                id="producer_practical_info"
+                name="practical_info"
+                rows="10"
+                placeholder="Infos pour le/la référent⋅e : moyen de contact à privilégier, comment les produits sont-ils habituellement livrés..."
+            >{{ producer.practical_info or '' }}</textarea>
+        </div>
+        <div class="pure-controls">
+            <input type="submit" name="submit" value="Valider" class="primary">
+        </div>
     </fieldset>
 </form>
 

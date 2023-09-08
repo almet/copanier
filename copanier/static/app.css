@@ -258,6 +258,13 @@ textarea {
   box-sizing: border-box;
 }
 
+textarea {
+  /* override 2rem from the previous rule to enable textareas to size themselves automatically,
+  and/or using the `rows` attribute: */
+  height: auto;
+  resize: vertical;
+}
+
 select {
   -webkit-appearance: none;
   -moz-appearance: none;
