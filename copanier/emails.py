@@ -1,4 +1,5 @@
 from emails import Message
+import email.utils as utils
 
 from . import config
 
@@ -7,8 +8,10 @@ def send(to, subject, body, html=None, copy=None, attachments=None, mail_from=No
     if not attachments:
         attachments = []
 
+    # compute a message id, this is good for spam score
+    mid = utils.make_msgid(domain=config.FROM_EMAIL.partition('@')[2])
     message = Message(
-        text=body, html=html, subject=subject, mail_from=config.FROM_EMAIL
+        text=body, html=html, subject=subject, mail_from=config.FROM_EMAIL, message_id=mid
     )
 
     for filename, attachment, mime in attachments:
@@ -18,12 +21,20 @@ def send(to, subject, body, html=None, copy=None, attachments=None, mail_from=No
         body = body.replace("https", "http")
         return print("Sending email", str(body.encode('utf-8')), flush=True)
 
+    # If the DOMAIN configuration parameter is configured, take it as HELO parameter
+    # Else, take None, the sender's fqdn will be computed by the library
+    # cf. https://docs.python.org/3/library/smtplib.html
+    domain = config.DOMAIN
+    if domain == "":
+        domain = None
+
     # if no SMTP_LOGIN specified, don't create user and password fields, as the smtp server don't want them !
     if config.SMTP_LOGIN=="":
         smtp={
             "host": config.SMTP_HOST,
             "port": "25",
             "ssl": False,
+            "local_hostname": domain
         }
 
     else:
@@ -33,6 +44,7 @@ def send(to, subject, body, html=None, copy=None, attachments=None, mail_from=No
             "password": config.SMTP_PASSWORD,
             "port": "25",
             "ssl": False,
+            "local_hostname": domain
         }
 
     message.send(
