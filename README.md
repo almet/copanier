@@ -168,6 +168,7 @@ export COPANIER_SMTP_HOST="mail.gandi.net"
 export COPANIER_SMTP_PASSWORD="something"
 export COPANIER_SMTP_LOGIN="yourlogin"
 export COPANIER_FROM_EMAIL="youremail@tld.com"
+export COPANIER_DOMAIN="tld.com"
 export COPANIER_EMAIL_SIGNATURE="The team"
 export COPANIER_STAFF="staff@email.com another@staff.com"
 ```
