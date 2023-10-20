@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye-slim
 
 EXPOSE 2244
 ENV DEBIAN_FRONTEND=noninteractive 
